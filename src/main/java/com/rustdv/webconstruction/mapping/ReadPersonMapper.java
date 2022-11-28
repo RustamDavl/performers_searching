@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
     @Override
     public ReadPersonDto mapFrom(Person from) {
+
         return ReadPersonDto.builder()
+                .id(String.valueOf(from.getId()))
                 .email(from.getEmail())
                 .photo(from.getPhoto())
                 .build();

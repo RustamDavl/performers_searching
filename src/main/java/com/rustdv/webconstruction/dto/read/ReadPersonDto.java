@@ -5,7 +5,11 @@ import lombok.Value;
 
 @Value
 @Builder
-public class ReadPersonDto {
+public class ReadPersonDto implements ReadDto {
+
+    String firstName;
+
+    String id;
 
     String email;
 

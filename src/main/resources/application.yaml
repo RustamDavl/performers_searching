@@ -10,5 +10,11 @@ spring:
       format_sql: true
       hbm2ddl.auto: validate
     open-in-view: false
+logging:
+  level:
+    root: warn
+  file:
+    name: rustdv.log
+    path: /
 
 

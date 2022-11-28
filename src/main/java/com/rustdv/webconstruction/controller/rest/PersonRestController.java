@@ -1,6 +1,6 @@
 package com.rustdv.webconstruction.controller.rest;
 
-import com.rustdv.webconstruction.dto.createupdate.CreatePersonDto;
+import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonDto;
 import com.rustdv.webconstruction.dto.read.ReadPersonDto;
 import com.rustdv.webconstruction.service.PersonService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class PersonRestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ReadPersonDto create(@RequestBody CreatePersonDto createPersonDto) {
+    public ReadPersonDto create(@RequestBody CreateUpdatePersonDto createPersonDto) {
 
         return personService.create(createPersonDto);
     }
