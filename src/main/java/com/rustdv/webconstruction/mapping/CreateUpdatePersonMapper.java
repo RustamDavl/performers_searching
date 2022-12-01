@@ -18,6 +18,7 @@ public class CreateUpdatePersonMapper implements Mapper<CreateUpdatePersonDto, P
     @Override
     public Person change(CreateUpdatePersonDto from, Person to) {
         to.setFirstName(from.getFirstName());
+        to.setEmail(from.getEmail());
         to.setPhoto(from.getPhoto());
         return to;
     }

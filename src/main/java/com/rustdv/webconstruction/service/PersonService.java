@@ -6,20 +6,29 @@ import com.rustdv.webconstruction.mapping.CreateUpdatePersonMapper;
 import com.rustdv.webconstruction.mapping.ReadPersonMapper;
 import com.rustdv.webconstruction.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 
+@Slf4j
 @RequiredArgsConstructor
+@Service
+@Transactional(readOnly = true)
 public class PersonService implements IService<CreateUpdatePersonDto, ReadPersonDto, Integer> {
 
     private final PersonRepository personRepository;
     private final CreateUpdatePersonMapper createUpdatePersonMapper;
     private final ReadPersonMapper readPersonMapper;
 
+    @Transactional
     public ReadPersonDto create(CreateUpdatePersonDto createPersonDto) {
 
+        log.info("create a person");
 
         return Optional.ofNullable(createPersonDto)
                 .map(createUpdatePersonMapper::mapFrom)
@@ -35,6 +44,7 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
                 .map(readPersonMapper::mapFrom);
     }
 
+    @Transactional
     @Override
     public Optional<ReadPersonDto> update(Integer id, CreateUpdatePersonDto from) {
 
@@ -42,20 +52,24 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
                 .map(toPerson -> createUpdatePersonMapper.change(from, toPerson))
                 .map(personRepository::saveAndFlush)
                 .map(readPersonMapper::mapFrom);
-
-
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
 
         personRepository.findById(id)
-               .ifPresentOrElse(personRepository::delete, () -> {throw new RuntimeException();});
+                .ifPresentOrElse(personRepository::delete, () -> {
+                    throw new RuntimeException();
+                });
     }
 
     @Override
     public List<ReadPersonDto> findAll() {
-        return null;
+
+        return personRepository.findAll()
+                .stream().map(readPersonMapper::mapFrom)
+                .toList();
     }
 
     public Optional<ReadPersonDto> findByEmailAndPassword(String email, String password) {

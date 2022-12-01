@@ -11,6 +11,7 @@ public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
 
         return ReadPersonDto.builder()
                 .id(String.valueOf(from.getId()))
+                .firstName(from.getFirstName())
                 .email(from.getEmail())
                 .photo(from.getPhoto())
                 .build();

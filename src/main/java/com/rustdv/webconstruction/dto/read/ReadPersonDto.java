@@ -7,9 +7,9 @@ import lombok.Value;
 @Builder
 public class ReadPersonDto implements ReadDto {
 
-    String firstName;
-
     String id;
+
+    String firstName;
 
     String email;
 
