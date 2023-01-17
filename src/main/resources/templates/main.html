@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon"> -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+
+    <title>Greetings</title>
+</head>
+
+
+<body>
+
+<style th:inline="text">
+    header {
+        margin: 0;
+        padding: 200px 0;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100vh;
+
+
+        background: linear-gradient(90deg, #000000b3 0%, rgba(56, 56, 56, 0.439086) 90%, rgba(255, 255, 255, 0) 99.14%),
+        url("/images/chb5.png");
+        background-size: cover;
+        background-position: center;
+
+    }
+</style>
+
+<header>
+    <nav class="navbar shadow fixed-top navbar-expand-lg navbar-dark bg-mynav container-fluid">
+
+        <div class="container">
+
+            <div class="col">
+
+
+                <a class="navbar-brand" href="#">
+                    <img th:src="@{/images/levelLogo.png}" alt="" width="160" height="65">
+                </a>
+            </div>
+
+            <div class="col-md-1 regDiv">
+                <button type="button" class="regButton btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#loginModal">Войти
+                </button>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <button type="button" class="btn-close btn-close-white"
+                        onclick="document.getElementById('logForm').reset()" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                <div class="myform bg-dark rounded-top">
+                    <h1 class="text-center">Авторизация</h1>
+                    <form class="logForm" name="logForm" id="logForm">
+                        <div class="mb-3 mt-4">
+                            <label for="exampleInputEmail1" class="form-label">Почта</label>
+                            <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                                   aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Пароль</label>
+                            <input type="password" name="rawPassword" class="form-control" id="exampleInputPassword1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputRole1" class="form-label">Войти как</label>
+
+                            <select id="exampleInputRole1" name="role"
+                                    class="form-select form-select-lg mb-3 loginSelect"
+                                    aria-label=".form-select-lg example">
+                                <option selected>Выберите роль</option>
+                                <option>Специалист</option>
+                                <option>Работодатель</option>
+                            </select>
+
+
+                        </div>
+
+                        <button type="submit" class="btn btn-light mt-3 enterBtn">ВОЙТИ</button>
+                        <p>Не зарегистрированы?
+                            <button id="btn btn-primary regButton" type="button" class="signupBtn"
+                                    data-bs-toggle="modal" data-bs-target="#regModal" aria-expanded="false"
+                                    aria-controls="regModal">
+                                Зарегистрироваться
+                            </button>
+                        </p>
+
+
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade collapse" id="regModal" tabindex="-1" aria-labelledby="ModalFormLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content ">
+            <div class="modal-body">
+                <button type="button" id="btn-close" class="btn-close btn-close-white" onclick="document.getElementById('regForm').reset();
+                        document.getElementById('matchingMessage').innerText = '';
+            " data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="myform bg-dark rounded-top">
+                    <h1 class="text-center">Регистрация</h1>
+                    <form class="regForm" name="regForm" id="regForm">
+                        <div class="mb-3 mt-4">
+                            <label for="exampleInputName1" class="form-label">Имя пользователя</label>
+                            <input type="text" name="firstName" aria-describedby="name-format emailHelp" required
+                                   aria-required="true" class="form-control" id="exampleInputName1">
+                        </div>
+                        <div class="mb-3 mt-4">
+                            <label for="emailRegForm" class="form-label">Почта</label>
+                            <input id="emailRegForm" type="email" name="email" required aria-required="true"
+                                   class="form-control"
+                                   aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword2" class="form-label">Пароль</label>
+                            <input type="password" name="rawPassword" pattern="[^\s]{8,}" title="не менее 8 симоволов"
+                                   class="form-control" id="exampleInputPassword2">
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword2-confirm" class="form-label">Повторить пароль</label>
+                            <input type="password" name="rawPassword" onkeyup="check();" class="form-control"
+                                   id="exampleInputPassword2-confirm">
+                            <span id='matchingMessage'></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputRole2" class="form-label">Войти как</label>
+
+                            <select id="exampleInputRole2" name="role"
+                                    class="form-select form-select-lg mb-3 loginSelect"
+                                    aria-label=".form-select-lg example">
+                                <option selected>Выберите роль</option>
+                                <option>Специалист</option>
+                                <option>Работодатель</option>
+                            </select>
+
+
+                        </div>
+                        <button type="submit" class="btn btn-light mt-3 enterBtn">РЕГИСТРАЦИЯ</button>
+
+                    </form>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <p>vident vero quis reiciendis incidunt ea repellat dolor vitae laborum
+
+        Laudantium, minima possimus dolorem vitae accusamus esse distinctio hic, voluptate, ab voluptatibus
+        explicabo ad inventore sint. Non incidunt a obcaecati iure porro tenetur reiciendis qui aperiam eligendi
+        rem. Magnam, saepe!
+        Qui ipsum doloremque excepturi consequuntur, obcaecati fugit nulla adipisci praesentium rem, dolores rerum
+        porro iste sunt molestias reiciendis neque odit nemo illum a. Blanditiis magnam enim asperiores nisi
+        accusamus autem.
+        Quam sunt, eaque eius saepe nam debitis? Provident illo accusamus, velit eius optio, quisquam esse
+        voluptates eligendi nostrum explicabo dolor recusandae? Ex dolores voluptates sit laborum quis, excepturi
+        adipisci deleniti!
+        Quis expedita, sit aliquam esse provident quo laboriosam accusamus velit rem fugit ea ipsum cum sunt est
+        nisi nesciunt unde eos ipsam sed inventore laborum vero fuga cupiditate. Repellendus, nam?
+        Ut cupiditate eos ullam, dolore voluptatem consequatur aliquam amet, vero porro fuga enim, veniam magni.
+        Expedita veniam culpa dolores quaerat quam necessitatibus et voluptatem! Impedit quisquam amet voluptate
+        nemo minus.
+        Nulla consequatur atque voluptates at, debitis cum fugiat amet laborum iusto? Est ducimus amet eos veritatis
+        fugiat consequatur nobis ad rem ipsa, reprehenderit id autem dolor qui vitae beatae dolores.
+        Sed laudantium cupiditate dolorem laborum praesentium iure, ipsam aliquid rem esse amet tempore error nobis
+        eius saepe voluptates provident natus eligendi, sapiente optio voluptate quod. Amet ea voluptas vero
+        officia.
+        Dicta beatae officia tempora dolorem aperiam obcaecati maxime, fuga unde minus minima reprehenderit quisquam
+        optio quis aut nulla dolore, deserunt ipsa amet quas? Corporis eius, vitae sunt quos possimus in.
+        Enim, dolorem magnam! Excepturi veniam perspiciatis dolore error dolor itaque hic natus! Adipisci, corrupti!
+        Quas autem velit modi sit culpa illum voluptas molestias! Doloribus, amet eligendi tempora culpa id
+        voluptate.
+        Consequuntur eaque voluptatibus illum repellendus, magni ipsam doloremque iste eius dignissimos fuga
+        praesentium. Distinctio, dolores! Quas natus, expedita odio, omnis voluptatem similique neque dolorum
+        veritatis maxime ducimus ullam? Vitae, impedit?
+
+
+    </p>
+</div>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script type="text/javascript">
+    var nav = document.querySelector('nav');
+
+    window.addEventListener('scroll', function () {
+        if (window.pageYOffset > 100) {
+            nav.classList.add('bg-dark', 'shadow');
+        } else {
+            nav.classList.remove('bg-dark', 'shadow');
+        }
+    });
+</script>
+
+<script>
+    var check = function () {
+        if (document.getElementById('exampleInputPassword2').value ==
+            document.getElementById('exampleInputPassword2-confirm').value) {
+            document.getElementById('matchingMessage').style.color = 'green';
+            document.getElementById('matchingMessage').innerHTML = 'пароли совпадают';
+        } else {
+            document.getElementById('matchingMessage').style.color = 'red';
+            document.getElementById('matchingMessage').innerHTML = 'пароли не совпадают';
+        }
+
+
+    }
+</script>
+
+
+<script>
+    var form = document.querySelector('#regForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        var formData = new FormData(regForm);
+        var object = {};
+        formData.forEach(function (value, key) {
+            object[key] = value;
+        });
+        var jsonRegForm = JSON.stringify(object);
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/api/v1/auth/signup", true);
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-type", "application/json");
+        xhr.send(jsonRegForm);
+
+
+        xhr.onload = () => {
+            if (xhr.status == 201 || xhr.status == 200) {
+
+                const person = JSON.parse(xhr.responseText);
+                window.location.href = "/executor/" + person.readPersonDto.id;
+            } else if (xhr.status == 409) {
+                var emailFolder = document.querySelector("#emailRegForm");
+
+                emailFolder.value = "";
+                emailFolder.style.color = "red";
+                emailFolder.value = "Пользователь с таким адресом существует"
+
+
+            }
+
+        }
+
+    })
+</script>
+
+
+<script>
+    var form = document.querySelector('#logForm');
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        var formData = new FormData(logForm);
+        var object = {};
+
+        formData.forEach(function (value, key) {
+            object[key] = value;
+        });
+        var jsonRegForm = JSON.stringify(object);
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:8080/api/v1/auth/signin", true);
+
+        xhr.setRequestHeader("Accept", "application/json");
+        xhr.setRequestHeader("Content-type", "application/json");
+
+        xhr.send(jsonRegForm);
+
+        xhr.onload = () => {
+            if (xhr.status == 201 || xhr.status == 200) {
+                const person = JSON.parse(xhr.responseText);
+                // const jsonPerson = xhr.responseText;
+                //
+                // xhr.open("POST","http://localhost:8080/executor/orders", true)
+                // xhr.send(jsonPerson);
+
+                window.location.href = "/executor/" + person.id + "/orders";
+            }
+
+            else if (xhr.status == 403) {
+                var someFolder = document.querySelector('#exampleInputEmail1');
+
+
+                someFolder.value = "";
+                someFolder.style.color = "red";
+                someFolder.value = "неверный логин или пароль"
+
+            }
+
+        }
+
+    })
+</script>
+
+</body>
+
+</html>

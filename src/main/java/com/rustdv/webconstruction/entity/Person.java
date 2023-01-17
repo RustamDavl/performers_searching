@@ -37,7 +37,7 @@ public class Person {
     private List<Resume> resumes = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private List<PersonRole> personRoleList = new ArrayList<>();
 
@@ -45,6 +45,7 @@ public class Person {
     @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
+
 
 
 

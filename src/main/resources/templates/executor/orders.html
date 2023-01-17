@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/forMainPage.css" th:href="@{/styles/forMainPage.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
+
+                </div>
+            </a> </i>
+        <div class="logo_name">
+
+            <select id="exampleInputRole1" name="role" class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Заказчик</option>
+                <option>Специалист</option>
+                <!-- options i also need to set dinamically  -->
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" href="#orders" onclick="changeHeaderText()">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Заказы</span>
+            </a>
+            <span class="tooltip">Заказы</span>
+        </li>
+        <li>
+            <a id="profile" href="#profile" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" href="#responses" onclick="changeHeaderText()">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Отклики</span>
+            </a>
+            <span class="tooltip">Отклики</span>
+        </li>
+        <li>
+            <a id="record" href="#records" onclick="changeHeaderText()">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Учет</span>
+            </a>
+            <span class="tooltip">Учет</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Заказы
+    </div>
+
+
+    <div class="screen-grid screen__grid">
+        <div class="screen-grid__content" style="position: relative;">
+            <div class="projects-list">
+                <div id="projectsDiv" class="projects-list__grid">
+
+
+
+
+
+                    <div th:each="readOrder : ${readOrders}" class="adding project-preview projects-list__item" style="cursor: pointer;">
+                        <div class="project-preview__container">
+                            <div class="project-preview__actions">
+                                <div class="project-preview__tasks">
+
+                                    <span class="project-preview__tasks-text">Удалить</span>
+
+                                </div>
+                                <div class="project-preview__edit"
+                                     style="cursor: pointer; min-width: auto; margin-right: 1rem;">
+                                    <span onclick="popupToggle();"
+                                        class="project-preview__edit-text">Редактировать</span>
+
+                                </div>
+                                <!-- <div class="project-preview__time-zone">PRSN</div> -->
+                            </div>
+                            <h2 data-cy="project-card-title" class="project-preview__title">
+
+
+                                <img th:src="@{/images/folder-black-interface-symbol_icon-icons.com_54528.png}" width="20"
+                                     height="20">
+
+                                <span th:text="${readOrder.orderName}" class="project-preview__title-text">order name</span>
+                            </h2>
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                    <button onclick="popupToggle();" class="project-add projects-list__item" type="button"><span
+                            class="project-add__container">
+                                <img th:src="@{/images/icons8-добавить-30.png}" width="30" height="30">
+
+                                <span class="project-add__text">Добавить заказ</span>
+                            </span></button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ...................................................................................... -->
+
+    <div id="popup">
+        <div class="slide-panel">
+            <div class="slide-panel__item">
+                <div class="slide-panel__content slide-panel__content--main"
+                     style="display: flex; flex-direction: column;">
+                    <div class="slide-panel__header">
+                        <button onclick="popupHide()" data-cy="project-form-close-bt"
+                                class="y-ctrl-btn slide-panel__button-back" type="button">
+
+
+                            <span class="y-ctrl-btn__text">Назад</span></button>
+
+                        <button id="addNewTaskBox"
+                                class="ctrl-btn slide-panel__button-main" type="submit" form="orderInfo" data-cy="btnSaveProject">
+
+
+                            <span class="ctrl-btn__text">Сохранить</span></button>
+                    </div>
+                    <div class="slide-panel__body slidePanelBody_slidePanel__body__ULnfn">
+                        <form id="orderInfo" th:action="@{/executor/{id}/orders/create(id = ${executorId})}" method="post" enctype="multipart/form-data" class="form-default" style="position: relative;" data-hs-cf-bound="true">
+                            <div class="form-default__container">
+                                <header class="form-default__header">
+                                    <h2 class="form-default__title">Создание заказа</h2>
+                                </header>
+                                <div class="form-default__grid">
+                                    <div class="form-default__item form-default__item--full">
+                                        <div class="ctrl-form" data-cy="name">
+                                            <div class="ctrl-form__header"><label class="ctrl-form__label">Название
+                                                заказа
+                                            </label></div>
+                                            <div class="ctrl-form__body">
+                                                <input name="orderName" type="text"
+                                                                                class="ctrl-textfield" value=""></div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-default__item form-default__item--full ui-widget">
+                                        <div class="ctrl-form" data-cy="name">
+                                            <div class="ctrl-form__header"><label class="ctrl-form__label">Услуга или
+                                                специалист
+                                            </label></div>
+                                            <div class="ctrl-form__body"><label for="keywords">
+                                                <input id="keywords" autocomplete="off" name="keyword" type="text"
+                                                                                    class="ctrl-textfield" value="">
+                                            </label></div>
+                                        </div>
+                                    </div>
+
+<!--                                    <ul id="ui-id-1" tabindex="0"-->
+<!--                                        class="ui-menu ui-widget ui-widget-content ui-autocomplete ui-front"-->
+<!--                                        unselectable="on" wfd-invisible="true"-->
+<!--                                        style="top: 31.6px; left: 50.6875px; width: 200px; display: none;">-->
+<!--                                    </ul>-->
+<!--                                    <div role="status" aria-live="assertive" aria-relevant="additions"-->
+<!--                                         class="ui-helper-hidden-accessible">-->
+<!--                                        <div>2 results are available, use up and down arrow keys to navigate.</div>-->
+<!--                                    </div>-->
+
+
+                                    <div class="form-default__item form-default__item--full">
+                                        <div class="ctrl-location-full">
+                                            <header class="ctrl-location-full__header">
+                                                <h3 class="ctrl-location-full__title">Местоположение</h3>
+
+                                            </header>
+                                            <div class="ctrl-location-full__body">
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="country">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Город</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class=" css-0"><span aria-live="polite"
+                                                                                      aria-atomic="false"
+                                                                                      aria-relevant="additions text"
+                                                                                      class="css-7pg0cj-a11yText"></span>
+                                                                <div class="ctrl-form__body">
+                                                                    <div class="react-geocoder "
+                                                                         style="position: relative;">
+                                                                        <input placeholder="" name="city" autocomplete="off"
+                                                                               value=""></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="state">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Улица</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class="react-geocoder " style="position: relative;">
+                                                                <input name="street" placeholder="" autocomplete="off" value=""></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="city">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Дом</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class="react-geocoder " style="position: relative;">
+                                                                <input name="houseNumber" placeholder="" autocomplete="off" value=""></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-default__item form-default__item--full">
+                                            <div class="ctrl-location-full">
+                                                <header class="ctrl-location-full__header">
+                                                    <h3 class="ctrl-location-full__title">Добавить фото</h3>
+
+                                                </header>
+
+
+                                                <div data-v-446116e0="" class="question-body question-wrapper"
+                                                     data-order="4" data-v-2433c8eb="">
+                                                    <div class="fineuploader-wrapper">
+                                                        <div class="filewrapper">
+                                                            <label for="input__file" class="input__file-button">
+                                                                <input name="images" id="input__file" class="input__file"
+                                                                       hidden="hidden" tabindex="-1" type="file"
+                                                                       multiple="multiple" accept="image/*">
+
+                                                                <div tabindex="-1">
+                                                                    <div class="fine-uploader-dropzone-container dropzone"
+                                                                         dropzone-options="[object Object]"
+                                                                         use-custom-dropzone-options="true"><span><i
+                                                                            data-v-08209afc="" class="i-icon">
+
+                                                                        <img th:src="@{/images/toppng.com-upload-to-cloud-free-cloud-ico-1601x1301.png}"
+                                                                             width="45" height="35">
+                                                                    </i> <span class="input__file-button-text">Нажмите здесь</span>
+                                                                </span>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </label></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="form-default__item form-default__item--full">
+                                                <div class="ctrl-location-full">
+                                                    <header class="ctrl-location-full__header">
+                                                        <h3 class="ctrl-location-full__title">Желаемая дата начала и
+                                                            окончания работ</h3>
+                                                    </header>
+                                                    <div class="ctrl-location-full__body">
+                                                        <div class="form-default__item">
+                                                            <div class="ctrl-form ctrl-form--button"
+                                                                 data-cy="defaultTaskStart">
+                                                                <div class="ctrl-form__header"><label
+                                                                        class="ctrl-form__label">Начало</label></div>
+                                                                <div class="ctrl-form__body">
+                                                                    <div class="react-datepicker-wrapper">
+                                                                        <div class="react-datepicker__input-container">
+                                                                            <label>
+                                                                                <input type="date" name="startAt"
+                                                                                       autocomplete="off"
+                                                                                       class="ctrl-textfield">
+                                                                            </label></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-default__item" style="position: relative;">
+                                                            <div class="ctrl-form ctrl-form--button"
+                                                                 data-cy="defaultTaskEnd">
+                                                                <div class="ctrl-form__header"><label
+                                                                        class="ctrl-form__label">Окончание</label>
+                                                                </div>
+                                                                <div class="ctrl-form__body">
+                                                                    <div class="react-datepicker-wrapper">
+                                                                        <div class="react-datepicker__input-container">
+                                                                            <label>
+                                                                                <input type="date" name="endAt"
+                                                                                       autocomplete="off"
+                                                                                       class="ctrl-textfield">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ctrl-location-full">
+                                                <header class="ctrl-location-full__header">
+                                                    <h3 class="ctrl-location-full__title">Дополнительно</h3>
+
+                                                </header>
+
+                                                <div class="form-default__item form-default__item--full">
+                                                    <div class="ctrl-form" data-cy="name">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Комментарий
+                                                        </label></div>
+                                                        <div class="ctrl-form__body">
+                                                    <textarea placeholder="Comment text..." name="description" type="text" class="ctrl-textfield" ></textarea>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <button data-cy="close_edit_menu_bt" class="ctrl-btn-clear slide-panel__button-close"
+                        type="button"><span class="ctrl-btn-clear__text">close</span>
+                    <svg
+                            class="icon ctrl-btn-clear__icon icon--color-fill" width="24" height="24">
+                        <use xlink:href="/static/media/svg-sprite.9e6e6a488fe0869ac5cb9913c6c2d047.svg#clear"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<script>
+    function popupToggle() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide() {
+        const popup = document.getElementById('popup');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $( function() {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $( "#keywords" ).autocomplete({
+            source: availableTags
+        });
+    } );
+</script>
+
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

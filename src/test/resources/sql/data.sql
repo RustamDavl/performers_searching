@@ -301,42 +301,24 @@ select setval('orders_resume_id_seq', (select max(id) from orders_resume));
 INSERT INTO person_role (id,
                          role_id,
                          person_id,
-                         rating,
-                         comment)
-VALUES (1, 1, 1, '3.3', 'normal'),
-       (2, 2, 1, '2.9', 'very good job'),
-       (3, 1, 2, '5.0', 'normal'),
-       (4, 2, 2, '3.8', 'normal'),
-       (5, 1, 3, '3.8', 'normal'),
-       (6, 2, 4, '3.5', 'nice!'),
-       (7, 1 , 5, '4.6', 'normal'),
-       (8, 2, 5, '4.8', 'nice!'),
-       (9, 1, 6, '4.4', 'very good job'),
-       (10, 2, 7, '3.3', 'normal'),
-       (11, 1, 7, '4.6', 'normal'),
-       (12, 2, 8, '4.4', 'nice!'),
-       (13, 1, 9, '3.5', 'nice!'),
-       (14, 2, 10, '4.6', 'nice!'),
-       (15, 1, 10, '4.6', 'very good job'),
-       (16, 2, 11, '4.2', 'normal'),
-
-       (17, 1, 12, '4.4', 'normal'),
-       (18, 2, 12, '4.4', 'quite bad'),
-       (19, 1, 13, '3.3', 'very good job'),
-       (20, 2, 13, '3.5', 'quite bad'),
-       (21, 1, 14, '4.6', 'normal'),
-       (22, 2, 14, '2.9', 'nice!'),
-       (23, 1, 15, '4.8', 'quite bad'),
-       (24, 2, 15, '2.9', 'normal'),
-       (25, 1, 16, '2.9', 'nice!'),
-
-       (26, 2, 16, '2.9', 'nice!'),
-       (27, 1, 17, '4.4', 'normal'),
+                         rating)
+VALUES (1, 1, 1, '3.3' ),
+       (2, 2, 1, '2.9'),
+       (3, 1, 2, '5.0'),
+       (4, 2, 2, '3.8'),
+       (5, 1, 3, '3.8'),
+       (6, 2, 4, '3.5'),
+       (7, 1 , 5, '4.6'),
+       (8, 2, 5, '4.8'),
+       (9, 1, 6, '4.4'),
+       (10, 2, 7, '3.3'),
+       (11, 1, 7, '4.6'),
+       (12, 2, 8, '4.4'),
+       (13, 1, 9, '3.5'),
+       (14, 2, 10, '4.6'),
+       (15, 1, 10, '4.6');
 
 
-       (28, 1, 20, '3.8', 'normal'),
-       (29, 2, 18, '4.2', 'nice!'),
-       (30, 1, 19, '4.6', 'very good job');
 select setval('person_role_id_seq', (select max(id) from person_role));
 
 INSERT INTO photo_f_orders (id,

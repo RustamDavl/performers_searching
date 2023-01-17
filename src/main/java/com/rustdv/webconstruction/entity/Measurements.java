@@ -8,6 +8,7 @@ import lombok.Getter;
 @Getter
 public enum Measurements {
 
+
     SERVICE("за услугу"),
     SQ_M("за кв метр"),
     M("за метр"),

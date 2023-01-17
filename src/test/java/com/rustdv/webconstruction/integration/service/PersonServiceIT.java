@@ -1,10 +1,8 @@
-package com.rustdv.webconstruction.integration.repository;
+package com.rustdv.webconstruction.integration.service;
 
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonDto;
 import com.rustdv.webconstruction.dto.read.ReadPersonDto;
-import com.rustdv.webconstruction.entity.Person;
 import com.rustdv.webconstruction.integration.IntegrationTestBase;
-import com.rustdv.webconstruction.repository.PersonRepository;
 import com.rustdv.webconstruction.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -12,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
 @RequiredArgsConstructor
-public class PersonServiceTest extends IntegrationTestBase {
+public class PersonServiceIT extends IntegrationTestBase {
 
     private static final Integer PERSON_ID = 10;
     private final PersonService personService;
@@ -78,8 +76,6 @@ public class PersonServiceTest extends IntegrationTestBase {
 
     }
 
-
-
     @Test
     void deletePerson() {
         personService.delete(PERSON_ID);
@@ -89,11 +85,5 @@ public class PersonServiceTest extends IntegrationTestBase {
         assertThat(nullPerson).isEmpty();
     }
 
-    @Test
-    void findByEmailAndPassword() {
-        var result = personService.findByEmailAndPassword("neque.Nullam@ut.org","pede.");
 
-        result.ifPresent(readPersonDto -> assertThat(readPersonDto.getId()).isEqualTo("1"));
-        result.ifPresent(readPersonDto -> assertThat(readPersonDto.getFirstName()).isEqualTo("Vera"));
-    }
 }

@@ -27,7 +27,7 @@ public class Role {
     private Roles role;
 
     @Builder.Default
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @ToString.Exclude
     private List<PersonRole> personRoleList = new ArrayList<>();
 

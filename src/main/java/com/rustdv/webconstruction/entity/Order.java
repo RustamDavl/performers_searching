@@ -5,8 +5,10 @@ import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +32,9 @@ public class Order {
 
     private String description;
 
+    @Column(name = "name")
+    private String orderName;
+
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
@@ -45,15 +50,21 @@ public class Order {
 
     @Builder.Default
     @ToString.Exclude
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PhotoForOrder> photos = new ArrayList<>();
 
 
     @Column(name = "start_at")
-    private LocalTime startAt;
+    private LocalDate startAt;
 
     @Column(name = "end_at")
-    private LocalTime endAt;
+    private LocalDate endAt;
+
+
+    public void addPhotos(Collection<PhotoForOrder> photos) {
+        this.photos.addAll(photos);
+        photos.forEach(photoForOrder -> photoForOrder.setOrder(this));
+    }
 
     @Override
     public boolean equals(Object o) {

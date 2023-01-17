@@ -2,9 +2,14 @@ package com.rustdv.webconstruction.service;
 
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonDto;
 import com.rustdv.webconstruction.dto.read.ReadPersonDto;
+import com.rustdv.webconstruction.dto.read.ReadPersonRoleDto;
+import com.rustdv.webconstruction.dto.read.ReadRoleDto;
+import com.rustdv.webconstruction.entity.Role;
+import com.rustdv.webconstruction.entity.Roles;
 import com.rustdv.webconstruction.mapping.CreateUpdatePersonMapper;
 import com.rustdv.webconstruction.mapping.ReadPersonMapper;
 import com.rustdv.webconstruction.repository.PersonRepository;
+import com.rustdv.webconstruction.repository.PersonRoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -25,12 +30,14 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
     private final CreateUpdatePersonMapper createUpdatePersonMapper;
     private final ReadPersonMapper readPersonMapper;
 
+    private final PersonRoleRepository personRoleRepository;
+
     @Transactional
-    public ReadPersonDto create(CreateUpdatePersonDto createPersonDto) {
+    public ReadPersonDto create(CreateUpdatePersonDto createUpdatePersonDto) {
 
         log.info("create a person");
 
-        return Optional.ofNullable(createPersonDto)
+        return Optional.ofNullable(createUpdatePersonDto)
                 .map(createUpdatePersonMapper::mapFrom)
                 .map(personRepository::save)
                 .map(readPersonMapper::mapFrom)
@@ -44,12 +51,13 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
                 .map(readPersonMapper::mapFrom);
     }
 
+
     @Transactional
     @Override
     public Optional<ReadPersonDto> update(Integer id, CreateUpdatePersonDto from) {
 
         return personRepository.findById(id)
-                .map(toPerson -> createUpdatePersonMapper.change(from, toPerson))
+                .map(toPerson -> createUpdatePersonMapper.update(from, toPerson))
                 .map(personRepository::saveAndFlush)
                 .map(readPersonMapper::mapFrom);
     }
@@ -72,10 +80,22 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
                 .toList();
     }
 
-    public Optional<ReadPersonDto> findByEmailAndPassword(String email, String password) {
-
-        return personRepository.findByEmailAndPassword(email, password)
+    public Optional<ReadPersonDto> findByEmail(String email) {
+        return personRepository.findByEmail(email)
                 .map(readPersonMapper::mapFrom);
 
+
     }
+
+    public Optional<ReadPersonDto> findByEmailAndPassword(String email, String password) {
+        return personRepository.findByEmailAndPassword(email, password)
+                .map(readPersonMapper::mapFrom);
+    }
+
+//    public List<ReadRoleDto> getAllRolesById(Integer id) {
+//
+//        return personRepository.
+//    }
+
+
 }

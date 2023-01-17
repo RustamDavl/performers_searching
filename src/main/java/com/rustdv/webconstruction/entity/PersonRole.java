@@ -18,7 +18,6 @@ import java.util.Objects;
         uniqueConstraints =
         @UniqueConstraint(columnNames={"role_id", "person_id"})
 )
-
 public class PersonRole {
 
     @Id
@@ -33,10 +32,21 @@ public class PersonRole {
     @JoinColumn(name = "person_id")
     private Person person;
 
-    private BigDecimal rating;
+    @Column(name = "rating", scale = 1)
+    @Builder.Default
+    private BigDecimal rating = new BigDecimal("0.0");
 
-    private String comment;
 
+    public void addRole(Role role) {
+        this.role = role;
+        this.role.getPersonRoleList().add(this);
+
+    }
+
+    public void addPerson(Person person) {
+        this.person = person;
+        this.person.getPersonRoleList().add(this);
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -23,8 +23,7 @@ public class Keyword {
     private Integer id;
 
     @Column(name = "name")
-    @Enumerated(EnumType.STRING)
-    private Keywords keyword;
+    private String keyword;
 
 
     @Builder.Default

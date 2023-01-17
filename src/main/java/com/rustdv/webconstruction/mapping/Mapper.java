@@ -4,7 +4,7 @@ public interface Mapper<F, T>{
 
     T mapFrom(F from);
 
-    default T change(F from, T to) {
+    default T update(F from, T to) {
         return to;
     }
 

@@ -62,7 +62,7 @@ public class Resume {
     @Builder.Default
     @OneToMany(mappedBy = "resume", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private List<PhotoForResume> photos = new ArrayList<>();
+    private List<PhotoForResume> resumePhotos = new ArrayList<>();
 
 
     @Builder.Default
