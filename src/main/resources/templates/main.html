@@ -82,8 +82,8 @@
                                     class="form-select form-select-lg mb-3 loginSelect"
                                     aria-label=".form-select-lg example">
                                 <option selected>Выберите роль</option>
-                                <option>Специалист</option>
-                                <option>Работодатель</option>
+                                <option value="Специалист">Специалист</option>
+                                <option value="Работодатель">Работодатель</option>
                             </select>
 
 
@@ -147,9 +147,9 @@
                             <select id="exampleInputRole2" name="role"
                                     class="form-select form-select-lg mb-3 loginSelect"
                                     aria-label=".form-select-lg example">
-                                <option selected>Выберите роль</option>
-                                <option>Специалист</option>
-                                <option>Работодатель</option>
+                                <option>Выберите роль</option>
+                                <option value="Специалист">Специалист</option>
+                                <option value="Работодатель">Работодатель</option>
                             </select>
 
 
@@ -254,9 +254,17 @@
 
         xhr.onload = () => {
             if (xhr.status == 201 || xhr.status == 200) {
-
                 const person = JSON.parse(xhr.responseText);
-                window.location.href = "/executor/" + person.readPersonDto.id;
+                const optionValue = document.getElementById("exampleInputRole2");
+
+                if(optionValue.value == 'Работодатель') {
+                    window.location.href = "/customer/" + person.readPersonDto.id + "/orders";
+                } else if (optionValue.value == 'Специалист') {
+                    window.location.href = "/executor/" + person.readPersonDto.id + "/resumes";
+                }
+
+
+
             } else if (xhr.status == 409) {
                 var emailFolder = document.querySelector("#emailRegForm");
 
@@ -298,12 +306,15 @@
         xhr.onload = () => {
             if (xhr.status == 201 || xhr.status == 200) {
                 const person = JSON.parse(xhr.responseText);
-                // const jsonPerson = xhr.responseText;
-                //
-                // xhr.open("POST","http://localhost:8080/executor/orders", true)
-                // xhr.send(jsonPerson);
+                const optionValue = document.getElementById("exampleInputRole1");
 
-                window.location.href = "/executor/" + person.id + "/orders";
+                if(optionValue.value == 'Работодатель') {
+                    window.location.href = "/customer/" + person.id + "/orders";
+                } else if (optionValue.value == 'Специалист') {
+                    window.location.href = "/executor/" + person.id + "/resumes";
+                }
+
+
             }
 
             else if (xhr.status == 403) {

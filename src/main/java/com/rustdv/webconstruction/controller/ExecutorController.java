@@ -1,53 +1,80 @@
 package com.rustdv.webconstruction.controller;
 
-
-import com.rustdv.webconstruction.dto.createupdate.CreateUpdateOrderDto;
-import com.rustdv.webconstruction.dto.read.ReadOrderDto;
-import com.rustdv.webconstruction.dto.read.ReadPersonDto;
-import com.rustdv.webconstruction.service.KeywordService;
+import com.rustdv.webconstruction.dto.createupdate.CreateUpdateResumeDto;
+import com.rustdv.webconstruction.entity.Team;
+import com.rustdv.webconstruction.repository.ExperienceRepository;
+import com.rustdv.webconstruction.repository.KeywordRepository;
+import com.rustdv.webconstruction.repository.MeasurementRepository;
 import com.rustdv.webconstruction.service.OrderService;
-import com.rustdv.webconstruction.service.PersonService;
+import com.rustdv.webconstruction.service.ResumeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Comparator;
+import java.util.Arrays;
 
-@Controller
 @RequestMapping("/executor")
 @RequiredArgsConstructor
+@Controller
 public class ExecutorController {
+
+    private final ResumeService resumeService;
+    private final MeasurementRepository measurementRepository;
+    private final KeywordRepository keywordRepository;
+    private final ExperienceRepository experienceRepository;
 
     private final OrderService orderService;
 
-    private final PersonService personService;
+    @GetMapping("/{id}/resumes")
+    public String getResumes(Model model, @PathVariable("id") Integer id) {
 
-    private final KeywordService keywordService;
 
+        model.addAttribute("resumes", resumeService.findAll());
+        model.addAttribute("executorId", id);
+        model.addAttribute("measurements", measurementRepository.findAll());
+        model.addAttribute("keywords", keywordRepository.findAll());
+        model.addAttribute("experiences", experienceRepository.findAll());
+        model.addAttribute("teams", Arrays.stream(Team.values()).map(Team::getDescription)
+                .toList());
+
+
+        return "executor/resumes";
+    }
+
+    @PostMapping("/{id}/resumes")
+    public String createResume(Model model, @PathVariable("id") Integer id,
+                               CreateUpdateResumeDto createUpdateResumeDto) {
+
+        var readResumeDto = resumeService.create(createUpdateResumeDto, id);
+
+
+        return "redirect:/executor/" + id + "/resumes";
+    }
 
     @GetMapping("/{id}/orders")
-    public String findById(Model model, @PathVariable("id") Integer id) {
+    public String findAllOrders(Model model, @PathVariable("id") Integer id) {
 
-        var readOrderDtoList = orderService.findAllByPersonId(id);
-        model.addAttribute("readOrders", readOrderDtoList);
+        model.addAttribute("orders", orderService.findAll());
         model.addAttribute("executorId", id);
-        model.addAttribute("keywords", keywordService.findAll());
 
-        return "executor/orders";
-
-
+        return "executor/getAllOrders";
     }
 
+    @GetMapping("/{id}/orders/{orderId}")
+    public String getOrderById(Model model, @PathVariable("id") Integer id, @PathVariable("orderId") Integer orderId) {
 
-    @PostMapping("/{id}/orders/create")
-    public String createOrder(Model model, @PathVariable("id") Integer id, CreateUpdateOrderDto createUpdateOrderDto) {
 
-       orderService.create(createUpdateOrderDto, id);
-        return "redirect:/executor/" + id + "/orders";
+        model.addAttribute("order", orderService.findById(orderId).orElse(null));
+        model.addAttribute("executorId", id);
+
+
+        return "executor/currentOrderInfo";
     }
+
 
 
 }

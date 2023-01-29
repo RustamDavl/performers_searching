@@ -6,6 +6,7 @@ import lombok.Value;
 @Value
 @Builder
 public class ReadPhotoDto implements ReadDto{
+
     Integer id;
 
     String pathToPhoto;

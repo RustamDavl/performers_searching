@@ -11,7 +11,9 @@ import java.util.List;
 @Value
 @Builder
 @RequiredArgsConstructor
-public class ReadResumeDto implements ReadDto{
+public class ReadResumeDto implements ReadDto {
+
+    Integer id;
 
     ReadPersonDto readPersonDto;
 
@@ -19,7 +21,7 @@ public class ReadResumeDto implements ReadDto{
 
     Integer price;
 
-    Measurements measurement;
+    String measurement;
 
     Weekdays weekdays;
 
@@ -27,13 +29,14 @@ public class ReadResumeDto implements ReadDto{
 
     LocalTime endAt;
 
-    Experience experience;
+    String experience;
+
 
     Address address;
 
-    Team team;
+    String team;
 
-    List<ReadPhotoDto> readPhotoDtoList;
+    List<String> imagePaths;
 
     String aboutMe;
 

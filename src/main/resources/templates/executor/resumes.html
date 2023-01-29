@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/forResumesPage.css" th:href="@{/styles/forResumesPage.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+
+<div  class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
+
+                </div>
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="inputRole" name="role" class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Специалист</option>
+                <option>Заказчик</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" th:href="@{/executor/{id}/resumes(id = ${executorId})}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Мое резюме</span>
+            </a>
+            <span class="tooltip">Мое резюме</span>
+        </li>
+        <li>
+            <a id="profile" href="#profile" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/executor/{id}/orders(id = ${executorId})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Найти заказы</span>
+            </a>
+            <span class="tooltip">Найти заказ</span>
+        </li>
+        <li>
+            <a id="record" href="#records" onclick="changeHeaderText()">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Учет</span>
+            </a>
+            <span class="tooltip">Учет</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Мои резюме
+    </div>
+
+
+    <div class="screen-grid screen__grid">
+        <div class="screen-grid__content" style="position: relative;">
+            <div class="projects-list">
+                <div id="projectsDiv" class="projects-list__grid">
+
+
+                    <div th:each="resume : ${resumes}" class="adding project-preview projects-list__item"
+                         style="cursor: pointer;">
+                        <div class="project-preview__container">
+                            <div class="project-preview__actions">
+                                <div class="project-preview__tasks">
+
+                                    <span class="project-preview__tasks-text">Удалить</span>
+
+                                </div>
+                                <div class="project-preview__edit"
+                                     style="cursor: pointer; min-width: auto; margin-right: 1rem;">
+                                    <span onclick="popupToggle();"
+                                          class="project-preview__edit-text">Редактировать</span>
+
+                                </div>
+                                <!-- <div class="project-preview__time-zone">PRSN</div> -->
+                            </div>
+                            <h2 data-cy="project-card-title" class="project-preview__title">
+
+
+                                <img th:src="@{/images/folder-black-interface-symbol_icon-icons.com_54528.png}"
+                                     width="20"
+                                     height="20">
+
+                                <span th:text="${resume.readPersonDto.firstName}"
+                                      class="project-preview__title-text">order name</span>
+                            </h2>
+
+                        </div>
+                    </div>
+
+
+                    <button onclick="popupToggle();" class="project-add projects-list__item" type="button"><span
+                            class="project-add__container">
+                                <img th:src="@{/images/icons8-добавить-30.png}" width="30" height="30">
+
+                                <span class="project-add__text">Создать резюме</span>
+                            </span></button>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ...................................................................................... -->
+
+    <div id="popup">
+        <div class="slide-panel">
+            <div class="slide-panel__item">
+                <div class="slide-panel__content slide-panel__content--main"
+                     style="display: flex; flex-direction: column;">
+                    <div class="slide-panel__header">
+                        <button onclick="popupHide()" data-cy="project-form-close-bt"
+                                class="y-ctrl-btn slide-panel__button-back" type="button">
+
+
+                            <span class="y-ctrl-btn__text">Назад</span></button>
+
+                        <button id="addNewTaskBox"
+                                class="ctrl-btn slide-panel__button-main" type="submit" form="orderInfo"
+                                data-cy="btnSaveProject">
+
+
+                            <span class="ctrl-btn__text">Сохранить</span></button>
+                    </div>
+                    <div class="slide-panel__body slidePanelBody_slidePanel__body__ULnfn">
+                        <form id="orderInfo" th:action="@{/executor/{id}/resumes(id = ${executorId})}"
+                              method="post" enctype="multipart/form-data" class="form-default"
+                              style="position: relative;" data-hs-cf-bound="true">
+                            <div class="form-default__container">
+                                <header class="form-default__header">
+                                    <h3 class="ctrl-location-full__title">Услуги и условия работы</h3>
+
+                                </header>
+                                <div class="form-default__grid personal">
+                                    <div class="ctrl-location-full__body personalSecond">
+                                        <div class="ctrl-location-full__item">
+                                            <div class="ctrl-form" data-cy="country">
+                                                <div class="ctrl-form__header">
+                                                    <label class="ctrl-form__label">Специальность</label>
+
+                                                </div>
+<!--                                                <div class="ctrl-form__body">-->
+<!--                                                    <div class=" css-0"><span aria-live="polite"-->
+<!--                                                                              aria-atomic="false"-->
+<!--                                                                              aria-relevant="additions text"-->
+<!--                                                                              class="css-7pg0cj-a11yText"></span>-->
+<!--                                                        <div class="ctrl-form__body">-->
+<!--                                                            <div class="react-geocoder "-->
+<!--                                                                 style="position: relative;">-->
+<!--                                                                <input placeholder="" name="keyword" autocomplete="off"-->
+<!--                                                                       value=""></div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
+                                                <div class="react-geocoder" style="position: relative;">
+                                                    <details class="custom-select forLabel">
+                                                        <summary class="radios">
+                                                            <input class="sumInput" type="radio" name="keyword" id="default4" title="Выбрать" checked="">
+
+
+                                                            <input th:each="keyword : ${keywords}" class="sumInput" type="radio" name="keyword" th:value="${keyword.name}" th:id="${keyword.name}" th:title="${keyword.name}" wfd-invisible="true">
+
+
+
+                                                        </summary>
+                                                        <ul class="list">
+                                                            <li th:each="keyword : ${keywords}">
+                                                                <label th:value="${keyword.name}" th:text="${keyword.name}" th:for="${keyword.name}">
+
+                                                                    dummy text
+
+                                                                </label>
+                                                            </li>
+                                                        </ul>
+                                                    </details>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ctrl-location-full__item">
+                                            <div class="ctrl-form" data-cy="state">
+                                                <div class="ctrl-form__header">
+                                                    <label class="ctrl-form__label">Численный
+                                                        состав</label>
+
+                                                </div>
+                                                <div class="ctrl-form__body">
+                                                    <div class="react-geocoder " style="position: relative;">
+                                                        <details class="custom-select forLabel">
+                                                            <summary class="radios">
+                                                                <input class="sumInput" type="radio" name="team"
+                                                                       id="default" title="Выбрать" checked>
+
+
+                                                                    <input th:each="team : ${teams}" class="sumInput" type="radio" name="team"
+                                                                          th:value="${team}"
+                                                                           th:id="${team}" th:title="${team}">
+
+
+                                                                <!--                                                                <input class="sumInput" type="radio" name="item"-->
+<!--                                                                       id="item1" title="Работаю один">-->
+<!--                                                                <input class="sumInput" type="radio" name="item"-->
+<!--                                                                       id="item2" title="Работаю в команде">-->
+<!--                                                                <input class="sumInput" type="radio" name="item"-->
+<!--                                                                       id="item3" title="Работаю один либо в команде">-->
+                                                                <!--                                                                <input class="sumInput" type="radio" name="item" id="item4" title="Item 4">-->
+                                                                <!--                                                                <input class="sumInput" type="radio" name="item" id="item5" title="Item 5">-->
+                                                            </summary>
+                                                            <ul class="list">
+                                                                <li th:each="team : ${teams}">
+                                                                    <label th:value="${team}" th:text="${team}" th:for="${team}">
+                                                                        dummy text
+
+                                                                    </label>
+                                                                </li>
+<!--                                                                <li>-->
+<!--                                                                    <label for="item2">Работаю в команде</label>-->
+<!--                                                                </li>-->
+<!--                                                                <li>-->
+<!--                                                                    <label for="item3">Работаю один либо в команде</label>-->
+<!--                                                                </li>-->
+
+                                                            </ul>
+                                                        </details>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="ctrl-location-full__body personalSecond">
+                                        <div class="ctrl-location-full__item">
+                                            <div class="ctrl-form" data-cy="country">
+                                                <div class="ctrl-form__header"><label
+                                                        class="ctrl-form__label">Цена</label>
+                                                </div>
+                                                <div class="ctrl-form__body">
+                                                    <div class=" css-0"><span aria-live="polite" aria-atomic="false"
+                                                                              aria-relevant="additions text"
+                                                                              class="css-7pg0cj-a11yText"></span>
+                                                        <div class="ctrl-form__body">
+                                                            <div class="react-geocoder " style="position: relative;">
+                                                                <input placeholder="" name="price" autocomplete="off"
+                                                                       value=""></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="ctrl-location-full__item">
+                                            <div class="ctrl-form" data-cy="state">
+                                                <div class="ctrl-form__header">
+                                                    <label class="ctrl-form__label">Тип цены</label>
+
+                                                </div>
+                                                <div class="ctrl-form__body">
+                                                    <div class="react-geocoder" style="position: relative;">
+                                                        <details class="custom-select forLabel">
+                                                            <summary class="radios">
+                                                                <input class="sumInput" type="radio" name="measurement"
+                                                                       id="default2" title="Выбрать" checked="">
+
+
+                                                                <input th:each="measurement : ${measurements}" class="sumInput" type="radio" name="measurement"
+                                                                       th:value="${measurement.name}"
+                                                                       th:id="${measurement.name}" th:title="${measurement.name}"
+                                                                       wfd-invisible="true">
+
+
+<!--                                                                <input class="sumInput" type="radio" name="item2"-->
+<!--                                                                       id="item12" title="За единицу"-->
+<!--                                                                       wfd-invisible="true">-->
+<!--                                                                <input class="sumInput" type="radio" name="item2"-->
+<!--                                                                       id="item22" title="За метр" wfd-invisible="true">-->
+<!--                                                                <input class="sumInput" type="radio" name="item2"-->
+<!--                                                                       id="item32" title="За литр" wfd-invisible="true">-->
+<!--                                                                <input class="sumInput" type="radio" name="item"-->
+<!--                                                                       id="item5" title="Item 5">-->
+                                                            </summary>
+                                                            <ul class="list">
+                                                                <li th:each="measurement : ${measurements}">
+                                                                    <label  th:value="${measurement.id}" th:text="${measurement.name}" th:for="${measurement.name}">
+
+                                                                        dummy text
+
+                                                                    </label>
+                                                                </li>
+
+<!--                                                                <li>-->
+<!--                                                                    <label for="item12">-->
+<!--                                                                        За единицу-->
+
+<!--                                                                    </label>-->
+<!--                                                                </li>-->
+<!--                                                                <li>-->
+<!--                                                                    <label for="item22">За метр</label>-->
+<!--                                                                </li>-->
+<!--                                                                <li>-->
+<!--                                                                    <label for="item32">За литр</label>-->
+<!--                                                                </li>-->
+
+                                                            </ul>
+                                                        </details>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="form-default__item form-default__item--full ui-widget">
+                                        <div class="ctrl-form" data-cy="name">
+                                            <div class="ctrl-form__header"><label class="ctrl-form__label">График работы
+                                            </label></div>
+                                            <div class="ctrl-form__body"><label>
+
+                                                <div class="dbgOuter">
+
+
+                                                    <div class="dbgCont">
+
+
+                                                        <input type="checkbox" name="mon" id="Mon"  class="dbgCheck" aria-checked="false"/>
+                                                        <label for="Mon">Пн</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Tue" name="tues"  class="dbgCheck"/>
+                                                        <label for="Tue">Вт</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Wed" name="wed"  class="dbgCheck"/>
+                                                        <label for="Wed">Ср</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Thur" name="thurs"  class="dbgCheck"/>
+                                                        <label for="Thur">Чт</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Fr" name="fri"  class="dbgCheck"/>
+                                                        <label for="Fr">Пт</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Sat" name="sat"  class="dbgCheck"/>
+                                                        <label for="Sat">Сб</label>
+                                                    </div>
+                                                    <div class="dbgCont">
+                                                        <input type="checkbox" id="Sun" name="sun" class="dbgCheck"`/>
+                                                        <label for="Sun">Вс</label>
+                                                    </div>
+
+                                                </div>
+
+                                            </label>
+                                            </div>
+                                        </div>
+                                        <div class="ctrl-location-full__body">
+                                            <div class="form-default__item">
+                                                <div class="ctrl-form ctrl-form--button"
+                                                     data-cy="defaultTaskStart">
+                                                    <div class="ctrl-form__header"><label
+                                                            class="ctrl-form__label">Начало</label></div>
+                                                    <div class="ctrl-form__body">
+                                                        <div class="react-datepicker-wrapper">
+                                                            <div class="react-datepicker__input-container">
+                                                                <label>
+                                                                    <input type="time" name="startAt"
+                                                                           autocomplete="off"
+                                                                           class="ctrl-textfield">
+                                                                </label></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-default__item" style="position: relative;">
+                                                <div class="ctrl-form ctrl-form--button"
+                                                     data-cy="defaultTaskEnd">
+                                                    <div class="ctrl-form__header"><label
+                                                            class="ctrl-form__label">Окончание</label>
+                                                    </div>
+                                                    <div class="ctrl-form__body">
+                                                        <div class="react-datepicker-wrapper">
+                                                            <div class="react-datepicker__input-container">
+                                                                <label>
+                                                                    <input type="time" name="endAt"
+                                                                           autocomplete="off"
+                                                                           class="ctrl-textfield">
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    </div>
+
+
+
+                                        <div class="ctrl-location-full">
+                                            <header class="ctrl-location-full__header">
+                                                <h3 class="ctrl-location-full__title">Опыт работы</h3>
+
+                                            </header>
+
+                                            <div class="react-geocoder" style="position: relative;">
+                                                <details class="custom-select forLabel">
+                                                    <summary class="radios">
+                                                        <input class="sumInput" type="radio" name="experience"
+                                                               id="default3" title="Выбрать" checked="">
+
+
+                                                        <input th:each="experience : ${experiences}" class="sumInput" type="radio" name="experience"
+                                                               th:value="${experience.value}"
+                                                               th:id="${experience.value}" th:title="${experience.value}"
+                                                               wfd-invisible="true">
+
+
+
+                                                    </summary>
+                                                    <ul class="list">
+                                                        <li th:each="experience : ${experiences}">
+                                                            <label  th:value="${experience.value}" th:text="${experience.value}" th:for="${experience.value}">
+
+                                                                dummy text
+
+                                                            </label>
+                                                        </li>
+                                                    </ul>
+                                                </details>
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="form-default__item form-default__item--full">
+                                        <div class="ctrl-location-full">
+                                            <header class="ctrl-location-full__header">
+                                                <h3 class="ctrl-location-full__title">Местоположение</h3>
+
+                                            </header>
+                                            <div class="ctrl-location-full__body">
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="country">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Город</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class=" css-0"><span aria-live="polite"
+                                                                                      aria-atomic="false"
+                                                                                      aria-relevant="additions text"
+                                                                                      class="css-7pg0cj-a11yText"></span>
+                                                                <div class="ctrl-form__body">
+                                                                    <div class="react-geocoder "
+                                                                         style="position: relative;">
+                                                                        <input placeholder="" name="city"
+                                                                               autocomplete="off"
+                                                                               value=""></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="state">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Улица</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class="react-geocoder" style="position: relative;">
+                                                                <input name="street" placeholder="" autocomplete="off"
+                                                                       value=""></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="ctrl-location-full__item">
+                                                    <div class="ctrl-form" data-cy="city">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Дом</label>
+                                                        </div>
+                                                        <div class="ctrl-form__body">
+                                                            <div class="react-geocoder" style="position: relative;">
+                                                                <input name="houseNumber" placeholder=""
+                                                                       autocomplete="off" value=""></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-default__item form-default__item--full">
+                                            <div class="ctrl-location-full">
+                                                <header class="ctrl-location-full__header">
+                                                    <h3 class="ctrl-location-full__title">Портфолио</h3>
+
+                                                </header>
+
+
+                                                <div data-v-446116e0="" class="question-body question-wrapper"
+                                                     data-order="4" data-v-2433c8eb="">
+                                                    <div class="fineuploader-wrapper">
+                                                        <div class="filewrapper">
+                                                            <label for="input__file" class="input__file-button">
+                                                                <input name="images" id="input__file"
+                                                                       class="input__file"
+                                                                       hidden="hidden" tabindex="-1" type="file"
+                                                                       multiple="multiple" accept="image/*">
+
+                                                                <div tabindex="-1">
+                                                                    <div class="fine-uploader-dropzone-container dropzone"
+                                                                         dropzone-options="[object Object]"
+                                                                         use-custom-dropzone-options="true"><span><i
+                                                                            data-v-08209afc="" class="i-icon">
+
+                                                                        <img th:src="@{/images/toppng.com-upload-to-cloud-free-cloud-ico-1601x1301.png}"
+                                                                             width="45" height="35">
+                                                                    </i> <span class="input__file-button-text">Нажмите здесь</span>
+                                                                </span>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </label></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="ctrl-location-full">
+                                                <header class="ctrl-location-full__header">
+                                                    <h3 class="ctrl-location-full__title">Дополнительно</h3>
+
+                                                </header>
+
+                                                <div class="form-default__item form-default__item--full">
+                                                    <div class="ctrl-form" data-cy="name">
+                                                        <div class="ctrl-form__header"><label class="ctrl-form__label">Обо мне
+                                                        </label></div>
+                                                        <div class="ctrl-form__body">
+                                                            <textarea placeholder="Обо мне..." name="aboutMe"
+                                                                      type="text" class="ctrl-textfield"></textarea>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+
+                <button data-cy="close_edit_menu_bt" class="ctrl-btn-clear slide-panel__button-close"
+                        type="button"><span class="ctrl-btn-clear__text">close</span>
+                    <svg
+                            class="icon ctrl-btn-clear__icon icon--color-fill" width="24" height="24">
+                        <use xlink:href="/static/media/svg-sprite.9e6e6a488fe0869ac5cb9913c6c2d047.svg#clear"></use>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+
+
+<script>
+    function popupToggle() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide() {
+        const popup = document.getElementById('popup');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var executorId = /*[[${executorId}]]*/ '5';
+        const optionValue = document.getElementById("inputRole");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + executorId + "/resumes";
+
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + executorId + "/orders";
+        }
+    }
+
+    /*]]>*/
+</script>
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

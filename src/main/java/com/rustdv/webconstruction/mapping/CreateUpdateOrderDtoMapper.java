@@ -32,7 +32,7 @@ public class CreateUpdateOrderDtoMapper implements Mapper<CreateUpdateOrderDto, 
                         .build())
                 .description(from.getDescription())
                 .person(readPersonMapper.mapFrom(readPersonDto))
-                .keyword(keywordRepository.findByKeyword(from.getKeyword()).orElseThrow(RuntimeException::new))
+                .keyword(keywordRepository.findByName(from.getKeyword()).orElseThrow(RuntimeException::new))
                 .startAt(from.getStartAt())
                 .endAt(from.getEndAt())
                 .orderName(from.getOrderName())

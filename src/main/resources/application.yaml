@@ -1,20 +1,44 @@
 spring:
- datasource:
-  url: jdbc:postgresql://localhost:5432/Level
-  username: postgres
-  password: password
-  driver-class-name: org.postgresql.Driver
- jpa:
+  mvc:
+    format:
+      time: iso
+      date: iso
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/Level
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
     properties.hibernate:
       show_sql: true
       format_sql: true
-      hbm2ddl.auto: validate
+      hbm2ddl.auto: none
     open-in-view: false
+
 logging:
   level:
     root: info
   file:
     name: rustdv.log
     path: /
+
+app:
+  image:
+    path: D:/IntelijProjects/WebConstruction/src/main/resources/static/images
+  orders:
+    path: /Orders
+  resumes:
+    path: /Resumes
+  download:
+    path: /images
+  baseperson:
+    path: /BasePersonIcon
 
 

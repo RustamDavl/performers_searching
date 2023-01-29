@@ -23,8 +23,7 @@ public class Measurement {
     private Integer id;
 
     @Column(name = "name")
-    @Enumerated(EnumType.STRING)
-    private Measurements measurement;
+    private String name;
 
     @Builder.Default
     @OneToMany(mappedBy = "measurement", fetch = FetchType.LAZY)

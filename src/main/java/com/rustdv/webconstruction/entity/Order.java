@@ -6,7 +6,6 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -51,7 +50,7 @@ public class Order {
     @Builder.Default
     @ToString.Exclude
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<PhotoForOrder> photos = new ArrayList<>();
+    private List<PhotoForOrder> images = new ArrayList<>();
 
 
     @Column(name = "start_at")
@@ -62,7 +61,7 @@ public class Order {
 
 
     public void addPhotos(Collection<PhotoForOrder> photos) {
-        this.photos.addAll(photos);
+        this.images.addAll(photos);
         photos.forEach(photoForOrder -> photoForOrder.setOrder(this));
     }
 

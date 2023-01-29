@@ -10,7 +10,7 @@ public class ReadKeywordMapper implements Mapper<Keyword, ReadKeywordDto> {
     public ReadKeywordDto mapFrom(Keyword from) {
        return ReadKeywordDto.builder()
                .id(from.getId())
-               .keyword(from.getKeyword())
+               .keyword(from.getName())
                .build();
     }
 }

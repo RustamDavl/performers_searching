@@ -1,22 +1,44 @@
 package com.rustdv.webconstruction.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
-public enum Experience {
+@NoArgsConstructor
+@Entity
+@Builder
+public class Experience {
 
-    LESS_ONE("Меньше года"),
-    ONE("1 год"),
-    TWO("2 года"),
-    THREE("3 года"),
-    FOUR("4 года"),
-    FIVE("5 лет"),
-    SIX("6 лет"),
-    SEVEN("7 лет"),
-    EIGHT("8 лет"),
-    NINE("9 лет"),
-    TEN("10 лет"),
-    MORE_TEN("Больше 10 лет");
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private String name;
+    @Column(name = "name")
+    private String value;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "experience", fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private List<Resume> resumes = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Experience that = (Experience) o;
+        return id != null && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

@@ -10,7 +10,7 @@ public class WebConstructionApplication {
 
     public static void main(String[] args) {
 
-        @Cleanup var application = SpringApplication.run(WebConstructionApplication.class, args);
+        var application = SpringApplication.run(WebConstructionApplication.class, args);
 
     }
 

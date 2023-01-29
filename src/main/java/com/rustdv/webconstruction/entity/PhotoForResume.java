@@ -27,7 +27,8 @@ public class PhotoForResume {
     @JoinColumn(name = "resume_id")
     private Resume resume;
 
-    private String photo;
+    @Column(name = "photo")
+    private String image;
 
 
     @Override

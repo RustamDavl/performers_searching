@@ -22,6 +22,7 @@ public class PhotoForOrder {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    @Column(name = "photo")
     private String photo;
 
 }

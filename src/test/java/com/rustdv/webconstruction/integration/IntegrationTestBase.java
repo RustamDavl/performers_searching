@@ -1,20 +1,19 @@
 package com.rustdv.webconstruction.integration;
 
-import com.rustdv.webconstruction.integration.annotation.IT;
-import org.junit.jupiter.api.AfterAll;
+import com.rustdv.webconstruction.integration.rest.annotation.IT;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
 import org.testcontainers.containers.PostgreSQLContainer;
 
 
 
-@Sql({
+@Sql(value = {
         "classpath:sql/data.sql"
-})
+},
+config = @SqlConfig(encoding = "utf-8"))
 @IT
 public abstract class IntegrationTestBase {
 
@@ -30,6 +29,7 @@ public abstract class IntegrationTestBase {
     static void postgresProperties(DynamicPropertyRegistry registry) {
 
         registry.add("spring.datasource.url", container::getJdbcUrl);
+
 
 
     }

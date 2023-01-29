@@ -1,42 +1,52 @@
 package com.rustdv.webconstruction.dto.createupdate;
 
-import com.rustdv.webconstruction.dto.read.ReadKeywordDto;
-import com.rustdv.webconstruction.dto.read.ReadPersonDto;
 import com.rustdv.webconstruction.entity.*;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import lombok.Value;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Value
 @Builder
 public class CreateUpdateResumeDto implements CreateUpdateDto {
 
-    Integer personId;
-
     String keyword;
 
-    Integer price;
+    String team;
 
-    Measurements measurement;
+    String price;
 
-    Weekdays weekdays;
+    String measurement;
+
+    Boolean mon;
+
+    Boolean tues;
+
+    Boolean wed;
+
+    Boolean thurs;
+
+    Boolean fri;
+
+    Boolean sat;
+
+    Boolean sun;
 
     LocalTime startAt;
 
     LocalTime endAt;
 
-    Experience experience;
+    String experience;
 
-    Address address;
+    String city;
 
-    Team team;
+    String street;
 
-    @Builder.Default
-    List<CreateUpdatePhotoDto> createUpdatePhotoDtoList = new ArrayList<>();
+    String houseNumber;
+
+    List<MultipartFile> images;
 
     String aboutMe;
 

@@ -21,7 +21,7 @@ public class ReadOrderDto implements ReadDto {
 
     String keyword;
 
-    List<String> imagePaths;
+    List<Integer> imagePaths;
 
     String description;
 

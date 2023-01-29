@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/currentOrderInfo.css" th:href="@{/styles/currentOrderInfo.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
+
+                </div>
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="exampleInputRole1" name="role"
+                    class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Специалист</option>
+                <option>Заказчик</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" th:href="@{/executor/{id}/resumes(id = ${executorId})}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Заказы</span>
+            </a>
+            <span class="tooltip">Заказы</span>
+        </li>
+        <li>
+            <a id="profile" href="#profile" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/executor/{id}/orders(id = ${executorId})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Найти заказы</span>
+            </a>
+            <span class="tooltip">Найти заказы</span>
+        </li>
+        <li>
+            <a id="record" href="#records" onclick="changeHeaderText()">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Учет</span>
+            </a>
+            <span class="tooltip">Учет</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Просмотр заказа
+    </div>
+
+
+    <table cellspacing="0" cellpadding="0" class="order-layout order-layout_wide">
+        <tbody>
+        <tr>
+            <td id="order">
+                <a name="ofrm"></a>
+
+
+                <div id="order-label"></div>
+                <div id="profile-reports"></div>
+
+                <div id="order_card_react" data-order-index="$order_index">
+                    <div class="order-card__container" data-testid="orderCard/container">
+                        <div class="order-card-content__container">
+                            <div class="Grid__Wrapper-sc-1uiem96-1 hsRTNY order-card-content__grid">
+                                <div spacing="1" class="Grid__Content-sc-1uiem96-0 eFFZeV">
+                                    <div class="Column-sc-1180kxd-0 Content__StyledColumn-sc-y9avip-0 kemdla eZrQqz">
+                                        <div class="ContentStyles__Card-sc-1vo8noy-0 kIhtgG">
+                                            <div class="order-card-header order-card-param-list__item">
+                                                <!--                                                =================================-->
+
+
+
+
+
+                                                <!--                                                ================================-->
+
+                                                <div class="order-card-header__title-container">
+                                                    <p th:text="${order.orderName}" size="24"
+                                                                                                   class="bo_text__24 bo_text">
+                                                    Отделка стен деревянными панелями</p>
+                                                    <div class="TagList__List-sc-1povpgm-0 dRvBCN order-card-header__tag-list">
+                                                        <div class="TagList__ListContainer-sc-1povpgm-1 dxGPHX">
+                                                            <div class="TagStyles__Component-sc-1ckjkbh-0 dlkFzg"
+                                                                 color="#0075FF"><span th:text="${order.keyword}"
+                                                                    class="TagStyles__TagText-sc-1ckjkbh-3 btGqYQ">dummy keyword</span>
+                                                            </div>
+<!--                                                            <div class="TagStyles__Component-sc-1ckjkbh-0 cPknyO"-->
+<!--                                                                 color="#141C25"><span-->
+<!--                                                                    class="TagStyles__TagText-sc-1ckjkbh-3 btGqYQ">Отделка стен деревом</span>-->
+<!--                                                            </div>-->
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+
+
+<!--                                            ===============-->
+
+                                            <div class="Gallery__Container-sc-1muncxh-0 jHIuVI order-card-param-list__item">
+                                                <div class="backoffice-common-carousel"
+                                                     style="height: 160px; margin-left: -16px; margin-right: -16px;">
+                                                    <div class="backoffice-common-carousel__overlay">
+                                                        <button class="backoffice-common-circle-button backoffice-common-circle-button_elevated backoffice-common-carousel__button backoffice-common-carousel__button_left backoffice-common-carousel__button_disabled"
+                                                                style="left: 16px;">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M15 17.129L13.607 18.5L7 12L13.607 5.5L15 6.871L9.786 12L15 17.129Z"
+                                                                      fill="currentColor"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button class="backoffice-common-circle-button backoffice-common-circle-button_elevated backoffice-common-carousel__button backoffice-common-carousel__button_right"
+                                                                style="right: 16px;">
+                                                            <svg width="24" height="24" viewBox="0 0 24 24"
+                                                                 fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M9 6.871L10.393 5.5L17 12L10.393 18.5L9 17.129L14.214 12L9 6.871Z"
+                                                                      fill="currentColor"></path>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="backoffice-common-carousel__wrapper backoffice-no-scrollbars">
+                                                        <div th:each="imageId : ${order.imagePaths}"  class="backoffice-common-carousel__list"
+                                                             style="padding-left: 16px; padding-right: 16px;">
+                                                            <img
+
+
+                                                                   th:src="@{/api/v1/executor/{id}/orders/{orderId}/images/{imageId}(id = ${executorId},
+                                                                   orderId = ${order.id}, imageId = ${imageId})}"
+
+
+
+
+                                                                alt="order photo"
+                                                                class="Gallery__Img-sc-1muncxh-1 cSZwLB">
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+<!--                                            ========-->
+                                            <div class="order-card-param-list__item order-card-param__container">
+                                                <div class="order-card-param-title"><p size="18"
+                                                                                       class="bo_text__18 bo_text">
+                                                    Описание</p></div>
+                                                <p th:text="${order.description}" size="16" class="bo_text__16 bo_text order-card-param__text">
+                                                    Отделочные материалы есть.
+                                                    Гражданство РФ, командировка.</p></div>
+
+                                            <div class="order-card-param-list__item">
+                                                <div class="order-card-param-title"><p size="18"
+                                                                                       class="bo_text__18 bo_text">
+                                                    Адрес</p></div>
+                                                <p th:text="|${order.address.city}, ${order.address.street}, ${order.address.houseNumber}|" size="16" class="bo_text__16 bo_text order-card-geo__regions">
+                                                    Республика Татарстан, Бугульма, улица Ленина, 2</p></div>
+                                            <div class="order-card-param-list__item order-card-param__container">
+                                                <div class="order-card-param-title"><p size="18"
+                                                                                       class="bo_text__18 bo_text">
+                                                    Дата начала и окончания</p></div>
+                                                <p th:text="|'c' ${order.startAt} по ${order.endAt}|" size="16" class="bo_text__16 bo_text order-card-param__text">
+                                                    2023-01-29 по 2023-03-22</p></div>
+
+
+                                            <div class="order-card-param-list__item">
+                                                <div class="order-card-client__top-container">
+                                                    <div class="order-card-client__avatar order-card-client__avatar_medium order-card-client-avatar__container"
+                                                         style="background: linear-gradient(rgb(255, 205, 105) 0%, rgb(255, 168, 92) 100%);">
+                                                        <p class="bo_text__16_bold bo_text order-card-client-avatar__letter">
+                                                            Е</p></div>
+                                                    <div><p th:text="${order.readPersonDto.firstName}" size="18" class="bo_text__18 bo_text">Евгений Кузнецов</p>
+                                                        </div>
+                                                </div>
+<!--                                                <div class="ClientSummaryBlock__Container-sc-fvhz77-0 fVNvpw">-->
+<!--                                                    <div class="ClientSummaryBlock__SummaryContainer-sc-fvhz77-1 kccqCh">-->
+<!--                                                        <div class="ClientSummaryBlock__Icon-sc-fvhz77-5 eLMPll">-->
+<!--                                                            <svg width="16" height="16" fill="none"-->
+<!--                                                                 xmlns="http://www.w3.org/2000/svg" color="#7e8287">-->
+<!--                                                                <path fill-rule="evenodd" clip-rule="evenodd"-->
+<!--                                                                      d="M13.5 8a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0ZM15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0ZM7 4.25a.75.75 0 0 1 1.5 0v3.19l2.1 2.1a.746.746 0 1 1-1.06 1.05L7 8V4.25Z"-->
+<!--                                                                      fill="currentColor"></path>-->
+<!--                                                            </svg>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="ClientSummaryBlock__Text-sc-fvhz77-2 fpqSpm"><span-->
+<!--                                                                class="ClientSummaryBlock__Title-sc-fvhz77-3 jzWZrC">На Профи</span><span-->
+<!--                                                                class="ClientSummaryBlock__Description-sc-fvhz77-4 gOjDPK">с 09 ноября 2022</span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="ClientSummaryBlock__SummaryContainer-sc-fvhz77-1 kccqCh">-->
+<!--                                                        <div class="ClientSummaryBlock__Icon-sc-fvhz77-5 eLMPll">-->
+<!--                                                            <svg width="16" height="16" fill="none"-->
+<!--                                                                 xmlns="http://www.w3.org/2000/svg" color="#7e8287">-->
+<!--                                                                <path fill-rule="evenodd" clip-rule="evenodd"-->
+<!--                                                                      d="M14.53 3.47a.75.75 0 0 1 0 1.06l-7 7-.53.53-.53-.53-4-4a.75.75 0 1 1 1.06-1.06L7 9.94l6.47-6.47a.75.75 0 0 1 1.06 0Z"-->
+<!--                                                                      fill="currentColor"></path>-->
+<!--                                                            </svg>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="ClientSummaryBlock__Text-sc-fvhz77-2 fpqSpm"><span-->
+<!--                                                                class="ClientSummaryBlock__Title-sc-fvhz77-3 jzWZrC">Подтвердил</span><span-->
+<!--                                                                class="ClientSummaryBlock__Description-sc-fvhz77-4 gOjDPK">номер</span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+                                                <div class="Reviews__Container-sc-rvgprm-0 kEhCfk">
+                                                    <div class="Reviews__EmptyTitle-sc-rvgprm-3 jjsrgY">Отзывов от
+                                                        специалистов пока нет
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
+                                        <div class="ContentStyles__StickyContainer-sc-1vo8noy-2 bgZqlz">
+                                            <div class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
+                                                <a class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                    <div class="backoffice-common-button__content"><p
+                                                            class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
+                                                            size="18">Откликнуться</p></div>
+                                                    <div data-testid="LOADER"
+                                                         class="loader-dots backoffice-common-button__loader">
+                                                        <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                        <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                        <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                    </div>
+                                                </a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bottomContainerStyles__Container-sc-p011ip-0 kiiuet order-card-bid-action-bar backoffice-no-scrollbars"
+                                 style="bottom: 0px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <a name="ofrm2"></a>
+
+
+                <table id="send_zayavka" cellspacing="0" cellpadding="0" width="100%">
+                    <tbody>
+                    <tr>
+                        <td style="font-weight:normal; font-size:13px; text-align:left;">
+
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <a name="ofrm2"></a>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</section>
+
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var executorId = /*[[${executorId}]]*/ '5';
+        const optionValue = document.getElementById("exampleInputRole1");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + executorId + "/resumes";
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + executorId + "/orders";
+
+        }
+    }
+
+    /*]]>*/
+</script>
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

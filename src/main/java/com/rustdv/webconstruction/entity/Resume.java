@@ -2,11 +2,11 @@ package com.rustdv.webconstruction.entity;
 
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,17 +52,19 @@ public class Resume {
     @Column(name = "end_at")
     private LocalTime endAt;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "experience_id")
     private Experience experience;
+
 
     @Embedded
     @AttributeOverride(name = "houseNumber", column = @Column(name = "house_number"))
     private Address address;
 
     @Builder.Default
-    @OneToMany(mappedBy = "resume", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "resume", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<PhotoForResume> resumePhotos = new ArrayList<>();
+    private List<PhotoForResume> resumeImages = new ArrayList<>();
 
 
     @Builder.Default
@@ -75,6 +77,11 @@ public class Resume {
 
     @Column(name = "about_me")
     private String aboutMe;
+
+    public void addPhotos(Collection<PhotoForResume> photos) {
+        this.resumeImages.addAll(photos);
+        photos.forEach(photoForResume -> photoForResume.setResume(this));
+    }
 
 
     @Override

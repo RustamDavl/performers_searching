@@ -2,11 +2,19 @@ package com.rustdv.webconstruction.service;
 
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdateResumeDto;
 import com.rustdv.webconstruction.dto.read.ReadResumeDto;
+import com.rustdv.webconstruction.entity.Keyword;
+import com.rustdv.webconstruction.entity.Measurement;
+import com.rustdv.webconstruction.entity.Resume;
 import com.rustdv.webconstruction.mapping.CreateUpdateResumeMapper;
 import com.rustdv.webconstruction.mapping.ReadPersonMapper;
+import com.rustdv.webconstruction.mapping.ReadResumeMapper;
+import com.rustdv.webconstruction.repository.KeywordRepository;
+import com.rustdv.webconstruction.repository.MeasurementRepository;
+import com.rustdv.webconstruction.repository.PersonRepository;
 import com.rustdv.webconstruction.repository.ResumeRepository;
-import lombok.AllArgsConstructor;
+import com.rustdv.webconstruction.util.ImageLoader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,35 +33,44 @@ public class ResumeService implements IService<CreateUpdateResumeDto, ReadResume
 
     private final CreateUpdateResumeMapper createUpdateResumeMapper;
 
+    private final PersonRepository personRepository;
+
+
+    private final ImageLoader imageLoader;
+
+    private final ReadResumeMapper readResumeMapper;
+
+    @Value("${app.resumes.path}")
+    private final String RESUMES_IMAGES_FOLDER;
+
 
     @Transactional
     @Override
     public ReadResumeDto create(CreateUpdateResumeDto object) {
 
-        var savedResume =  resumeRepository.save(createUpdateResumeMapper.mapFrom(object));
+        var savedResume = resumeRepository.save(createUpdateResumeMapper.mapFrom(object));
 
 
-        return ReadResumeDto.builder()
-                .readPersonDto(readPersonMapper.mapFrom(savedResume.getPerson()))
-                .keyword(savedResume.getKeyword().getKeyword())
-                .price(savedResume.getPrice())
-                .measurement(savedResume.getMeasurement().getMeasurement())
-                .weekdays(savedResume.getWeekdays())
-                .startAt(savedResume.getStartAt())
-                .endAt(savedResume.getEndAt())
-                .experience(savedResume.getExperience())
-                .address(savedResume.getAddress())
-                .team(savedResume.getTeam())
-                .readPhotoDtoList(null)
-                .aboutMe(savedResume.getAboutMe())
-                .build();
-
-
-
+        return readResumeMapper.mapFrom(savedResume);
 
 
     }
 
+    @Transactional
+    public ReadResumeDto create(CreateUpdateResumeDto object, Integer id) {
+
+        var maybePerson = personRepository.findById(id);
+
+        imageLoader.upload(object.getImages(), RESUMES_IMAGES_FOLDER);
+
+        return maybePerson.map(person -> {
+
+                    var resume = resumeRepository.save(createUpdateResumeMapper.mapFrom(object, person));
+                    return readResumeMapper.mapFrom(resume);
+                }
+        ).orElse(null);
+
+    }
 
 
     @Override
@@ -74,6 +91,11 @@ public class ResumeService implements IService<CreateUpdateResumeDto, ReadResume
 
     @Override
     public List<ReadResumeDto> findAll() {
-        return null;
+
+        return resumeRepository.findAll()
+                .stream()
+                .map(readResumeMapper::mapFrom)
+                .toList();
+
     }
 }

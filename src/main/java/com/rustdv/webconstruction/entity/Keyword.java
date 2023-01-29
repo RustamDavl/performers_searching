@@ -23,7 +23,7 @@ public class Keyword {
     private Integer id;
 
     @Column(name = "name")
-    private String keyword;
+    private String name;
 
 
     @Builder.Default

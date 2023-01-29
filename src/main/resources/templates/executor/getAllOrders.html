@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/findorders.css" th:href="@{/styles/findorders.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
+
+                </div>
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="exampleInputRole1" name="role"
+                    class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Специалист</option>
+                <option>Заказчик</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders"th:href="@{/executor/{id}/resumes(id = ${executorId})}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Заказы</span>
+            </a>
+            <span class="tooltip">Заказы</span>
+        </li>
+        <li>
+            <a id="profile" href="#profile" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/executor/{id}/orders(id = ${executorId})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Найти заказы</span>
+            </a>
+            <span class="tooltip">Найти заказы</span>
+        </li>
+        <li>
+            <a id="record" href="#records" onclick="changeHeaderText()">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Учет</span>
+            </a>
+            <span class="tooltip">Учет</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Поиск заказов
+    </div>
+
+
+    <div id="OrdersBoardPageContainerId" data-testid="ORDERS_BOARD"
+         class="PageContainer__AlignContainer-sc-xe5rib-1 drtEfM">
+        <div class="PageContainer__WidthContainer-sc-xe5rib-0 gKzyDu">
+            <div class="Grid__Wrapper-sc-1uiem96-1 hsRTNY OrdersBoardStyles__StyledGrid-sc-p2e612-0 lgnZSn main-content">
+                <div id="BOARD_GRID_CONTAINER_ID" spacing="1" class="Grid__Content-sc-1uiem96-0 eFFZeV">
+                    <div class="Column-sc-1180kxd-0 kWFdZ sidebarFilter is-affixed" style="position: relative;">
+                        <div class="sidebar__inner" style="position: relative; transform: translate3d(0px, 0px, 0px);">
+                            <div class="cardViewStyles__Container-sc-tphy1d-0 fCKckI">
+                                <div type="1"
+                                     class="GroupHeaderStyles__Container-sc-4opbje-0 UnUeF OrdersFiltersStyles__Header-sc-8ynm37-1 bNdava"
+                                     data-testid="dropdown-group-header">
+                                    <div class="GroupHeaderStyles__LeftBlockContainer-sc-4opbje-1 gIcVj"><span
+                                            class="GroupHeaderStyles__TextContainer-sc-4opbje-2 ljSuRQ">Фильтр</span>
+                                    </div>
+                                </div>
+                                <div class="OrdersFiltersStyles__HeaderSeparator-sc-8ynm37-12 cjMECF"></div>
+                                <div class="OrdersFiltersStyles__Content-sc-8ynm37-0 gxbeGO">
+
+
+                                    <div class="GroupFormStyles__Container-sc-97gsgo-0 kppMDJ OrdersFiltersStyles__StyledGroupForm-sc-8ynm37-2 jUWWiq">
+                                        <div type="1" class="GroupHeaderStyles__Container-sc-4opbje-0 UnUeF"
+                                             data-testid="dropdown-group-header">
+                                            <div class="GroupHeaderStyles__LeftBlockContainer-sc-4opbje-1 gIcVj"><span
+                                                    class="GroupHeaderStyles__TextContainer-sc-4opbje-2 bNkKJK">Регион</span>
+                                            </div>
+                                        </div>
+                                        <div class="GroupFormStyles__CollapsibleContainer-sc-97gsgo-1 jwTmYH"
+                                             height="56">
+                                            <div>
+                                                <div class="DropdownSearchStyles__DropdownContainer-sc-2pbboo-4 fCBKcO">
+<!--                                                    <div class="DropdownSearchStyles__Container-sc-2pbboo-0 gquPAk">-->
+<!--                                                        <div tabindex="0"-->
+<!--                                                             class="DropdownInputStyles__Container-sc-rewvo0-0 cXPmeG">-->
+<!--                                                            <div class="DropdownInputStyles__LeftContainer-sc-rewvo0-1 QnLvr">-->
+<!--                                                                <span class="DropdownInputStyles__Label-sc-rewvo0-3 dTlQdJ">Татарстан</span>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="DropdownInputStyles__CrossIconContainer-sc-rewvo0-4 iOHOfl">-->
+<!--                                                                <svg width="16" height="16" fill="none"-->
+<!--                                                                     xmlns="http://www.w3.org/2000/svg">-->
+<!--                                                                    <path fill-rule="evenodd" clip-rule="evenodd"-->
+<!--                                                                          d="m8 11.969-.475-.388-5.5-4.5a.75.75 0 0 1 .95-1.161L8 10.03l5.025-4.11a.75.75 0 1 1 .95 1.16l-5.5 4.5L8 11.97Z"-->
+<!--                                                                          fill="currentColor"></path>-->
+<!--                                                                </svg>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+
+                                                    <details class="custom-select forLabel">
+                                                        <summary class="radios">
+                                                            <input class="sumInput" type="radio" name="team"
+                                                                   id="default" title="Выбрать" checked>
+
+
+                                                            <input th:each="team : ${teams}" class="sumInput" type="radio" name="team"
+                                                                   th:value="${team}"
+                                                                   th:id="${team}" th:title="${team}">
+
+
+                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
+                                                            <!--                                                                       id="item1" title="Работаю один">-->
+                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
+                                                            <!--                                                                       id="item2" title="Работаю в команде">-->
+                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
+                                                            <!--                                                                       id="item3" title="Работаю один либо в команде">-->
+                                                            <!--                                                                <input class="sumInput" type="radio" name="item" id="item4" title="Item 4">-->
+                                                            <!--                                                                <input class="sumInput" type="radio" name="item" id="item5" title="Item 5">-->
+                                                        </summary>
+                                                        <ul class="list">
+                                                            <li th:each="team : ${teams}">
+                                                                <label th:value="${team}" th:text="${team}" th:for="${team}">
+                                                                    dummy text
+
+                                                                </label>
+                                                            </li>
+                                                            <!--                                                                <li>-->
+                                                            <!--                                                                    <label for="item2">Работаю в команде</label>-->
+                                                            <!--                                                                </li>-->
+                                                            <!--                                                                <li>-->
+                                                            <!--                                                                    <label for="item3">Работаю один либо в команде</label>-->
+                                                            <!--                                                                </li>-->
+
+                                                        </ul>
+                                                    </details>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="OrdersFiltersStyles__ButtonsContainer-sc-8ynm37-7 fHggSY">
+                                        <button type="button"
+                                                class="ButtonStyles__Container-sc-1kch7k2-0 ccIeRv OrdersFiltersStyles__ResetButton-sc-8ynm37-8 jcEZep">
+                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj"><p
+                                                        class="ButtonStyles__Label-sc-1kch7k2-4 gjngHg">Сбросить всё</p>
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div dir="ltr" class="resize-sensor"
+                                 style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                                <div class="resize-sensor-expand"
+                                     style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                                    <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 290px; height: 880px;"></div>
+                                </div>
+                                <div class="resize-sensor-shrink"
+                                     style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                                    <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 200%; height: 200%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="Column-sc-1180kxd-0 OrdersBoardStyles__OrdersColumn-sc-obij8q-0 kemdla gmnbwJ">
+                        <div class="BoardHeaderBlockStyles__Container-sc-j7ee70-0 jyECA">
+                            <div class="BoardHeaderBlockStyles__ContentLine-sc-j7ee70-2 fGferl">
+                                <div class="SearchLayoutV2Styles__ContainerRelativeWrapper-sc-1axrqpn-5 kXjlkd">
+                                    <div data-focus-guard="true" tabindex="-1"
+                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+                                    <div data-focus-lock-disabled="disabled">
+                                        <div class="SearchLayoutV2Styles__Container-sc-1axrqpn-0 gwOiVH">
+                                            <div class="SearchLayoutV2Styles__AbsoluteContainer-sc-1axrqpn-6 eILtCu">
+                                                <div class="InViewPort__Container-sc-1fm8w2v-0 FTALj">
+                                                    <div class="SearchLayoutStyles__HorizontalWrapper-sc-1l4gf38-10 cSaWto">
+                                                        <div class="SearchLayoutV2Styles__SearchFieldContainer-sc-1axrqpn-3 gkXzYh">
+                                                            <div class="SearchFieldStyles__Container-sc-ntu65e-0 cqRmDE">
+                                                                <div class="SearchFieldStyles__LeftContainer-sc-ntu65e-1 cIKVpm">
+                                                                    <div class="SearchFieldStyles__StretchContainer-sc-ntu65e-2 gjgiOz">
+                                                                        <div class="SearchFieldStyles__SearchIconContainer-sc-ntu65e-3 kmliPS">
+                                                                            <svg width="24" height="24" fill="none"
+                                                                                 xmlns="http://www.w3.org/2000/svg"
+                                                                                 color="#141c25">
+                                                                                <path fill-rule="evenodd"
+                                                                                      clip-rule="evenodd"
+                                                                                      d="M3.5 11a7.25 7.25 0 1 1 12.457 5.044.763.763 0 0 0-.163.163A7.25 7.25 0 0 1 3.5 11Zm12.884 6.695a8.75 8.75 0 1 1 1.06-1.06l3.836 3.835a.75.75 0 1 1-1.06 1.06l-3.836-3.835Z"
+                                                                                      fill="currentColor"></path>
+                                                                            </svg>
+                                                                        </div>
+<!--                                                                        <button data-testid="fulltext_view_mode_test_id"-->
+<!--                                                                                class="SearchFieldStyles__ViewStateBlock-sc-ntu65e-4 bbIAsl">-->
+<!--                                                                            <span class="SearchFieldStyles__ViewStateBlockText-sc-ntu65e-5 liGqRz">укладка 3д панелей</span>-->
+<!--                                                                        </button>-->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="SearchFieldStyles__RightContainer-sc-ntu65e-9 bnTUaw">
+                                                                    <label for="searchField-1" class="SearchFieldStyles__HiddenLabel-sc-ntu65e-7 bUewrz">Поиск заказов</label>
+                                                                    <input placeholder="Поиск заказов" id="searchField-1" data-testid="fulltext_edit_mode_test_id" autocomplete="off" class="SearchFieldStyles__SearchInput-sc-ntu65e-6 cSteQi" value="">
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-focus-guard="true" tabindex="-1"
+                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div th:each="order : ${orders}" class="FlatListStyles__ContentContainer-sc-1ipsls8-0 cymlLM" id="content-content">
+                            <div class="OrderSnippetContainerStyles__Container-sc-85p0ef-0 dojFOQ">
+                                <div class="OrderSnippetStyles__CardContainer-sc-hfzrw4-1 hMXvDV">
+                                    <a
+                                        data-testid="54025023_order-snippet"
+                                        th:href="@{/executor/{id}/orders/{orderId}(id = ${executorId},orderId = ${order.id})}"
+                                        id="54025023" aria-label=""
+                                        class="SnippetBodyStyles__Container-sc-wu97j-0 eyvTOL">
+                                    <div class="OrderCardStyles__RefuseButtonContainer-sc-12zln64-6 hIBpTa">
+                                        <button type="button"
+                                                class="ButtonStyles__Container-sc-1kch7k2-0 eZTuJf OrderCardStyles__RefuseButton-sc-12zln64-5 gByBqo"
+                                                aria-label="Скрыть заказ" data-testid="54025023_refuse">
+                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                    <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                        <svg width="16" height="16" fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                  d="M13.03 4.03a.75.75 0 0 0-1.06-1.06L8 6.94 4.03 2.97a.75.75 0 0 0-1.06 1.06L6.94 8l-3.97 3.97a.75.75 0 1 0 1.06 1.06L8 9.06l3.97 3.97a.75.75 0 1 0 1.06-1.06L9.06 8l3.97-3.97Z"
+                                                                  fill="currentColor"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                        </button>
+                                    </div>
+                                    <div class="SnippetBodyStyles__Content-sc-wu97j-1 dWueiY">
+                                        <div class="SnippetBodyStyles__ContentLeftContainer-sc-wu97j-2 iUyqEa">
+                                            <div class="SubjectAndPriceStyles__Container-sc-qy1ik2-0 fCJUwq">
+                                                <div class="SubjectAndPriceStyles__SubjectsContainer-sc-qy1ik2-8 jGzSsG">
+                                                    <h3 th:text="${order.orderName}" class="SubjectAndPriceStyles__SubjectsText-sc-qy1ik2-1 daLNyi">
+                                                        Укладка 3д панелей на стену</h3></div>
+                                                <div class="SubjectAndPriceStyles__PriceContainer-sc-qy1ik2-2 gmLfVl"><span
+                                                        class="SubjectAndPriceStyles__AccessibilityPriceLine-sc-qy1ik2-3 fuAvYS">
+  </span><span aria-hidden="true" class="SubjectAndPriceStyles__PriceLine-sc-qy1ik2-4 eFdYGq"><span
+                                                        class="SubjectAndPriceStyles__PriceValue-sc-qy1ik2-5 ksIpKc"></span></span>
+                                                </div>
+                                            </div>
+                                            <p th:text="${order.description}" class="SnippetBodyStyles__MainInfo-sc-wu97j-5 jBJaPE">Описание</p>
+                                            <div class="SnippetBodyStyles__LocationAndDateContainer-sc-wu97j-4 jljjKo">
+                                                <div class="SnippetBodyStyles__LocationAndStatusContainer-sc-wu97j-11 gCCfZX">
+                                                    <ul role="list"
+                                                        class="LocationAndScheduleStyles__Container-sc-14uppec-3 cwqJfU">
+                                                        <li aria-label="Адрес клиента:" role="listitem"
+                                                            class="LocationAndScheduleStyles__BlockContainer-sc-14uppec-4 fvlPCn">
+                                                            <div class="SnippetBodyStyles__IconContainer-sc-wu97j-6 jzzbAX">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     class="LocationAndScheduleStyles__HomeIcon-sc-14uppec-0 julECH">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                          d="M8.4 2.248a.65.65 0 0 0-.8 0L2.35 6.332a.65.65 0 0 0-.251.513v6.419a1.817 1.817 0 0 0 1.817 1.817h8.168a1.817 1.817 0 0 0 1.817-1.817V6.845a.65.65 0 0 0-.25-.513L8.398 2.248Zm2 11.533h1.684a.517.517 0 0 0 .517-.517v-6.1L8 3.583l-4.601 3.58v6.1a.517.517 0 0 0 .517.517H5.6V8.596a.65.65 0 0 1 .65-.65h3.5a.65.65 0 0 1 .65.65v5.185Zm-3.5 0h2.2V9.246H6.9v4.535Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                            <span class="LocationAndScheduleStyles__TextContainer-sc-14uppec-5 kWSHFr">
+                                                                <span th:text="|${order.address.city}, |"
+                                                                    class="LocationAndScheduleStyles__LocationText-sc-14uppec-7 boEKuP">dummy city</span>
+                                                                <span th:text="|${order.address.street}, ${order.address.houseNumber}|"
+                                                                    class="LocationAndScheduleStyles__LocationText-sc-14uppec-7 boEKuP">dummy street, dummy houseNumber</span></span><span
+                                                                class="LocationAndScheduleStyles__SuffixContainer-sc-14uppec-6 iVLGnc"></span>
+                                                        </li>
+                                                        <li aria-label="Удобное время:" role="listitem"
+                                                            class="LocationAndScheduleStyles__BlockContainer-sc-14uppec-4 fvlPCn">
+                                                            <div class="SnippetBodyStyles__IconContainer-sc-wu97j-6 jzzbAX">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg"
+                                                                     class="LocationAndScheduleStyles__ScheduleIcon-sc-14uppec-10 keqltE">
+                                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                          d="M5.15 2a.65.65 0 0 1 .65.65v.785h4.4V2.65a.65.65 0 1 1 1.3 0v.785h.55A1.95 1.95 0 0 1 14 5.385v7.665A1.95 1.95 0 0 1 12.05 15h-8.1A1.95 1.95 0 0 1 2 13.05V5.385a1.95 1.95 0 0 1 1.95-1.95h.55V2.65A.65.65 0 0 1 5.15 2Zm-1.2 2.735a.65.65 0 0 0-.65.65v1.238h9.4V5.385a.65.65 0 0 0-.65-.65h-8.1Zm8.75 3.188H3.3v5.127c0 .359.291.65.65.65h8.1a.65.65 0 0 0 .65-.65V7.923Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                            <span th:text="|${order.startAt} - ${order.endAt}|" class="LocationAndScheduleStyles__ScheduleText-sc-14uppec-11 hdGqmZ">dummy startAt - dummy endAt</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+<!--                                                <div class="Date__Container-sc-19z4g3h-0 kfJJxd SnippetBodyStyles__AllocAndStatusDate-sc-wu97j-8 jAjgkV">-->
+<!--                                                    <span class="Date__DateText-sc-19z4g3h-1 jsRPdl">Вчера в 20:33</span>-->
+<!--                                                </div>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div dir="ltr" class="resize-sensor"
+                     style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                    <div class="resize-sensor-expand"
+                         style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                        <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 882px; height: 880px;"></div>
+                    </div>
+                    <div class="resize-sensor-shrink"
+                         style="pointer-events: none; position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden; max-width: 100%;">
+                        <div style="position: absolute; left: 0px; top: 0px; transition: all 0s ease 0s; width: 200%; height: 200%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var customerId = /*[[${customerId}]]*/ '5';
+        const optionValue = document.getElementById("exampleInputRole1");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + customerId + "/resumes";
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + customerId + "/orders";
+
+        }
+    }
+
+    /*]]>*/
+</script>
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

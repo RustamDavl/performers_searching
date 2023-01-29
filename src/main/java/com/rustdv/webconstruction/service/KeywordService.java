@@ -28,7 +28,7 @@ public class KeywordService {
     }
 
     public Optional<ReadKeywordDto> findByName(String keyword) {
-        return keywordRepository.findByKeyword(keyword)
+        return keywordRepository.findByName(keyword)
                 .map(readKeywordMapper::mapFrom);
     }
 

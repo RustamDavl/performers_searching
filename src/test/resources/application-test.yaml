@@ -9,4 +9,8 @@ spring:
 #    driver-class-name: org.h2.Driver
   jpa:
     properties.hibernate:
-      hbm2ddl.auto: validate
+      hbm2ddl.auto: none
+  mvc:
+    format:
+      date: iso
+      time: iso

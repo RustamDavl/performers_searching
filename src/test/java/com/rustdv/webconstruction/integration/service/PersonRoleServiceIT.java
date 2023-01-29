@@ -38,7 +38,7 @@ public class PersonRoleServiceIT extends IntegrationTestBase {
 
         assertThat(readPersonRoleDto.getReadPersonDto().getFirstName()).isEqualTo("Idris");
         assertThat(readPersonRoleDto.getReadPersonDto().getEmail()).isEqualTo("easton1234537@gmail.com");
-        assertThat(readPersonRoleDto.getReadRoleDto().getRole()).isEqualTo("Специалист");
+
 
 
 

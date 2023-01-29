@@ -16,4 +16,13 @@ public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
                 .photo(from.getPhoto())
                 .build();
     }
+
+    public Person mapFrom(ReadPersonDto from) {
+        return Person.builder()
+                .id(Integer.valueOf(from.getId()))
+                .firstName(from.getFirstName())
+                .email(from.getEmail())
+                .photo(from.getPhoto())
+                .build();
+    }
 }
