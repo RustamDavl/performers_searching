@@ -47,9 +47,9 @@
         <li>
             <a id="orders"th:href="@{/executor/{id}/resumes(id = ${executorId})}">
                 <i class='bx bx-grid-alt'></i>
-                <span class="links_name">Заказы</span>
+                <span class="links_name">Мое резюме</span>
             </a>
-            <span class="tooltip">Заказы</span>
+            <span class="tooltip">Мое резюме</span>
         </li>
         <li>
             <a id="profile" href="#profile" onclick="changeHeaderText()">
@@ -267,7 +267,7 @@
                                 <div class="OrderSnippetStyles__CardContainer-sc-hfzrw4-1 hMXvDV">
                                     <a
                                         data-testid="54025023_order-snippet"
-                                        th:href="@{/executor/{id}/orders/{orderId}(id = ${executorId},orderId = ${order.id})}"
+                                        th:href="@{/executor/{id}/orders/{orderId}(id = ${executorId},orderId = ${order.readOrderDto.id})}"
                                         id="54025023" aria-label=""
                                         class="SnippetBodyStyles__Container-sc-wu97j-0 eyvTOL">
                                     <div class="OrderCardStyles__RefuseButtonContainer-sc-12zln64-6 hIBpTa">
@@ -293,15 +293,20 @@
                                         <div class="SnippetBodyStyles__ContentLeftContainer-sc-wu97j-2 iUyqEa">
                                             <div class="SubjectAndPriceStyles__Container-sc-qy1ik2-0 fCJUwq">
                                                 <div class="SubjectAndPriceStyles__SubjectsContainer-sc-qy1ik2-8 jGzSsG">
-                                                    <h3 th:text="${order.orderName}" class="SubjectAndPriceStyles__SubjectsText-sc-qy1ik2-1 daLNyi">
-                                                        Укладка 3д панелей на стену</h3></div>
+                                                    <h3 th:text="${order.readOrderDto.orderName}" class="SubjectAndPriceStyles__SubjectsText-sc-qy1ik2-1 daLNyi">
+                                                        Укладка 3д панелей на стену</h3>
+                                                    <div class="accepted" style="color: green; margin-left: auto" th:if="${order.readOrderDto.readPersonDto.id == order.orderWithReply?.id}">
+                                                        Вы уже откликнулись
+                                                    </div>
+                                                </div>
+
                                                 <div class="SubjectAndPriceStyles__PriceContainer-sc-qy1ik2-2 gmLfVl"><span
                                                         class="SubjectAndPriceStyles__AccessibilityPriceLine-sc-qy1ik2-3 fuAvYS">
   </span><span aria-hidden="true" class="SubjectAndPriceStyles__PriceLine-sc-qy1ik2-4 eFdYGq"><span
                                                         class="SubjectAndPriceStyles__PriceValue-sc-qy1ik2-5 ksIpKc"></span></span>
                                                 </div>
                                             </div>
-                                            <p th:text="${order.description}" class="SnippetBodyStyles__MainInfo-sc-wu97j-5 jBJaPE">Описание</p>
+                                            <p th:text="${order.readOrderDto.description}" class="SnippetBodyStyles__MainInfo-sc-wu97j-5 jBJaPE">Описание</p>
                                             <div class="SnippetBodyStyles__LocationAndDateContainer-sc-wu97j-4 jljjKo">
                                                 <div class="SnippetBodyStyles__LocationAndStatusContainer-sc-wu97j-11 gCCfZX">
                                                     <ul role="list"
@@ -318,9 +323,9 @@
                                                                 </svg>
                                                             </div>
                                                             <span class="LocationAndScheduleStyles__TextContainer-sc-14uppec-5 kWSHFr">
-                                                                <span th:text="|${order.address.city}, |"
+                                                                <span th:text="|${order.readOrderDto.address.city}, |"
                                                                     class="LocationAndScheduleStyles__LocationText-sc-14uppec-7 boEKuP">dummy city</span>
-                                                                <span th:text="|${order.address.street}, ${order.address.houseNumber}|"
+                                                                <span th:text="|${order.readOrderDto.address.street}, ${order.readOrderDto.address.houseNumber}|"
                                                                     class="LocationAndScheduleStyles__LocationText-sc-14uppec-7 boEKuP">dummy street, dummy houseNumber</span></span><span
                                                                 class="LocationAndScheduleStyles__SuffixContainer-sc-14uppec-6 iVLGnc"></span>
                                                         </li>
@@ -335,7 +340,7 @@
                                                                           fill="currentColor"></path>
                                                                 </svg>
                                                             </div>
-                                                            <span th:text="|${order.startAt} - ${order.endAt}|" class="LocationAndScheduleStyles__ScheduleText-sc-14uppec-11 hdGqmZ">dummy startAt - dummy endAt</span>
+                                                            <span th:text="|${order.readOrderDto.startAt} - ${order.readOrderDto.endAt}|" class="LocationAndScheduleStyles__ScheduleText-sc-14uppec-11 hdGqmZ">dummy startAt - dummy endAt</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -500,13 +505,13 @@
 
 
     function doSelect() {
-        var customerId = /*[[${customerId}]]*/ '5';
+        var executorId = /*[[${executorId}]]*/ '5';
         const optionValue = document.getElementById("exampleInputRole1");
 
         if (optionValue.value == 'Специалист') {
-            window.location.href = "/executor/" + customerId + "/resumes";
+            window.location.href = "/executor/" + executorId + "/resumes";
         } else if (optionValue.value == 'Заказчик') {
-            window.location.href = "/customer/" + customerId + "/orders";
+            window.location.href = "/customer/" + executorId + "/orders";
 
         }
     }

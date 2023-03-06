@@ -17,7 +17,6 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -100,7 +99,7 @@ public class OrderService implements IService<CreateUpdateOrderDto, ReadOrderDto
         var readPersonDto = personService.findById(personId)
                 .orElseThrow(RuntimeException::new);
 
-        imageLoader.upload(createUpdateOrderDto.getImages(), ORDERS_IMAGES_FOLDER);
+        imageLoader.uploadAllImages(createUpdateOrderDto.getImages(), ORDERS_IMAGES_FOLDER);
 
         return readOrderMapper.mapFrom(
                 orderRepository

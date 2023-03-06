@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/privateChat.css" th:href="@{/styles/privateChat.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
+
+                </div>
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="exampleInputRole1" name="role"
+                    class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Заказчик</option>
+                <option>Специалист</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" href="#orders" onclick="changeHeaderText()">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Заказы</span>
+            </a>
+            <span class="tooltip">Заказы</span>
+        </li>
+        <li>
+            <a id="profile" href="#profile" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/customer/{id}/responses(id = ${customerId})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Отклики</span>
+            </a>
+            <span class="tooltip">Отклики</span>
+        </li>
+        <li>
+            <a id="record" href="#records" onclick="changeHeaderText()">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Учет</span>
+            </a>
+            <span class="tooltip">Учет</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Заказы
+    </div>
+
+
+    <!-- ...................................................................................... -->
+
+    <div class="xx">
+        <div class="seamless__column-gutter ui_1liXe ui_2BO_3">
+            <div class="seamless__content seamless__content_chat">
+                <div class="seamless__chat seamless__chat_has_actions">
+                    <div class="seamless__chat-body">
+                        <div class="seamless__chat-head-container">
+                            <div class="seamless__chat-head seamless__chat-head_msngr_prep_client"><a
+                                    href="https://profi.ru/profile/SoloninMS/?fromNk=1&amp;orderId=53390296&amp;isSeamless=1"
+                                    class="ui_1hi7c seamless__chat-head-avatar-link" target="_blank">
+                                <div class="ui_1iXtc ui_j6qVY seamless__chat-head-avatar">
+                                    <div class="ui_13AKO"><img
+                                            src="//cdn.profi.ru/7bd600253a3c4f24831505aa7d784c62.jpg-a34-75.jpg"
+                                            alt="Аватар Михаил Сергеевич" loading="eager" class="ui_2-COb"></div>
+                                </div>
+                            </a>
+                                <div class="seamless__chat-head-user-data"><a
+                                        href="https://profi.ru/profile/SoloninMS/?fromNk=1&amp;orderId=53390296&amp;isSeamless=1"
+                                        class="ui_1hi7c ui_RF7aD ui_3j-OD seamless__chat-head-name"
+                                        target="_blank"><span
+                                        class="seamless__chat-head-name-wrapped">Михаил Сергеевич</span></a>
+                                    <div class="seamless__chat-head-profile-indicators _1VL78c-"
+                                         data-shmid="profileIndicators"><a
+                                            class="_1NMf894 _a8ql2Xu _BNLWoQn ui-link _t37mbJS _Y42KJjp _vH7hafA ui-link_size-14 _2l1CpUa"
+                                            data-shmid="profileIndicators_ratingLink"
+                                            href="https://profi.ru/profile/SoloninMS/?fromNk=1&amp;orderId=53390296&amp;isSeamless=1"
+                                            target="_self">
+                                        <svg class="_uvhqnlI" width="14" height="14" viewBox="0 0 18 18" fill="#FFC600"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.31897 0.457643L9.68103 0.457642L11.2776 5.36143C11.4373 5.85218 11.8956 6.18444 12.4126 6.18444H17.5791L18 7.47724L13.8202 10.5079C13.4019 10.8112 13.2269 11.3489 13.3867 11.8396L14.9832 16.7434L13.8813 17.5424L9.7015 14.5117C9.28321 14.2084 8.71679 14.2084 8.2985 14.5117L4.11872 17.5424L3.01679 16.7434L4.61333 11.8396C4.7731 11.3489 4.59807 10.8112 4.17978 10.5079L0 7.47724L0.420898 6.18444H5.58739C6.10443 6.18444 6.56266 5.85218 6.72244 5.36143L8.31897 0.457643Z"></path>
+                                        </svg>
+                                        <span class="ui-text _3eH689t _2iyzK60 _2FaBpDL">4,75</span></a><a
+                                            class="_1NMf894 _a8ql2Xu _3Y9Ho5m ui-link _t37mbJS _Y42KJjp _2l1CpUa"
+                                            data-shmid="profileIndicators_reviews_link"
+                                            href="https://profi.ru/profile/SoloninMS/?fromNk=1&amp;orderId=53390296#rating"
+                                            target="_self">
+                                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg" class="_uvhqnlI">
+                                            <path d="M12.512 13.686l5.43-1.223c.41-3.04.41-6.123 0-9.164a37.173 37.173 0 00-15.883 0 34.147 34.147 0 000 9.164l5.43 1.223c.28.063.499.282.562.563l1.223 4.188h1.452l1.223-4.188c.063-.28.282-.5.563-.563z"
+                                                  fill="#C8CBD2"></path>
+                                        </svg>
+                                        <span class="ui-text _3eH689t _2iyzK60 _2FaBpDL">12 отзывов</span></a></div>
+                                    <div class="ui_2MYaG ui_1pcoM ui_3nAGW ui_237c5 seamless__chat-head-last-seen-container">
+                                        <div class="seamless__chat-head-last-seen-online seamless__chat-head-last-seen-online_offline">
+                                            Был в&nbsp;сети 2&nbsp;дня назад
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="seamless__chat-head-actions-container ui_33HPb">
+                                    <!--                                <button type="button"-->
+                                    <!--                                        class="ui_2QW3c ui_1MjKu ui_3aY4S ui__sBR4 ui_2yWhm seamless__chat-head-actions-toggler">-->
+                                    <!--                                    <span class="ui_3vUWP"><svg width="1em" height="1em" viewBox="0 0 18 17" fill="none"-->
+                                    <!--                                                                xmlns="http://www.w3.org/2000/svg"><circle cx="9"-->
+                                    <!--                                                                                                           cy="15" r="2"-->
+                                    <!--                                                                                                           fill="currentColor"></circle><circle-->
+                                    <!--                                            cx="9" cy="8.5" r="2" fill="currentColor"></circle><circle cx="9" cy="2"-->
+                                    <!--                                                                                                       r="2"-->
+                                    <!--                                                                                                       fill="currentColor"></circle></svg></span>-->
+                                    <!--                                </button>-->
+                                    <!--                                <div class="ui_1Vx4e ui_1ZTCd ui_2E6&#45;&#45;">-->
+                                    <!--                                    <div class="ui_2gTjQ seamless__chat-head-actions-list">-->
+                                    <!--                                        <ul class="ui_VhBby">-->
+                                    <!--                                            <li class="ui_1PoLy ui_3wwoj ui_Ma0Q1" tabindex="0" aria-disabled="false"-->
+                                    <!--                                                role="button">-->
+                                    <!--                                                <div>-->
+                                    <!--                                                    <div class="ui_2MYaG ui_gBDdc ui_3nAGW ui_3Y-uv ui_8WOO3">Перейти в-->
+                                    <!--                                                        профиль-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                                <span class="ui_1TyQ_"><svg width="1em" height="1em" viewBox="0 0 18 17"-->
+                                    <!--                                                                            fill="none"-->
+                                    <!--                                                                            xmlns="http://www.w3.org/2000/svg"-->
+                                    <!--                                                                            class="seamless__chat-head-action-list-icon"><path-->
+                                    <!--                                                        fill="currentColor" fill-rule="evenodd" stroke="none"-->
+                                    <!--                                                        stroke-width="1"-->
+                                    <!--                                                        d="M9 15.3A6.8 6.8 0 1 0 9 1.7a6.8 6.8 0 0 0 0 13.6ZM9 17A8.5 8.5 0 1 0 9 0a8.5 8.5 0 0 0 0 17ZM9 7c.6 0 1 .4 1 1v4a1 1 0 0 1-2 0V8c0-.6.4-1 1-1Zm0-1a1.15 1.15 0 1 0 0-2.3A1.15 1.15 0 0 0 9 6Z"></path></svg></span>-->
+                                    <!--                                            </li>-->
+                                    <!--                                            <li class="ui_1PoLy ui_3wwoj ui_Ma0Q1" tabindex="0" aria-disabled="false"-->
+                                    <!--                                                role="button">-->
+                                    <!--                                                <div>-->
+                                    <!--                                                    <div class="ui_2MYaG ui_gBDdc ui_3nAGW ui_3Y-uv ui_8WOO3">Закрепить-->
+                                    <!--                                                        чат-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                                <span class="ui_1TyQ_"><svg width="1em" height="1em" viewBox="0 0 18 17"-->
+                                    <!--                                                                            fill="none"-->
+                                    <!--                                                                            xmlns="http://www.w3.org/2000/svg"-->
+                                    <!--                                                                            class="seamless__chat-head-action-list-icon"><path-->
+                                    <!--                                                        fill="currentColor" fill-rule="evenodd"-->
+                                    <!--                                                        d="M11.85 2h.02l3.62 3.63.01.01v.01L13.25 7.9a1 1 0 0 0-.16 1.2c.68 1.18.51 2.7-.5 3.7l-1.28 1.3-7.9-7.9 1.29-1.3c1-1 2.52-1.17 3.7-.5a1 1 0 0 0 1.2-.15L11.85 2ZM13.29.6a2.02 2.02 0 0 0-2.86 0L8.7 2.32a5.07 5.07 0 0 0-5.4 1.15l-2 2a1 1 0 0 0 0 1.41l3.94 3.95L.8 15.3a1 1 0 1 0 1.42 1.42l4.45-4.45 3.95 3.95a1 1 0 0 0 1.41 0l2-2a5.07 5.07 0 0 0 1.15-5.4l1.74-1.74c.79-.79.79-2.07 0-2.86L13.29.6Z"-->
+                                    <!--                                                        clip-rule="evenodd"></path></svg></span></li>-->
+                                    <!--                                            <li class="ui_1PoLy ui_3wwoj ui_Ma0Q1" tabindex="0" aria-disabled="false"-->
+                                    <!--                                                role="button">-->
+                                    <!--                                                <div>-->
+                                    <!--                                                    <div class="ui_2MYaG ui_gBDdc ui_3nAGW ui_3Y-uv ui_8WOO3">Удалить-->
+                                    <!--                                                        чат-->
+                                    <!--                                                    </div>-->
+                                    <!--                                                </div>-->
+                                    <!--                                                <span class="ui_1TyQ_"><svg width="1em" height="1em" viewBox="0 0 18 17"-->
+                                    <!--                                                                            fill="none"-->
+                                    <!--                                                                            xmlns="http://www.w3.org/2000/svg"-->
+                                    <!--                                                                            class="seamless__chat-head-action-list-icon"><path-->
+                                    <!--                                                        fill="currentColor" fill-rule="evenodd"-->
+                                    <!--                                                        d="M8.05 0a2 2 0 0 0-2 2v1H2.2a1 1 0 0 0 0 2h.2l.78 9.25A3 3 0 0 0 6.18 17h5.64a3 3 0 0 0 3-2.75L15.58 5h.2a1 1 0 1 0 0-2h-3.84V2a2 2 0 0 0-2-2h-1.9Zm1.9 3V2h-1.9v1h1.9ZM4.42 5h9.16l-.76 9.08a1 1 0 0 1-1 .92H6.18a1 1 0 0 1-1-.92L4.42 5Z"-->
+                                    <!--                                                        clip-rule="evenodd"></path></svg></span></li>-->
+                                    <!--                                        </ul>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seamless__chat-messages-container seamless__chat-messages-container_msngr_prep_client">
+                            <div class="seamless__chat-messages">
+                                <div class="seamless__chat-messages-wrapper clearfix">
+                                    <div class="seamless__chat-messages-loader} _9Sgdhlc">
+                                        <div class="ui_fKh5y _3X5lRhW ui_33tG1"><span class="ui_FTm7B"></span></div>
+                                    </div>
+                                    <div class="seamless__chat-messages-date-separator clearfix"><span>29 декабря</span>
+                                    </div>
+                                    <div class="seamless__chat-message-wrapper seamless__chat-message-wrapper_profile clearfix">
+                                        <div class="seamless__chat-message-author-name">Михаил Сергеевич</div>
+                                        <div class="seamless__chat-message-angle"></div>
+                                        <div class="_thfEiXM seamless__chat-message-author-avatar-wrapper"
+                                             style="width: 35px; height: 45px;"><img loading="lazy"
+                                                                                     data-shmid="avatarImg"
+                                                                                     src="//cdn.profi.ru/7bd600253a3c4f24831505aa7d784c62.jpg-a34-35.jpg"
+                                                                                     class="_1OdLdqI seamless__chat-message-author-avatar seamless__chat-message-author-avatar-img"
+                                                                                     width="35" height="45" alt="">
+                                        </div>
+                                        <div class="seamless__chat-message seamless__chat-message_profile">
+                                            <div class="seamless__chat-message-text seamless__chat-message-text_formatted">
+                                                Здравствуйте, ! Меня зовут Михаил, я являюсь практикующим дизайнером и
+                                                преподавателем в Университете. Веду дисциплины по графическому дизайну,
+                                                3D
+                                                моделированию и анимации. Обучаю работе во всех программах пакета Adobe
+                                                и
+                                                Autodesk, в том числе в TinkerCAD. В сфере образования более 8 лет. <br>
+                                                <br>
+                                                Готов оперативно взяться за задачу по обучению и выполнению с вами
+                                                проекта в
+                                                программе TinkerCAD.<br>
+                                                <br>
+                                                Заранее благодарен за обратную связь.
+                                            </div>
+                                            <div class="seamless__chat-message_time-read">
+                                                <div class="seamless__chat-message-time">00:09</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="seamless__chat-message-wrapper seamless__chat-message-wrapper_profile clearfix seamless__chat-message_with-same-author">
+                                        <div class="seamless__chat-message-author-name">Михаил Сергеевич</div>
+                                        <div class="seamless__chat-message seamless__chat-message_profile seamless__chat-message-inside_with-same-author">
+                                            <div class="seamless__chat-message-text seamless__chat-message-text_formatted">
+                                                Стоимость занятия 1000 руб. / 60 мин.<br>
+                                                Контакты:<br>
+                                                <a href="#" data-action-id="ph-act-cl-1">+7-978-148-... обменяться
+                                                    контактами</a>,<br>
+                                                <a href="#" data-action-id="email-act-cl-1">...@mail.ru показать эл.
+                                                    почту</a></div>
+                                            <div class="seamless__chat-message_time-read">
+                                                <div class="seamless__chat-message-time">00:09</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="seamless__chat-sender-container">
+                            <div class="seamless__actions seamless__actions_client"><a type="button" href="#"
+                                                                                       target="_self"
+                                                                                       role="button"
+                                                                                       class="seamless__action ui-button _nbHh1K4 _2UPHffq _2WQjhSP _gzvlD4p">Обменяться
+                                контактами</a><a type="button" href="#" target="_self" role="button"
+                                                 class="seamless__action ui-button _nbHh1K4 _2UPHffq _2WQjhSP _gzvlD4p">Выбрать
+                                этого специалиста</a></div>
+                            <form class="seamless__chat-message-sender"><label for="filesInput"
+                                                                               class="seamless__chat-message-sender-add-image"><input
+                                    type="file" name="seamless-photo__file"
+                                    accept="image/png,image/x-png,image/jpeg,image/tiff,image/gif" id="filesInput"
+                                    hidden="" multiple="" wfd-invisible="true"></label><label
+                                    class="seamless__chat-message-sender-textarea"><textarea placeholder="Сообщение"
+                                                                                             class="seamless__chat-message-sender-textarea-input seamless__chat-message-sender-textarea-input_client"
+                                                                                             style="height: 40px;">ewf</textarea></label>
+                                <div class="seamless__chat-message-sender-btn" wfd-invisible="true">
+                                    <button type="submit"
+                                            class="seamless__send-btn ui-button _nbHh1K4 _2UPHffq _2WQjhSP _gzvlD4p undefined">
+                                        </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<script>
+    function popupToggle() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide() {
+        const popup = document.getElementById('popup');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var customerId = /*[[${customerId}]]*/ '5';
+        const optionValue = document.getElementById("exampleInputRole1");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + customerId + "/resumes";
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + customerId + "/orders";
+
+        }
+    }
+
+    /*]]>*/
+</script>
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

@@ -8,8 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Component
 public class ReadOrderMapper implements Mapper<Order, ReadOrderDto> {
@@ -36,7 +34,7 @@ public class ReadOrderMapper implements Mapper<Order, ReadOrderDto> {
                 .address(from.getAddress())
                 .readPersonDto(readPersonMapper.mapFrom(from.getPerson()))
                 .keyword(from.getKeyword().getName())
-                .imagePaths(imagesId)
+                .imageIdentifiers(imagesId)
                 .description(from.getDescription())
                 .startAt(from.getStartAt())
                 .endAt(from.getEndAt())

@@ -7,7 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 @Data
@@ -35,5 +39,24 @@ public class Weekdays {
         this.sun = Objects.requireNonNullElse(sun, false);
 
 
+    }
+
+    public String workingDays() {
+
+        var map = new LinkedHashMap<String, Boolean>();
+        map.put("Пн", mon);
+        map.put("Вт", tues);
+        map.put("Ср", wed);
+        map.put("Чт", thurs);
+        map.put("Пт", fri);
+        map.put("Сб", sat);
+        map.put("Вс", sun);
+
+
+        return map.entrySet()
+                .stream()
+                .filter(Map.Entry::getValue)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.joining(",", "", "."));
     }
 }

@@ -11,6 +11,8 @@ databaseChangeLog:
       file: db/changelog/db.change-table-experience-1.0.sql
   - include:
       file: db/changelog/db.change-table-resume-1.0.sql
+  - include:
+      file: db/changelog/db.change-table-OrdersResume-1.0.sql
 
 
 

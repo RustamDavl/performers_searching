@@ -23,7 +23,7 @@ import java.util.Objects;
                         "keyword_id",
                         "measurement_id"})
 )
-public class Resume {
+public class  Resume {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

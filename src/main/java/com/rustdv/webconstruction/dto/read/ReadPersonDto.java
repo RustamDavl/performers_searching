@@ -15,4 +15,10 @@ public class ReadPersonDto implements ReadDto {
 
     String photo;
 
+    ReadResumeDto readResumeDto;
+
+    ReadOrderDto readOrderDto;
+
+    String rating;
+
 }

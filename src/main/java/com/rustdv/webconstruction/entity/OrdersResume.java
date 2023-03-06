@@ -35,11 +35,21 @@ public class OrdersResume {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "resume_status")
-    private ReplyStatus resumeStatus;
+    private RespondStatus resumeStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private ReplyStatus orderStatus;
+    private RespondStatus orderStatus;
+
+    public void addOrder(Order order) {
+        this.order = order;
+        order.getOrdersResumeList().add(this);
+    }
+
+    public void addResume(Resume resume) {
+        this.resume = resume;
+        resume.getOrdersResumeList().add(this);
+    }
 
     @Override
     public boolean equals(Object o) {

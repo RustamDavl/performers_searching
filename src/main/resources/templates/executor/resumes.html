@@ -122,16 +122,22 @@
                                 </div>
                                 <!-- <div class="project-preview__time-zone">PRSN</div> -->
                             </div>
-                            <h2 data-cy="project-card-title" class="project-preview__title">
+                            <h2 style="color: black" data-cy="project-card-title" class="project-preview__title">
 
 
                                 <img th:src="@{/images/folder-black-interface-symbol_icon-icons.com_54528.png}"
                                      width="20"
                                      height="20">
 
-                                <span th:text="${resume.readPersonDto.firstName}"
+                                <span th:text="${resume.keyword}"
                                       class="project-preview__title-text">order name</span>
+
                             </h2>
+
+
+                            <a th:if="${acceptedCount != 0}" th:text="|Количество предложений: ${acceptedCount}|" style="color: black; margin-top: 5px">
+                                Количество предложений:
+                            </a>
 
                         </div>
                     </div>
@@ -206,7 +212,7 @@
                                                 <div class="react-geocoder" style="position: relative;">
                                                     <details class="custom-select forLabel">
                                                         <summary class="radios">
-                                                            <input class="sumInput" type="radio" name="keyword" id="default4" title="Выбрать" checked="">
+                                                            <input class="sumInput" type="radio" name="keyword" id="default4" title="" checked="">
 
 
                                                             <input th:each="keyword : ${keywords}" class="sumInput" type="radio" name="keyword" th:value="${keyword.name}" th:id="${keyword.name}" th:title="${keyword.name}" wfd-invisible="true">
@@ -240,7 +246,7 @@
                                                         <details class="custom-select forLabel">
                                                             <summary class="radios">
                                                                 <input class="sumInput" type="radio" name="team"
-                                                                       id="default" title="Выбрать" checked>
+                                                                       id="default" title="" checked>
 
 
                                                                     <input th:each="team : ${teams}" class="sumInput" type="radio" name="team"
@@ -312,7 +318,7 @@
                                                         <details class="custom-select forLabel">
                                                             <summary class="radios">
                                                                 <input class="sumInput" type="radio" name="measurement"
-                                                                       id="default2" title="Выбрать" checked="">
+                                                                       id="default2" title="" checked="">
 
 
                                                                 <input th:each="measurement : ${measurements}" class="sumInput" type="radio" name="measurement"

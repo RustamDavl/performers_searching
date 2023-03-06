@@ -65,7 +65,7 @@
             <span class="tooltip">Сообщения</span>
         </li>
         <li>
-            <a id="responses" href="#responses" onclick="changeHeaderText()">
+            <a id="responses" th:href="@{/customer/{id}/responses(id = ${customerId})}">
                 <i class='bx bx-pie-chart-alt-2'></i>
                 <span class="links_name">Отклики</span>
             </a>

@@ -1,7 +1,8 @@
 package com.rustdv.webconstruction.controller.rest;
 
+import com.rustdv.webconstruction.service.OrderService;
 import com.rustdv.webconstruction.service.PersonService;
-import com.rustdv.webconstruction.service.ResumeService;
+import com.rustdv.webconstruction.util.ImageLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,19 +11,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/executor")
+@RequestMapping("api/v1/customer")
 @RequiredArgsConstructor
-public class ExecutorRestController {
+public class CustomerRestController {
 
+    private final OrderService orderService;
     private final PersonService personService;
 
-    private final ResumeService resumeService;
 
-    @GetMapping(value = "/responses/{resumeId}/images/{imageId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public byte[] getImageByResumeIdAndImageId(@PathVariable("resumeId") Integer resumeId,
+
+    @GetMapping(value = "/orders/{orderId}/images/{imageId}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public byte[] getOrderImageById(@PathVariable("orderId") Integer orderId,
                                     @PathVariable("imageId") Integer imageId) {
 
-        return resumeService.getImageByResumeIdAndImageId(resumeId, imageId);
+        return orderService.getImageByOrderIdAndImageId(orderId, imageId);
+
 
     }
 
@@ -31,4 +34,5 @@ public class ExecutorRestController {
 
         return personService.getExecutorIcon(id);
     }
+
 }

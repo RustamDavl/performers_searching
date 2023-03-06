@@ -2,6 +2,7 @@ package com.rustdv.webconstruction.service;
 
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonDto;
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonRoleDto;
+import com.rustdv.webconstruction.dto.read.ReadOrderResumeDto;
 import com.rustdv.webconstruction.dto.read.ReadPersonRoleDto;
 import com.rustdv.webconstruction.dto.read.ReadRoleDto;
 import com.rustdv.webconstruction.entity.PersonRole;
@@ -12,6 +13,7 @@ import com.rustdv.webconstruction.mapping.ReadPersonRoleMapper;
 import com.rustdv.webconstruction.mapping.ReadRoleMapper;
 import com.rustdv.webconstruction.repository.PersonRepository;
 import com.rustdv.webconstruction.repository.PersonRoleRepository;
+import com.rustdv.webconstruction.util.ImageLoader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,18 +35,22 @@ public class PersonRoleService implements IService<CreateUpdatePersonRoleDto, Re
     private final ReadPersonMapper readPersonMapper;
     private final ReadPersonRoleMapper readPersonRoleMapper;
 
-    private final PersonRepository personRepository;
+    private final ImageLoader imageLoader;
+
+
 
     @Override
     public ReadPersonRoleDto create(CreateUpdatePersonRoleDto object) {
 
         var roles = roleService.findAll();
 
+
         //create a person and then save him
         var createUpdatePersonDto = CreateUpdatePersonDto.builder()
                 .firstName(object.getFirstName())
                 .rawPassword(object.getRawPassword())
                 .role(object.getRole())
+                .photo("pngwing.com (1).png")
                 .email(object.getEmail())
                 .build();
         var person = readPersonMapper.mapFrom(personService.create(createUpdatePersonDto));
@@ -85,6 +91,8 @@ public class PersonRoleService implements IService<CreateUpdatePersonRoleDto, Re
 
     }
 
+
+
     @Override
     public List<ReadPersonRoleDto> findAll() {
         return null;
@@ -119,5 +127,11 @@ public class PersonRoleService implements IService<CreateUpdatePersonRoleDto, Re
 //
 //        }
         return null;
+    }
+
+    public Optional<ReadPersonRoleDto> findByRoleIdAndPersonId(Integer roleId, Integer personId) {
+
+        return personRoleRepository.findByRoleIdAndPersonId(roleId, personId)
+                .map(readPersonRoleMapper::mapFrom);
     }
 }

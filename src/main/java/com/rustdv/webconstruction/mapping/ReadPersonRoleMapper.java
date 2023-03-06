@@ -19,7 +19,6 @@ public class ReadPersonRoleMapper implements Mapper<PersonRole, ReadPersonRoleDt
 
         return ReadPersonRoleDto.builder()
                 .readPersonDto(readPersonMapper.mapFrom(from.getPerson()))
-//                .readRoleDto(readRoleMapper.mapFrom(from.getRole()))
                 .rating(String.valueOf(from.getRating()))
                 .build();
     }

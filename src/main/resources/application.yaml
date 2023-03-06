@@ -38,7 +38,7 @@ app:
     path: /Resumes
   download:
     path: /images
-  baseperson:
+  basePersonIcon:
     path: /BasePersonIcon
 
 

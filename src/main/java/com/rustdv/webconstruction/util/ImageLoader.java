@@ -1,29 +1,16 @@
 package com.rustdv.webconstruction.util;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import static java.nio.file.StandardOpenOption.*;
 
@@ -39,7 +26,7 @@ public class ImageLoader {
 
 
     @SneakyThrows
-    public void upload(Collection<MultipartFile> images, String folder) {
+    public void uploadAllImages(Collection<MultipartFile> images, String folder) {
 
         var paths = images.stream()
                 .map(multipartFile -> {
@@ -59,7 +46,7 @@ public class ImageLoader {
 
 
     @SneakyThrows
-    public List<byte[]> download(Collection<String> imagesName, String folder) {
+    public List<byte[]> downloadAllImages(Collection<String> imagesName, String folder) {
 
         return imagesName.stream()
                 .map(s -> {

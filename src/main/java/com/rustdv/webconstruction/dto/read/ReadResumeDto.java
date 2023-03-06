@@ -23,7 +23,7 @@ public class ReadResumeDto implements ReadDto {
 
     String measurement;
 
-    Weekdays weekdays;
+    String weekdays;
 
     LocalTime startAt;
 
@@ -31,13 +31,14 @@ public class ReadResumeDto implements ReadDto {
 
     String experience;
 
-
     Address address;
 
     String team;
 
-    List<String> imagePaths;
+    List<Integer> imageIdentifiers;
 
     String aboutMe;
+
+
 
 }
