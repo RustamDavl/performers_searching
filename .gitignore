@@ -19,6 +19,7 @@ target/
 *.iml
 *.ipr
 *.log
+*.gz
 
 ### NetBeans ###
 /nbproject/private/
@@ -33,4 +34,6 @@ build/
 ### VS Code ###
 .vscode/
 
-!**/src/main/resources/static
+!**/src/main/resources/static/images
+
+

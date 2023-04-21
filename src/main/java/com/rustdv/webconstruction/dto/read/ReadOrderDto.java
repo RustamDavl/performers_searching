@@ -28,4 +28,6 @@ public class ReadOrderDto implements ReadDto {
     LocalDate startAt;
 
     LocalDate endAt;
+
+    ReadDateDto readDateDto;
 }

@@ -22,13 +22,14 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/customer/{id}/image(id = ${customerId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
-            <select onchange="doSelect()" id="exampleInputRole1" name="role" class="form-select form-select-lg mb-3 loginSelect"
+            <select onchange="doSelect()" id="exampleInputRole1" name="role"
+                    class="form-select form-select-lg mb-3 loginSelect"
                     aria-label=".form-select-lg example">
 
                 <option>Заказчик</option>
@@ -51,7 +52,7 @@
             <span class="tooltip">Заказы</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/customer/{id}/profile(id = ${customerId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>
@@ -122,7 +123,7 @@
                                         <div type="1" class="GroupHeaderStyles__Container-sc-4opbje-0 UnUeF"
                                              data-testid="dropdown-group-header">
                                             <div class="GroupHeaderStyles__LeftBlockContainer-sc-4opbje-1 gIcVj"><span
-                                                    class="GroupHeaderStyles__TextContainer-sc-4opbje-2 bNkKJK">Заказ</span>
+                                                    class="GroupHeaderStyles__TextContainer-sc-4opbje-2 bNkKJK">Отобразить отклики</span>
                                             </div>
                                         </div>
                                         <div class="GroupFormStyles__CollapsibleContainer-sc-97gsgo-1 jwTmYH"
@@ -146,54 +147,90 @@
                                                     <!--                                                        </div>-->
                                                     <!--                                                    </div>-->
 
-                                                    <details class="custom-select forLabel">
-                                                        <summary class="radios">
-                                                            <input class="sumInput" type="radio" name="team"
-                                                                   id="default" title="Выбрать" checked>
+
+                                                    <form method="get" id="responsesfilter" th:action="@{/customer/{id}/responses(id = ${customerId})}">
 
 
-                                                            <input th:each="team : ${teams}" class="sumInput" type="radio" name="team"
-                                                                   th:value="${team}"
-                                                                   th:id="${team}" th:title="${team}">
+                                                        <div class="react-geocoder" style="position: relative;">
+                                                            <details class="custom-select forLabel">
+                                                                <summary class="radios">
+                                                                    <input class="sumInput" type="radio"
+                                                                           name="filter"
+                                                                           id="default5" title="Выбрать" checked="">
+                                                                    <input class="sumInput" type="radio"
+                                                                           name="filter"
+                                                                           value="accepted" id="каменщик"
+                                                                           title="Только принятые"
+                                                                           wfd-invisible="true">
+                                                                    <input class="sumInput"
+                                                                           type="radio"
+                                                                           name="filter"
+                                                                           value="notaccepted"
+                                                                           id="столяр"
+                                                                           title="Не принятые"
+                                                                           wfd-invisible="true">
+                                                                    <input
+                                                                            class="sumInput" type="radio" name="filter"
+                                                                            value="finished" id="монтажник"
+                                                                            title="Завершенные" wfd-invisible="true">
+                                                                    <input
+                                                                            class="sumInput" type="radio" name="filter"
+                                                                            value="all" id="монтажник окон"
+                                                                            title="Все" wfd-invisible="true">
 
 
-                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
-                                                            <!--                                                                       id="item1" title="Работаю один">-->
-                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
-                                                            <!--                                                                       id="item2" title="Работаю в команде">-->
-                                                            <!--                                                                <input class="sumInput" type="radio" name="item"-->
-                                                            <!--                                                                       id="item3" title="Работаю один либо в команде">-->
-                                                            <!--                                                                <input class="sumInput" type="radio" name="item" id="item4" title="Item 4">-->
-                                                            <!--                                                                <input class="sumInput" type="radio" name="item" id="item5" title="Item 5">-->
-                                                        </summary>
-                                                        <ul class="list">
-                                                            <li th:each="team : ${teams}">
-                                                                <label th:value="${team}" th:text="${team}" th:for="${team}">
-                                                                    dummy text
 
-                                                                </label>
-                                                            </li>
-                                                            <!--                                                                <li>-->
-                                                            <!--                                                                    <label for="item2">Работаю в команде</label>-->
-                                                            <!--                                                                </li>-->
-                                                            <!--                                                                <li>-->
-                                                            <!--                                                                    <label for="item3">Работаю один либо в команде</label>-->
-                                                            <!--                                                                </li>-->
+                                                                </summary>
+                                                                <ul class="list">
+                                                                    <li>
+                                                                        <label value="Только принятые"
+                                                                               for="каменщик">Только принятые</label>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label value="Не принятые" for="столяр">Не
+                                                                            принятые</label>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label value="Завершенные"
+                                                                               for="монтажник">Завершенные</label>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label value="Все"
+                                                                               for="монтажник окон">Все</label>
+                                                                    </li>
 
-                                                        </ul>
-                                                    </details>
+
+                                                                </ul>
+                                                            </details>
+                                                        </div>
+                                                    </form>
+
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
 
                                     <div class="OrdersFiltersStyles__ButtonsContainer-sc-8ynm37-7 fHggSY">
-                                        <button type="button"
+                                        <button  type="submit"
                                                 class="ButtonStyles__Container-sc-1kch7k2-0 ccIeRv OrdersFiltersStyles__ResetButton-sc-8ynm37-8 jcEZep">
                                             <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
                                                 <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj"><p
                                                         class="ButtonStyles__Label-sc-1kch7k2-4 gjngHg">Сбросить всё</p>
                                                 </div>
+                                            </div>
+                                        </button>
+                                    </div>
+
+                                    <div class="FilterButtonStyles__Container-sc-mw8s4e-0 erCzHC">
+                                        <button form="responsesfilter" type="submit"
+                                                class="ButtonStyles__Container-sc-1nuwmcp-0 dsOXnT FilterButtonStyles__SubmitButton-sc-mw8s4e-1 joXbqP">
+                                            <div class="ButtonStyles__Content-sc-1nuwmcp-1 hVkvZV">
+                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1nuwmcp-3 bObdZE"><p
+                                                        class="ButtonStyles__Label-sc-1nuwmcp-4 leNFeA">Показать</p>
+                                                </div>
+
                                             </div>
                                         </button>
                                     </div>
@@ -214,62 +251,63 @@
                     </div>
                     <div class="Column-sc-1180kxd-0 OrdersBoardStyles__OrdersColumn-sc-obij8q-0 kemdla gmnbwJ">
                         <div class="BoardHeaderBlockStyles__Container-sc-j7ee70-0 jyECA">
-<!--                            <div class="BoardHeaderBlockStyles__ContentLine-sc-j7ee70-2 fGferl">-->
-<!--                                <div class="SearchLayoutV2Styles__ContainerRelativeWrapper-sc-1axrqpn-5 kXjlkd">-->
-<!--                                    <div data-focus-guard="true" tabindex="-1"-->
-<!--                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>-->
-<!--                                    <div data-focus-lock-disabled="disabled">-->
-<!--                                        <div class="SearchLayoutV2Styles__Container-sc-1axrqpn-0 gwOiVH">-->
-<!--                                            <div class="SearchLayoutV2Styles__AbsoluteContainer-sc-1axrqpn-6 eILtCu">-->
-<!--                                                <div class="InViewPort__Container-sc-1fm8w2v-0 FTALj">-->
-<!--                                                    <div class="SearchLayoutStyles__HorizontalWrapper-sc-1l4gf38-10 cSaWto">-->
-<!--                                                        <div class="SearchLayoutV2Styles__SearchFieldContainer-sc-1axrqpn-3 gkXzYh">-->
-<!--                                                            <div class="SearchFieldStyles__Container-sc-ntu65e-0 cqRmDE">-->
-<!--                                                                <div class="SearchFieldStyles__LeftContainer-sc-ntu65e-1 cIKVpm">-->
-<!--                                                                    <div class="SearchFieldStyles__StretchContainer-sc-ntu65e-2 gjgiOz">-->
-<!--                                                                        <div class="SearchFieldStyles__SearchIconContainer-sc-ntu65e-3 kmliPS">-->
-<!--                                                                            <svg width="24" height="24" fill="none"-->
-<!--                                                                                 xmlns="http://www.w3.org/2000/svg"-->
-<!--                                                                                 color="#141c25">-->
-<!--                                                                                <path fill-rule="evenodd"-->
-<!--                                                                                      clip-rule="evenodd"-->
-<!--                                                                                      d="M3.5 11a7.25 7.25 0 1 1 12.457 5.044.763.763 0 0 0-.163.163A7.25 7.25 0 0 1 3.5 11Zm12.884 6.695a8.75 8.75 0 1 1 1.06-1.06l3.836 3.835a.75.75 0 1 1-1.06 1.06l-3.836-3.835Z"-->
-<!--                                                                                      fill="currentColor"></path>-->
-<!--                                                                            </svg>-->
-<!--                                                                        </div>-->
-<!--                                                                        &lt;!&ndash;                                                                        <button data-testid="fulltext_view_mode_test_id"&ndash;&gt;-->
-<!--                                                                        &lt;!&ndash;                                                                                class="SearchFieldStyles__ViewStateBlock-sc-ntu65e-4 bbIAsl">&ndash;&gt;-->
-<!--                                                                        &lt;!&ndash;                                                                            <span class="SearchFieldStyles__ViewStateBlockText-sc-ntu65e-5 liGqRz">укладка 3д панелей</span>&ndash;&gt;-->
-<!--                                                                        &lt;!&ndash;                                                                        </button>&ndash;&gt;-->
-<!--                                                                    </div>-->
-<!--                                                                </div>-->
-<!--                                                                <div class="SearchFieldStyles__RightContainer-sc-ntu65e-9 bnTUaw">-->
-<!--                                                                    <label for="searchField-1" class="SearchFieldStyles__HiddenLabel-sc-ntu65e-7 bUewrz">Поиск заказов</label>-->
-<!--                                                                    <input placeholder="Поиск заказов" id="searchField-1" data-testid="fulltext_edit_mode_test_id" autocomplete="off" class="SearchFieldStyles__SearchInput-sc-ntu65e-6 cSteQi" value="">-->
+                            <!--                            <div class="BoardHeaderBlockStyles__ContentLine-sc-j7ee70-2 fGferl">-->
+                            <!--                                <div class="SearchLayoutV2Styles__ContainerRelativeWrapper-sc-1axrqpn-5 kXjlkd">-->
+                            <!--                                    <div data-focus-guard="true" tabindex="-1"-->
+                            <!--                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>-->
+                            <!--                                    <div data-focus-lock-disabled="disabled">-->
+                            <!--                                        <div class="SearchLayoutV2Styles__Container-sc-1axrqpn-0 gwOiVH">-->
+                            <!--                                            <div class="SearchLayoutV2Styles__AbsoluteContainer-sc-1axrqpn-6 eILtCu">-->
+                            <!--                                                <div class="InViewPort__Container-sc-1fm8w2v-0 FTALj">-->
+                            <!--                                                    <div class="SearchLayoutStyles__HorizontalWrapper-sc-1l4gf38-10 cSaWto">-->
+                            <!--                                                        <div class="SearchLayoutV2Styles__SearchFieldContainer-sc-1axrqpn-3 gkXzYh">-->
+                            <!--                                                            <div class="SearchFieldStyles__Container-sc-ntu65e-0 cqRmDE">-->
+                            <!--                                                                <div class="SearchFieldStyles__LeftContainer-sc-ntu65e-1 cIKVpm">-->
+                            <!--                                                                    <div class="SearchFieldStyles__StretchContainer-sc-ntu65e-2 gjgiOz">-->
+                            <!--                                                                        <div class="SearchFieldStyles__SearchIconContainer-sc-ntu65e-3 kmliPS">-->
+                            <!--                                                                            <svg width="24" height="24" fill="none"-->
+                            <!--                                                                                 xmlns="http://www.w3.org/2000/svg"-->
+                            <!--                                                                                 color="#141c25">-->
+                            <!--                                                                                <path fill-rule="evenodd"-->
+                            <!--                                                                                      clip-rule="evenodd"-->
+                            <!--                                                                                      d="M3.5 11a7.25 7.25 0 1 1 12.457 5.044.763.763 0 0 0-.163.163A7.25 7.25 0 0 1 3.5 11Zm12.884 6.695a8.75 8.75 0 1 1 1.06-1.06l3.836 3.835a.75.75 0 1 1-1.06 1.06l-3.836-3.835Z"-->
+                            <!--                                                                                      fill="currentColor"></path>-->
+                            <!--                                                                            </svg>-->
+                            <!--                                                                        </div>-->
+                            <!--                                                                        &lt;!&ndash;                                                                        <button data-testid="fulltext_view_mode_test_id"&ndash;&gt;-->
+                            <!--                                                                        &lt;!&ndash;                                                                                class="SearchFieldStyles__ViewStateBlock-sc-ntu65e-4 bbIAsl">&ndash;&gt;-->
+                            <!--                                                                        &lt;!&ndash;                                                                            <span class="SearchFieldStyles__ViewStateBlockText-sc-ntu65e-5 liGqRz">укладка 3д панелей</span>&ndash;&gt;-->
+                            <!--                                                                        &lt;!&ndash;                                                                        </button>&ndash;&gt;-->
+                            <!--                                                                    </div>-->
+                            <!--                                                                </div>-->
+                            <!--                                                                <div class="SearchFieldStyles__RightContainer-sc-ntu65e-9 bnTUaw">-->
+                            <!--                                                                    <label for="searchField-1" class="SearchFieldStyles__HiddenLabel-sc-ntu65e-7 bUewrz">Поиск заказов</label>-->
+                            <!--                                                                    <input placeholder="Поиск заказов" id="searchField-1" data-testid="fulltext_edit_mode_test_id" autocomplete="off" class="SearchFieldStyles__SearchInput-sc-ntu65e-6 cSteQi" value="">-->
 
-<!--                                                                </div>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
+                            <!--                                                                </div>-->
+                            <!--                                                            </div>-->
+                            <!--                                                        </div>-->
 
-<!--                                                    </div>-->
-<!--                                                </div>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div data-focus-guard="true" tabindex="-1"-->
-<!--                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <!--                                                    </div>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                    </div>-->
+                            <!--                                    <div data-focus-guard="true" tabindex="-1"-->
+                            <!--                                         style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
                         </div>
-                        <div th:each="resume : ${respondedResumes}" class="FlatListStyles__ContentContainer-sc-1ipsls8-0 cymlLM" id="content-content">
+                        <div th:each="resume : ${respondedResumes}"
+                             class="FlatListStyles__ContentContainer-sc-1ipsls8-0 cymlLM" id="content-content">
                             <div class="OrderSnippetContainerStyles__Container-sc-85p0ef-0 dojFOQ">
                                 <div class="OrderSnippetStyles__CardContainer-sc-hfzrw4-1 hMXvDV">
                                     <a th:href="@{/customer/{id}/responses/{resumeId}(id = ${customerId}, resumeId = ${resume.readResumeDto.id},
                                     orderId = ${resume.readOrderDto.id})}"
-                                            data-testid="54025023_order-snippet"
+                                       data-testid="54025023_order-snippet"
 
-                                            id="54025023" aria-label=""
-                                            class="SnippetBodyStyles__Container-sc-wu97j-0 eyvTOL">
+                                       id="54025023" aria-label=""
+                                       class="SnippetBodyStyles__Container-sc-wu97j-0 eyvTOL">
                                         <div class="OrderCardStyles__RefuseButtonContainer-sc-12zln64-6 hIBpTa">
                                             <button type="button"
                                                     class="ButtonStyles__Container-sc-1kch7k2-0 eZTuJf OrderCardStyles__RefuseButton-sc-12zln64-5 gByBqo"
@@ -293,11 +331,17 @@
                                             <div class="SnippetBodyStyles__ContentLeftContainer-sc-wu97j-2 iUyqEa">
                                                 <div class="SubjectAndPriceStyles__Container-sc-qy1ik2-0 fCJUwq">
                                                     <div class="SubjectAndPriceStyles__SubjectsContainer-sc-qy1ik2-8 jGzSsG">
-                                                        <h3 th:text="${resume.readOrderDto.readPersonDto.firstName}" class="SubjectAndPriceStyles__SubjectsText-sc-qy1ik2-1 daLNyi">
+                                                        <h3 th:text="${resume.readResumeDto.readPersonDto.firstName}"
+                                                            class="SubjectAndPriceStyles__SubjectsText-sc-qy1ik2-1 daLNyi">
                                                             Укладка 3д панелей на стену</h3>
-                                                    <div class="accepted" style="color: green; margin-left: auto" th:if="${resume.orderStatus == 'ACCEPTED'}">
-                                                        Принято
-                                                    </div>
+                                                        <div class="accepted" style="color: green; margin-left: auto"
+                                                             th:if="${resume.orderStatus == 'ACCEPTED'}">
+                                                            Принято
+                                                        </div>
+                                                        <div class="accepted" style="color: green; margin-left: auto"
+                                                             th:if="${resume.orderStatus == 'FINISHED'}">
+                                                            Завершено
+                                                        </div>
                                                     </div>
                                                     <div class="SubjectAndPriceStyles__PriceContainer-sc-qy1ik2-2 gmLfVl"><span
                                                             class="SubjectAndPriceStyles__AccessibilityPriceLine-sc-qy1ik2-3 fuAvYS">
@@ -305,7 +349,8 @@
                                                             class="SubjectAndPriceStyles__PriceValue-sc-qy1ik2-5 ksIpKc"></span></span>
                                                     </div>
                                                 </div>
-                                                <p th:text="|Опыт работы ${resume.readResumeDto.experience}|" class="SnippetBodyStyles__MainInfo-sc-wu97j-5 jBJaPE">Описание</p>
+                                                <p th:text="|Опыт работы ${resume.readResumeDto.experience}|"
+                                                   class="SnippetBodyStyles__MainInfo-sc-wu97j-5 jBJaPE">Описание</p>
 
                                                 <div class="SnippetBodyStyles__LocationAndDateContainer-sc-wu97j-4 jljjKo">
                                                     <div class="SnippetBodyStyles__LocationAndStatusContainer-sc-wu97j-11 gCCfZX">
@@ -319,25 +364,26 @@
                                                                     <div class="_1NMf894 _a8ql2Xu _BNLWoQn"
                                                                          data-shmid="profileIndicators_ratingBlock">
                                                                         <svg class="_uvhqnlI" width="14" height="14"
-                                                                             viewBox="0 0 18 18" fill="#FFC600"
+                                                                             viewBox="0 0 18 18" fill="black"
                                                                              xmlns="http://www.w3.org/2000/svg">
                                                                             <path d="M8.31897 0.457643L9.68103 0.457642L11.2776 5.36143C11.4373 5.85218 11.8956 6.18444 12.4126 6.18444H17.5791L18 7.47724L13.8202 10.5079C13.4019 10.8112 13.2269 11.3489 13.3867 11.8396L14.9832 16.7434L13.8813 17.5424L9.7015 14.5117C9.28321 14.2084 8.71679 14.2084 8.2985 14.5117L4.11872 17.5424L3.01679 16.7434L4.61333 11.8396C4.7731 11.3489 4.59807 10.8112 4.17978 10.5079L0 7.47724L0.420898 6.18444H5.58739C6.10443 6.18444 6.56266 5.85218 6.72244 5.36143L8.31897 0.457643Z"></path>
                                                                         </svg>
-                                                                        <span th:text="${personRole.rating}" class="ui-text _3eH689t _2iyzK60 _2FaBpDL">
+                                                                        <span th:text="${personRole.rating}"
+                                                                              class="ui-text _3eH689t _2iyzK60 _2FaBpDL">
                                                                             0.0
                                                                         </span>
                                                                     </div>
-<!--                                                                    <div class="_1NMf894 _a8ql2Xu _3Y9Ho5m"-->
-<!--                                                                         data-shmid="profileIndicators_reviews_block">-->
-<!--                                                                        <svg width="14" height="14" viewBox="0 0 20 20"-->
-<!--                                                                             fill="none"-->
-<!--                                                                             xmlns="http://www.w3.org/2000/svg"-->
-<!--                                                                             class="_uvhqnlI" wfd-invisible="true">-->
-<!--                                                                            <path d="M12.512 13.686l5.43-1.223c.41-3.04.41-6.123 0-9.164a37.173 37.173 0 00-15.883 0 34.147 34.147 0 000 9.164l5.43 1.223c.28.063.499.282.562.563l1.223 4.188h1.452l1.223-4.188c.063-.28.282-.5.563-.563z"-->
-<!--                                                                                  fill="#C8CBD2"></path>-->
-<!--                                                                        </svg>-->
-<!--                                                                        <span class="ui-text _3eH689t _2iyzK60 _2FaBpDL">0 отзывов</span>-->
-<!--                                                                    </div>-->
+                                                                    <!--                                                                    <div class="_1NMf894 _a8ql2Xu _3Y9Ho5m"-->
+                                                                    <!--                                                                         data-shmid="profileIndicators_reviews_block">-->
+                                                                    <!--                                                                        <svg width="14" height="14" viewBox="0 0 20 20"-->
+                                                                    <!--                                                                             fill="none"-->
+                                                                    <!--                                                                             xmlns="http://www.w3.org/2000/svg"-->
+                                                                    <!--                                                                             class="_uvhqnlI" wfd-invisible="true">-->
+                                                                    <!--                                                                            <path d="M12.512 13.686l5.43-1.223c.41-3.04.41-6.123 0-9.164a37.173 37.173 0 00-15.883 0 34.147 34.147 0 000 9.164l5.43 1.223c.28.063.499.282.562.563l1.223 4.188h1.452l1.223-4.188c.063-.28.282-.5.563-.563z"-->
+                                                                    <!--                                                                                  fill="#C8CBD2"></path>-->
+                                                                    <!--                                                                        </svg>-->
+                                                                    <!--                                                                        <span class="ui-text _3eH689t _2iyzK60 _2FaBpDL">0 отзывов</span>-->
+                                                                    <!--                                                                    </div>-->
                                                                 </div>
 
                                                             </li>
@@ -347,14 +393,16 @@
                                                                      data-shmid="profileIndicators">
                                                                     <div class="_1NMf894 _a8ql2Xu _3Y9Ho5m"
                                                                          data-shmid="profileIndicators_reviews_block">
-                                                                        <img class="comm" width="17" height="15" src="/static/images/message-svgrepo-com.svg" th:src="@{/images/message-svgrepo-com.svg}">
-<!--                                                                        <svg width="14" height="14" viewBox="0 0 20 20"-->
-<!--                                                                             fill="none"-->
-<!--                                                                             xmlns="http://www.w3.org/2000/svg"-->
-<!--                                                                             class="_uvhqnlI" wfd-invisible="true">-->
-<!--                                                                            <path d="M12.512 13.686l5.43-1.223c.41-3.04.41-6.123 0-9.164a37.173 37.173 0 00-15.883 0 34.147 34.147 0 000 9.164l5.43 1.223c.28.063.499.282.562.563l1.223 4.188h1.452l1.223-4.188c.063-.28.282-.5.563-.563z"-->
-<!--                                                                                  fill="#C8CBD2"></path>-->
-<!--                                                                        </svg>-->
+                                                                        <img class="comm" width="17" height="15"
+                                                                             src="/static/images/chat.png"
+                                                                             th:src="@{/images/chat.png}">
+                                                                        <!--                                                                        <svg width="14" height="14" viewBox="0 0 20 20"-->
+                                                                        <!--                                                                             fill="none"-->
+                                                                        <!--                                                                             xmlns="http://www.w3.org/2000/svg"-->
+                                                                        <!--                                                                             class="_uvhqnlI" wfd-invisible="true">-->
+                                                                        <!--                                                                            <path d="M12.512 13.686l5.43-1.223c.41-3.04.41-6.123 0-9.164a37.173 37.173 0 00-15.883 0 34.147 34.147 0 000 9.164l5.43 1.223c.28.063.499.282.562.563l1.223 4.188h1.452l1.223-4.188c.063-.28.282-.5.563-.563z"-->
+                                                                        <!--                                                                                  fill="#C8CBD2"></path>-->
+                                                                        <!--                                                                        </svg>-->
                                                                         <span class="ui-text _3eH689t _2iyzK60 _2FaBpDL">0 отзывов</span>
                                                                     </div>
                                                                 </div>
@@ -362,7 +410,6 @@
 
                                                             <li aria-label="Адрес клиента:" role="listitem"
                                                                 class="LocationAndScheduleStyles__BlockContainer-sc-14uppec-4 fvlPCn">
-
 
 
                                                                 <div class="SnippetBodyStyles__IconContainer-sc-wu97j-6 jzzbAX">
@@ -380,28 +427,25 @@
                                                                 <span th:text="|${resume.readResumeDto.address.street}, ${resume.readResumeDto.address.houseNumber}|"
                                                                       class="LocationAndScheduleStyles__LocationText-sc-14uppec-7 boEKuP">dummy street, dummy houseNumber</span></span>
                                                                 <span
-                                                                    class="LocationAndScheduleStyles__SuffixContainer-sc-14uppec-6 iVLGnc"></span>
+                                                                        class="LocationAndScheduleStyles__SuffixContainer-sc-14uppec-6 iVLGnc"></span>
                                                             </li>
-<!--                                                            <li aria-label="Удобное время:" role="listitem"-->
-<!--                                                                class="LocationAndScheduleStyles__BlockContainer-sc-14uppec-4 fvlPCn">-->
-<!--                                                                <div class="SnippetBodyStyles__IconContainer-sc-wu97j-6 jzzbAX">-->
-<!--                                                                    <svg width="16" height="16" fill="none"-->
-<!--                                                                         xmlns="http://www.w3.org/2000/svg"-->
-<!--                                                                         class="LocationAndScheduleStyles__ScheduleIcon-sc-14uppec-10 keqltE">-->
-<!--                                                                        <path fill-rule="evenodd" clip-rule="evenodd"-->
-<!--                                                                              d="M5.15 2a.65.65 0 0 1 .65.65v.785h4.4V2.65a.65.65 0 1 1 1.3 0v.785h.55A1.95 1.95 0 0 1 14 5.385v7.665A1.95 1.95 0 0 1 12.05 15h-8.1A1.95 1.95 0 0 1 2 13.05V5.385a1.95 1.95 0 0 1 1.95-1.95h.55V2.65A.65.65 0 0 1 5.15 2Zm-1.2 2.735a.65.65 0 0 0-.65.65v1.238h9.4V5.385a.65.65 0 0 0-.65-.65h-8.1Zm8.75 3.188H3.3v5.127c0 .359.291.65.65.65h8.1a.65.65 0 0 0 .65-.65V7.923Z"-->
-<!--                                                                              fill="currentColor"></path>-->
-<!--                                                                    </svg>-->
-<!--                                                                </div>-->
-<!--&lt;!&ndash;                                                                <span th:text="|${order.startAt} - ${order.endAt}|" class="LocationAndScheduleStyles__ScheduleText-sc-14uppec-11 hdGqmZ">dummy startAt - dummy endAt</span>&ndash;&gt;-->
-<!--                                                            </li>-->
+                                                            <!--                                                            <li aria-label="Удобное время:" role="listitem"-->
+                                                            <!--                                                                class="LocationAndScheduleStyles__BlockContainer-sc-14uppec-4 fvlPCn">-->
+                                                            <!--                                                                <div class="SnippetBodyStyles__IconContainer-sc-wu97j-6 jzzbAX">-->
+                                                            <!--                                                                    <svg width="16" height="16" fill="none"-->
+                                                            <!--                                                                         xmlns="http://www.w3.org/2000/svg"-->
+                                                            <!--                                                                         class="LocationAndScheduleStyles__ScheduleIcon-sc-14uppec-10 keqltE">-->
+                                                            <!--                                                                        <path fill-rule="evenodd" clip-rule="evenodd"-->
+                                                            <!--                                                                              d="M5.15 2a.65.65 0 0 1 .65.65v.785h4.4V2.65a.65.65 0 1 1 1.3 0v.785h.55A1.95 1.95 0 0 1 14 5.385v7.665A1.95 1.95 0 0 1 12.05 15h-8.1A1.95 1.95 0 0 1 2 13.05V5.385a1.95 1.95 0 0 1 1.95-1.95h.55V2.65A.65.65 0 0 1 5.15 2Zm-1.2 2.735a.65.65 0 0 0-.65.65v1.238h9.4V5.385a.65.65 0 0 0-.65-.65h-8.1Zm8.75 3.188H3.3v5.127c0 .359.291.65.65.65h8.1a.65.65 0 0 0 .65-.65V7.923Z"-->
+                                                            <!--                                                                              fill="currentColor"></path>-->
+                                                            <!--                                                                    </svg>-->
+                                                            <!--                                                                </div>-->
+                                                            <!--&lt;!&ndash;                                                                <span th:text="|${order.startAt} - ${order.endAt}|" class="LocationAndScheduleStyles__ScheduleText-sc-14uppec-11 hdGqmZ">dummy startAt - dummy endAt</span>&ndash;&gt;-->
+                                                            <!--                                                            </li>-->
                                                         </ul>
 
 
-
                                                     </div>
-
-
 
 
                                                     <!--
@@ -409,15 +453,16 @@
 
 
                                                  <div class="Date__Container-sc-19z4g3h-0 kfJJxd SnippetBodyStyles__AllocAndStatusDate-sc-wu97j-8 jAjgkV">-->
-<!--                                                                                                        <span class="Date__DateText-sc-19z4g3h-1 jsRPdl">Вчера в 20:33</span>-->
-<!--                                                                                                    </div>-->
+                                                    <!--                                                                                                        <span class="Date__DateText-sc-19z4g3h-1 jsRPdl">Вчера в 20:33</span>-->
+                                                    <!--                                                                                                    </div>-->
                                                 </div>
 
                                                 <div class="order-card-param-list__item order-card-param__container">
                                                     <div class="order-card-param-title">
                                                     </div>
-                                                    <p th:text="${resume.readOrderDto.orderName}" size="16" class="bo_text__16 bo_text order-card-geo__regions">
-                                                        Отклик  заказ: </p></div>
+                                                    <p style="color: black" th:text="${resume.readOrderDto.orderName}"
+                                                       size="16" class="bo_text__16 bo_text order-card-geo__regions">
+                                                        Отклик заказ: </p></div>
                                             </div>
                                         </div>
                                     </a></div>

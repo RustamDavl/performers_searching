@@ -249,7 +249,7 @@
 }
 .forPhoto {
     width: 60px;
-    height: 60px;
+    height: 57px;
 
     background-size: cover;
     background-position: center;
@@ -1388,6 +1388,15 @@ textarea {
     resize:vertical;
 }
 
+.removeResume {
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+}
 
 
 

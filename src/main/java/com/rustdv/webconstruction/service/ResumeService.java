@@ -99,8 +99,13 @@ public class ResumeService implements IService<CreateUpdateResumeDto, ReadResume
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Integer resumeId) {
 
+        resumeRepository.findById(resumeId)
+                .ifPresent(resume -> {
+                    resumeRepository.delete(resume);
+                    resumeRepository.flush();
+                });
     }
 
     @Override

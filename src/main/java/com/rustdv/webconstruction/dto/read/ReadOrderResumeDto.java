@@ -2,7 +2,6 @@ package com.rustdv.webconstruction.dto.read;
 
 import lombok.Builder;
 import lombok.Value;
-import org.springframework.stereotype.Component;
 
 
 @Builder
@@ -20,4 +19,10 @@ public class ReadOrderResumeDto implements ReadDto {
     String resumeStatus;
 
     String orderStatus;
+
+    Boolean accepted;
+
+    Boolean submitted;
+
+    String personId; //person's id which submitted the order
 }

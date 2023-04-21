@@ -40,5 +40,9 @@ app:
     path: /images
   basePersonIcon:
     path: /BasePersonIcon
+  personIcons:
+    path: /PersonIcons
+  basePersonIconName:
+    name: pngwing.com (1).png
 
 

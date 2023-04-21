@@ -31,11 +31,20 @@ public class ResponseOrderResumeController {
     }
 
     @PostMapping("/customer/{customerId}/responses/{resumeId}")
-    public String acceptResume(Model model, @PathVariable("customerId") Integer customerId,
+    public String updateResumeStatus(Model model, @PathVariable("customerId") Integer customerId,
                                @PathVariable("resumeId") Integer resumeId,
                                CreateUpdateOrderResumeDto object) {
         orderResumeService.update(object);
 
         return "redirect:/customer/" + customerId + "/responses";
+    }
+
+    @PostMapping("/executor/{executorId}/responses/{resumeId}")
+    public String updateOrderStatus(Model model, @PathVariable("executorId") Integer executorId,
+                                     @PathVariable("resumeId") Integer resumeId,
+                                     CreateUpdateOrderResumeDto object) {
+        orderResumeService.update(object);
+
+        return "redirect:/executor/" + executorId + "/progress";
     }
 }

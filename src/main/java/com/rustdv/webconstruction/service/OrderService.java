@@ -56,7 +56,7 @@ public class OrderService implements IService<CreateUpdateOrderDto, ReadOrderDto
     public byte[] getImageByOrderIdAndImageId(Integer orderId, Integer imageId) {
 
 
-        var image =  orderRepository.findById(orderId)
+        var image = orderRepository.findById(orderId)
                 .map(Order::getImages)
                 .stream()
                 .flatMap(Collection::stream)
@@ -65,7 +65,7 @@ public class OrderService implements IService<CreateUpdateOrderDto, ReadOrderDto
                 .filter(StringUtils::hasText)
                 .collect(Collectors.joining());
 
-         return imageLoader.downloadOneImage(image, ORDERS_IMAGES_FOLDER);
+        return imageLoader.downloadOneImage(image, ORDERS_IMAGES_FOLDER);
 
     }
 
@@ -75,8 +75,14 @@ public class OrderService implements IService<CreateUpdateOrderDto, ReadOrderDto
     }
 
     @Override
-    public void delete(Integer integer) {
+    public void delete(Integer orderId) {
 
+        orderRepository.findById(orderId)
+                .ifPresent(order -> {
+                    orderRepository.delete(order);
+                    orderRepository.flush();
+
+                });
     }
 
     @Override
@@ -99,7 +105,13 @@ public class OrderService implements IService<CreateUpdateOrderDto, ReadOrderDto
         var readPersonDto = personService.findById(personId)
                 .orElseThrow(RuntimeException::new);
 
-        imageLoader.uploadAllImages(createUpdateOrderDto.getImages(), ORDERS_IMAGES_FOLDER);
+
+//        if(createUpdateOrderDto.getImages() != null) {
+//
+//            imageLoader.uploadAllImages(createUpdateOrderDto.getImages(), ORDERS_IMAGES_FOLDER);
+//
+//        }
+
 
         return readOrderMapper.mapFrom(
                 orderRepository

@@ -144,6 +144,104 @@ p a:hover {
 
 }
 
+/*new red btn and some text*/
+
+
+.CtrlButton_ctrlButton_view_stroke__vtd1d.CtrlButton_ctrlButton_color_second__AJio1 {
+    border-color: #ef4444;
+    color: #f87171;
+}
+
+[type=button], [type=reset], [type=submit], button {
+    -webkit-appearance: button;
+}
+.CtrlButton_ctrlButton_textView_uppercase__P44ZJ {
+    text-transform: uppercase;
+}
+.CtrlButton_ctrlButton_view_stroke__vtd1d {
+    background-color: transparent;
+    border-color: #f9fafb;
+    color: #f9fafb;
+}
+.CtrlButton_ctrlButton__s2HoO {
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 32px;
+    padding: 8px 32px;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    transition-duration: 125ms;
+    transition-property: color,border-color,background-color,-webkit-transform;
+    transition-property: color,border-color,background-color,transform;
+    transition-property: color,border-color,background-color,transform,-webkit-transform;
+    transition-timing-function: ease;
+}
+button {
+    cursor: pointer;
+}
+button, select {
+    text-transform: none;
+}
+button, input {
+    overflow: visible;
+}
+
+.CtrlButton_ctrlButton_view_stroke__vtd1d.CtrlButton_ctrlButton_color_second__AJio1 {
+    border-color: #ff0000;
+    /* color: #f87171; */
+    color: #f20404;
+}
+
+.CtrlButton_ctrlButton_textView_uppercase__P44ZJ {
+    text-transform: uppercase;
+}
+.CtrlButton_ctrlButton_view_stroke__vtd1d {
+    background-color: transparent;
+    border-color: #f9fafb;
+    color: #f9fafb;
+}
+.CtrlButton_ctrlButton__s2HoO {
+    border-radius: 6px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 32px;
+    padding: 8px 32px;
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    transition-duration: 125ms;
+    transition-property: color,border-color,background-color,-webkit-transform;
+    transition-property: color,border-color,background-color,transform;
+    transition-property: color,border-color,background-color,transform,-webkit-transform;
+    transition-timing-function: ease;
+}
+
+.getStarted {
+    position: relative;
+    left: 125px;
+    top: 300px;
+}
+.greetingText {
+    color: #fff;
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 58px;
+    position: relative;+
+
+    bottom: 390px
+}
+.redBtn {
+    position: relative;
+    bottom: 300px;
+}
 
 
 

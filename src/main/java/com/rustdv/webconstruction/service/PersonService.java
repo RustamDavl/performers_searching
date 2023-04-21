@@ -40,6 +40,12 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
     @Value("${app.basePersonIcon.path}")
     private final String BASE_PERSON_ICON_FOLDER;
 
+    @Value("${app.basePersonIconName.name}")
+    private final String BASE_PERSON_ICON_NAME;
+
+    @Value("${app.personIcons.path}")
+    private final String PERSON_ICONS;
+
     @Transactional
     public ReadPersonDto create(CreateUpdatePersonDto createUpdatePersonDto) {
 
@@ -63,14 +69,25 @@ public class PersonService implements IService<CreateUpdatePersonDto, ReadPerson
 
         return personRepository.findById(id)
                 .map(Person::getPhoto)
-                .map(s -> imageLoader.downloadOneImage(s, BASE_PERSON_ICON_FOLDER))
-                .orElse(null);
+                .map(s -> {
+                            if (s.equals(BASE_PERSON_ICON_NAME)) {
+                                return imageLoader.downloadOneImage(s, BASE_PERSON_ICON_FOLDER);
+
+                            }
+
+                            return imageLoader.downloadOneImage(s, PERSON_ICONS);
+                        }
+                ).orElse(null);
     }
 
 
     @Transactional
     @Override
     public Optional<ReadPersonDto> update(Integer id, CreateUpdatePersonDto from) {
+
+        if (from == null || from.fieldsNull()) {
+            return Optional.empty();
+        }
 
         return personRepository.findById(id)
                 .map(toPerson -> createUpdatePersonMapper.update(from, toPerson))

@@ -23,9 +23,9 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/executor/{id}/image(id = ${executorId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
@@ -52,7 +52,7 @@
             <span class="tooltip">Мое резюме</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/executor/{id}/profile(id = ${executorId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>
@@ -73,11 +73,11 @@
             <span class="tooltip">Найти заказ</span>
         </li>
         <li>
-            <a id="record" href="#records" onclick="changeHeaderText()">
+            <a id="record" th:href="@{/executor/{id}/progress(id = ${executorId})}">
                 <i class='bx bx-folder'></i>
-                <span class="links_name">Учет</span>
+                <span class="links_name">Выполняемые</span>
             </a>
-            <span class="tooltip">Учет</span>
+            <span class="tooltip">Выполняемые</span>
         </li>
 
         <li class="profile">
@@ -109,11 +109,20 @@
                          style="cursor: pointer;">
                         <div class="project-preview__container">
                             <div class="project-preview__actions">
+
+
+
                                 <div class="project-preview__tasks">
 
+                                    <form id="deleteResume" method="post" th:action="@{/executor/{id}/resume/delete(id = ${executorId})}">
+                                    <button form="deleteResume" class="removeResume" type="submit" >
                                     <span class="project-preview__tasks-text">Удалить</span>
 
+                                    </button>
+                                    </form>
                                 </div>
+
+
                                 <div class="project-preview__edit"
                                      style="cursor: pointer; min-width: auto; margin-right: 1rem;">
                                     <span onclick="popupToggle();"

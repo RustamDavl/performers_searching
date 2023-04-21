@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
     <link rel="stylesheet" href="/static/styles/currentOrderInfo.css" th:href="@{/styles/currentOrderInfo.css}">
     <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
 
     <title></title>
 </head>
@@ -22,9 +23,9 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/executor/{id}/image(id = ${executorId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
@@ -47,12 +48,12 @@
         <li>
             <a id="orders" th:href="@{/executor/{id}/resumes(id = ${executorId})}">
                 <i class='bx bx-grid-alt'></i>
-                <span class="links_name">Заказы</span>
+                <span class="links_name">Мое резюме</span>
             </a>
-            <span class="tooltip">Заказы</span>
+            <span class="tooltip">Мое резюме</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/executor/{id}/profile(id = ${executorId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>
@@ -73,11 +74,11 @@
             <span class="tooltip">Найти заказы</span>
         </li>
         <li>
-            <a id="record" href="#records" onclick="changeHeaderText()">
+            <a id="record" th:href="@{/executor/{id}/progress(id = ${executorId})}">
                 <i class='bx bx-folder'></i>
-                <span class="links_name">Учет</span>
+                <span class="links_name">Выполняемые</span>
             </a>
-            <span class="tooltip">Учет</span>
+            <span class="tooltip">Выполняемые</span>
         </li>
 
         <li class="profile">
@@ -211,7 +212,7 @@
                                                 <div class="order-card-param-title"><p size="18"
                                                                                        class="bo_text__18 bo_text">
                                                     Дата начала и окончания:</p></div>
-                                                <p th:text="|${order.startAt} : ${order.endAt}|" size="16"
+                                                <p th:text="|${order.readDateDto.startAtDay} ${order.readDateDto.startAtMonth} - ${order.readDateDto.endAtDay} ${order.readDateDto.endAtMonth}|" size="16"
                                                    class="bo_text__16 bo_text order-card-param__text">
                                                     2023-01-29 по 2023-03-22</p></div>
 
@@ -221,8 +222,8 @@
                                                     <div class="order-card-client__avatar order-card-client__avatar_medium order-card-client-avatar__container">
                                                         <!--                                                        <p class="bo_text__16_bold bo_text order-card-client-avatar__letter">-->
                                                         <!--                                                            Е</p>-->
-                                                        <img th:src="@{/api/v1/executor/{id}/image(id = ${executorId})}"
-                                                             width="35px" height="35px" alt="empty">
+                                                        <img th:src="@{/api/v1/customer/{id}/image(id = ${order.readPersonDto.id})}"
+                                                             width="65px" height="55px" alt="empty">
                                                     </div>
                                                     <div><p th:text="${order.readPersonDto.firstName}" size="18"
                                                             class="bo_text__18 bo_text">Евгений Кузнецов</p>
@@ -238,7 +239,9 @@
 
                                         </div>
                                     </div>
-                                    <div class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
+
+<!--                                    change if statement-->
+                                    <div th:if="${accepted != 'true' and submitted == 'false'}" class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
                                         <form th:action="@{/response/executor/{executorId}/orders/{orderId}(executorId=${executorId}, orderId = ${order.id})}" method="post">
                                             <input type="hidden" name="orderId" th:value="${order.id}">
                                             <input type="hidden" name="orderStatus" value="TO">
@@ -291,6 +294,58 @@
                                             </div>
                                         </form>
                                     </div>
+
+                                    <h1>Stars rating system</h1>
+                                    <div class="product-review-stars">
+                                        <input type="radio" id="star5" name="rating" value="5" class="visuallyhidden" /><label for="star5" title="Rocks!">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4" class="visuallyhidden" /><label for="star4" title="Pretty good">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3" class="visuallyhidden" /><label for="star3" title="Meh">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2" class="visuallyhidden" /><label for="star2" title="Kinda bad">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1" class="visuallyhidden" /><label for="star1" title="Sucks big time">★</label>
+                                    </div>
+
+
+                                    <div th:if="${accepted == 'true' and submitted == 'true'}" class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
+                                        <form th:action="@{/response/executor/{executorId}/responses/{orderId}(executorId=${executorId}, orderId = ${order.id})}" method="post">
+                                            <input type="hidden" name="orderId" th:value="${order.id}">
+                                            <input type="hidden" name="resumeId" th:value="${param.resumeId}">
+                                            <input type="hidden" name="orderStatus" value="FINISHED">
+                                            <input type="hidden" name="resumeStatus" value="FROM">
+                                            <div class="react-geocoder" style="position: relative;">
+
+
+                                            </div>
+                                            <div class="ContentStyles__StickyContainer-sc-1vo8noy-2 bgZqlz">
+                                                <div class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
+                                                    <button type="submit" style="border: none; background: none; width: 100%">
+                                                        <a  class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                            <div class="backoffice-common-button__content"><p
+                                                                    class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
+                                                                    size="18" style="margin-bottom: 5px;">Завершить</p></div>
+                                                            <div data-testid="LOADER"
+                                                                 class="loader-dots backoffice-common-button__loader">
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                            </div>
+                                                        </a>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
                                 </div>
                             </div>
                             <div class="bottomContainerStyles__Container-sc-p011ip-0 kiiuet order-card-bid-action-bar backoffice-no-scrollbars"
@@ -321,6 +376,11 @@
         </tr>
         </tbody>
     </table>
+
+
+
+
+
 
 
 </section>

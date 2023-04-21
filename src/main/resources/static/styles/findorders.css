@@ -6,6 +6,15 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+.forPhoto {
+    width: 60px;
+    height: 57px;
+
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 100%;
+}
 
 .sidebar {
     position: fixed;
@@ -705,11 +714,7 @@ a {
     padding: 16px;
 }
 
-.iUyqEa {
-    display: flex;
-    flex: 1 1 0%;
-    flex-direction: column;
-}
+
 
 .fCJUwq {
     display: flex;
@@ -1068,6 +1073,13 @@ button {
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
+}
+.replied {
+    background: inherit;
+    opacity: 0.4;
+}
+.notreplied {
+    background: inherit;
 }
 
 .fCJUwq {

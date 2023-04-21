@@ -2,7 +2,6 @@ package com.rustdv.webconstruction.repository;
 
 import com.rustdv.webconstruction.entity.OrdersResume;
 import com.rustdv.webconstruction.entity.RespondStatus;
-import liquibase.pro.packaged.Q;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface OrderResumeRepository extends JpaRepository<OrdersResume, Integer> {
 
-    List<OrdersResume> findByOrderId(Integer orderId);
+    List<OrdersResume> findAllByOrderId(Integer orderId);
 
     void deleteAllByOrderIdAndResumeId(Integer orderId, Integer resumeId);
 

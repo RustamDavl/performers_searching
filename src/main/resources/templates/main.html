@@ -6,9 +6,10 @@
 
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon"> -->
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/bootstrap.min.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/fontello.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/style.css}">
+    <link rel="stylesheet" type="text/css" href="/static/styles/bootstrap.min.css"
+          th:href="@{/styles/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" type="text/css" href="/static/styles/style.css" th:href="@{/styles/style.css}">
 
     <title>Greetings</title>
 </head>
@@ -53,6 +54,19 @@
             </div>
         </div>
     </nav>
+    <div class="getStarted">
+        <div class="greetingText">
+
+            Для любой задачи найдется<br> специалист
+
+
+        </div>
+
+        <button data-bs-toggle="modal"
+                data-bs-target="#loginModal" type="button"
+                class="redBtn CtrlButton_ctrlButton__s2HoO CtrlButton_ctrlButton_view_stroke__vtd1d CtrlButton_ctrlButton_color_second__AJio1 CtrlButton_ctrlButton_textView_uppercase__P44ZJ">
+            <span>  &nbsp&nbsp начать &nbsp&nbsp  </span></button>
+    </div>
 </header>
 
 
@@ -257,12 +271,11 @@
                 const person = JSON.parse(xhr.responseText);
                 const optionValue = document.getElementById("exampleInputRole2");
 
-                if(optionValue.value == 'Работодатель') {
+                if (optionValue.value == 'Работодатель') {
                     window.location.href = "/customer/" + person.readPersonDto.id + "/orders";
                 } else if (optionValue.value == 'Специалист') {
                     window.location.href = "/executor/" + person.readPersonDto.id + "/resumes";
                 }
-
 
 
             } else if (xhr.status == 409) {
@@ -308,16 +321,14 @@
                 const person = JSON.parse(xhr.responseText);
                 const optionValue = document.getElementById("exampleInputRole1");
 
-                if(optionValue.value == 'Работодатель') {
+                if (optionValue.value == 'Работодатель') {
                     window.location.href = "/customer/" + person.id + "/orders";
                 } else if (optionValue.value == 'Специалист') {
                     window.location.href = "/executor/" + person.id + "/resumes";
                 }
 
 
-            }
-
-            else if (xhr.status == 403) {
+            } else if (xhr.status == 403) {
                 var someFolder = document.querySelector('#exampleInputEmail1');
 
 

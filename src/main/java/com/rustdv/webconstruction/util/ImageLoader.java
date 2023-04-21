@@ -24,6 +24,9 @@ public class ImageLoader {
     @Value("${app.download.path}")
     private final String BASE_PATH_FOR_DOWNLOAD;
 
+    @Value("${app.personIcons.path}")
+    private final String PERSON_ICONS;
+
 
     @SneakyThrows
     public void uploadAllImages(Collection<MultipartFile> images, String folder) {
@@ -58,6 +61,18 @@ public class ImageLoader {
                         throw new RuntimeException(e);
                     }
                 }).toList();
+
+    }
+
+    public String updatePersonIcon(MultipartFile image) {
+
+        var fullPath = Path.of(BASE_PATH, PERSON_ICONS, image.getOriginalFilename());
+        try {
+            Files.write(fullPath, image.getBytes(), TRUNCATE_EXISTING, CREATE);
+            return image.getOriginalFilename();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

@@ -1,5 +1,6 @@
 package com.rustdv.webconstruction.mapping;
 
+import com.rustdv.webconstruction.dto.read.ReadDateDto;
 import com.rustdv.webconstruction.dto.read.ReadOrderDto;
 import com.rustdv.webconstruction.entity.Order;
 import com.rustdv.webconstruction.entity.PhotoForOrder;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 public class ReadOrderMapper implements Mapper<Order, ReadOrderDto> {
 
     private final ReadPersonMapper readPersonMapper;
+
+    private final ReadDateDtoMapper readDateDtoMapper;
 
     private final ImageLoader imageLoader;
 
@@ -38,6 +41,7 @@ public class ReadOrderMapper implements Mapper<Order, ReadOrderDto> {
                 .description(from.getDescription())
                 .startAt(from.getStartAt())
                 .endAt(from.getEndAt())
+                .readDateDto(readDateDtoMapper.mapFrom(from.getStartAt(), from.getEndAt()))
                 .build();
     }
 

@@ -46,6 +46,9 @@ public class Person {
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();
 
+    @Column(name = "personal_info")
+    private String personalInfo;
+
 
 
 

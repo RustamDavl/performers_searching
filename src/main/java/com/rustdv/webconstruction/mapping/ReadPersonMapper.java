@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
 
+
     @Override
     public ReadPersonDto mapFrom(Person from) {
 
-        if(from == null)
+        if (from == null)
             return null;
 
         return ReadPersonDto.builder()
@@ -22,6 +23,12 @@ public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
                 .firstName(from.getFirstName())
                 .email(from.getEmail())
                 .photo(from.getPhoto())
+                .personalInfo(from.getPersonalInfo())
+//                .readResumeDtos(
+//                        from.getResumes().stream()
+//                                .map(readResumeMapper::mapFrom)
+//                                .toList()
+//                )
                 .build();
     }
 

@@ -6,6 +6,35 @@
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
 }
+.forPhoto {
+    width: 60px;
+    height: 57px;
+
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 100%;
+}
+
+
+
+.y-ctrl-btn {
+    align-items: center;
+    background: transparent;
+    border-width: 0;
+    color: #053fe3;
+    display: inline-flex;
+    font-size: 24px;
+    letter-spacing: -1px;
+    line-height: 28px;
+    outline: none;
+    padding: 10px 0;
+    -webkit-user-select: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+
 
 .sidebar {
     position: fixed;
@@ -932,6 +961,7 @@ IMG {
 IMG {
     border: 0;
     vertical-align: top;
+    border-radius: 5%;
 }
 
 

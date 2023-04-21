@@ -3,6 +3,8 @@ package com.rustdv.webconstruction.dto.read;
 import lombok.Builder;
 import lombok.Value;
 
+import java.util.List;
+
 @Value
 @Builder
 public class ReadPersonDto implements ReadDto {
@@ -15,10 +17,12 @@ public class ReadPersonDto implements ReadDto {
 
     String photo;
 
-    ReadResumeDto readResumeDto;
+    List<ReadResumeDto> readResumeDtos;
 
     ReadOrderDto readOrderDto;
 
     String rating;
+
+    String personalInfo;
 
 }

@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/forProfile.css" th:href="@{/styles/forProfile.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+
+                <img th:src="@{/api/v1/executor/{id}/image(id = ${readPersonDto.id})}"
+                     class="forPhoto">
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="exampleInputRole1" name="role"
+                    class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Специалист</option>
+                <option>Заказчик</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" th:href="@{/executor/{id}/resumes(id = ${readPersonDto.id})}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Мое резюме</span>
+            </a>
+            <span class="tooltip">Заказы</span>
+        </li>
+        <li>
+            <a id="profile" th:href="@{/executor/{id}/profile(id = ${readPersonDto.id})}" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/executor/{id}/orders(id = ${readPersonDto.id})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Найти заказ</span>
+            </a>
+            <span class="tooltip">Найти заказ</span>
+        </li>
+        <li>
+            <a id="record" th:href="@{/executor/{id}/progress(id = ${readPersonDto.id})}">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Выполняемые</span>
+            </a>
+            <span class="tooltip">Выполняемые</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Профиль
+    </div>
+
+
+    <!--  popup window  -->
+
+    <div id="popup" class="ModalStyles__Backdrop-sc-5v78xr-0 bFJChp">
+        <div data-focus-guard="true" tabindex="0"
+             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+        <div data-focus-lock-disabled="false">
+            <div class="ModalStyles__Container-sc-5v78xr-1 ddKVbO BlockLayout__StyledModal-sc-1ti9mrx-9 gnhbYm"
+                 aria-modal="true" role="dialog">
+                <div class="ModalStyles__Header-sc-5v78xr-2 hYcmpu">
+
+                    <div class="PanelHeaderStyles__Container-sc-w0osk-0 kMrAYI">
+                        <div class="PanelHeaderStyles__LeftContainer-sc-w0osk-1 jVrOqC"><span
+                                class="PanelHeaderStyles__Title-sc-w0osk-3 cYsEQW">ФИО</span></div>
+                        <div onclick="popupHide()" class="PanelHeaderStyles__RightContainer-sc-w0osk-2 kqUmrg">
+                            <button type="button" class="ButtonStyles__Container-sc-1kch7k2-0 hrzpjw">
+                                <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                    <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                        <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                            <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M18.28 6.03a.75.75 0 0 0-1.06-1.06l-5.47 5.47-5.47-5.47a.75.75 0 0 0-1.06 1.06l5.47 5.47-5.47 5.47a.75.75 0 1 0 1.06 1.06l5.47-5.47 5.47 5.47a.75.75 0 1 0 1.06-1.06l-5.47-5.47 5.47-5.47Z"
+                                                      fill="currentColor"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBBE"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form id="rename" method="post"  th:action="@{/executor/{id}/profile/update(id = ${readPersonDto.id})}">
+                <div class="ScrollbarsCustom ModalStyles__StretchedScrollbar-sc-5v78xr-6 cTKbIP"
+                     style="position: relative; width: 100%; height: 80px;">
+                    <span class=""
+                          style="position: absolute; inset: 0px; overflow: hidden; width: 100%;"><div
+                            class="ScrollbarsCustom-Scroller" style="position: absolute; inset: 0px; overflow: hidden;"><div
+                            class="ScrollbarsCustom-Content"
+                            style="box-sizing: border-box; display: table-cell; min-width: 100%;"><div width="428"
+                                                                                                       class="ModalStyles__Content-sc-5v78xr-7 cskSnY"><div
+                            class="BlockLayout__StyledModalContent-sc-1ti9mrx-10 boSNJY"><div
+                            class="InputStyles__Container-sc-189fpbj-0 hUCpWv">
+
+                    <input placeholder="ФИО"
+                           class="InputStyles__StyledInput-sc-189fpbj-6 khEGES"
+                           name="firstName"
+                           th:value="${readPersonDto.firstName}">
+
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </span><span
+                        class="bo_scrollbar__track" axis="y"
+                        style="position: absolute; overflow: hidden; border-radius: 4px; background: transparent; user-select: none; width: 6px; height: calc(100% - 16px); top: 8px; right: 1px; display: none;"><span
+                        class="bo_scrollbar__thumb " axis="y"
+                        style="cursor: pointer; border-radius: 3px; background: rgba(20, 28, 37, 0.24); width: 100%; height: 0px; position: absolute; border: 1px solid rgba(255, 255, 255, 0.24); display: none;"></span></span>
+                    <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX"
+                         style="position: absolute; overflow: hidden; border-radius: 4px; background: rgba(0, 0, 0, 0.1); user-select: none; height: 10px; width: calc(100% - 20px); bottom: 0px; left: 10px; display: none;">
+                        <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX"
+                             style="cursor: pointer; border-radius: 4px; background: rgba(0, 0, 0, 0.4); height: 100%; width: 0px; display: none;"></div>
+                    </div>
+                </div>
+                </form>
+                <div class="ModalStyles__Footer-sc-5v78xr-8 fMvgca">
+                    <div class="ModalButtons__Container-sc-374zdf-0 ivBGmn">
+                        <button form="rename" type="submit" class="ButtonStyles__Container-sc-1kch7k2-0 zAoqI">
+                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj"><p
+                                        class="ButtonStyles__Label-sc-1kch7k2-4 iuiven">Сохранить</p></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-focus-guard="true" tabindex="0"
+             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+    </div>
+
+    <!--    -->
+
+
+    <!--    popup 2-->
+    <div id="popup2" class="ModalStyles__Backdrop-sc-5v78xr-0 bFJChp">
+        <div data-focus-guard="true" tabindex="0"
+             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+        <div data-focus-lock-disabled="false">
+            <div class="ModalStyles__Container-sc-5v78xr-1 ddKVbO BlockLayout__StyledModal-sc-1ti9mrx-9 gnhbYm"
+                 aria-modal="true" role="dialog">
+                <div class="ModalStyles__Header-sc-5v78xr-2 hYcmpu">
+                    <div class="PanelHeaderStyles__Container-sc-w0osk-0 kMrAYI">
+                        <div class="PanelHeaderStyles__LeftContainer-sc-w0osk-1 jVrOqC"><span
+                                class="PanelHeaderStyles__Title-sc-w0osk-3 cYsEQW">О себе</span></div>
+                        <div onclick="popupHide2()" class="PanelHeaderStyles__RightContainer-sc-w0osk-2 kqUmrg">
+                            <button type="button" class="ButtonStyles__Container-sc-1kch7k2-0 hrzpjw">
+                                <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                    <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                        <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                            <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                                      d="M18.28 6.03a.75.75 0 0 0-1.06-1.06l-5.47 5.47-5.47-5.47a.75.75 0 0 0-1.06 1.06l5.47 5.47-5.47 5.47a.75.75 0 1 0 1.06 1.06l5.47-5.47 5.47 5.47a.75.75 0 1 0 1.06-1.06l-5.47-5.47 5.47-5.47Z"
+                                                      fill="currentColor"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBBE"></div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <form id="PersonalInfo" method="post" th:action="@{/executor/{id}/profile/update(id = ${readPersonDto.id})}">
+                <div class="ScrollbarsCustom ModalStyles__StretchedScrollbar-sc-5v78xr-6 cTKbIP"
+                     style="position: relative; width: 100%; height: 372px;"><span class=""
+                                                                                   style="position: absolute; inset: 0px; overflow: hidden; width: 100%;"><div
+                        class="ScrollbarsCustom-Scroller" style="position: absolute; inset: 0px; overflow: hidden;"><div
+                        class="ScrollbarsCustom-Content"
+                        style="box-sizing: border-box; display: table-cell; min-width: 100%;"><div width="428"
+                                                                                                   class="ModalStyles__Content-sc-5v78xr-7 cskSnY"><div
+                        class="BlockLayout__StyledModalContent-sc-1ti9mrx-10 boSNJY"><div
+                        class="GroupItemModalStyles__Description-sc-z3uj2r-1 hsojlX">Расскажите подробно о себе, чтобы клиенты узнали вас получше. Не добавляйте сюда ссылки, контакты и цены на услуги.</div>
+                    <textarea name="personalInfo" th:text="${readPersonDto.personalInfo}"
+                        sizetextarea="M"
+                        placeholder="Как давно вы работаете, каких успехов добились? В чём особенность вашего подхода? Какие заказы вам интересны?"
+                        class="TextAreaStyles__StyledTextArea-sc-1525kgd-0 dhbxpg"
+                        style="height: 256px !important;"></textarea></div></div></div></div></span><span
+                        class="bo_scrollbar__track" axis="y"
+                        style="position: absolute; overflow: hidden; border-radius: 4px; background: transparent; user-select: none; width: 6px; height: calc(100% - 16px); top: 8px; right: 1px; display: none;"><span
+                        class="bo_scrollbar__thumb " axis="y"
+                        style="cursor: pointer; border-radius: 3px; background: rgba(20, 28, 37, 0.24); width: 100%; height: 0px; position: absolute; border: 1px solid rgba(255, 255, 255, 0.24); display: none;"></span></span>
+                    <div class="ScrollbarsCustom-Track ScrollbarsCustom-TrackX"
+                         style="position: absolute; overflow: hidden; border-radius: 4px; background: rgba(0, 0, 0, 0.1); user-select: none; height: 10px; width: calc(100% - 20px); bottom: 0px; left: 10px; display: none;">
+                        <div class="ScrollbarsCustom-Thumb ScrollbarsCustom-ThumbX"
+                             style="cursor: pointer; border-radius: 4px; background: rgba(0, 0, 0, 0.4); height: 100%; width: 0px; display: none;"></div>
+                    </div>
+                </div>
+                </form>
+                <div class="ModalStyles__Footer-sc-5v78xr-8 fMvgca">
+                    <div class="ModalButtons__Container-sc-374zdf-0 ivBGmn">
+                        <button form="PersonalInfo" type="submit" class="ButtonStyles__Container-sc-1kch7k2-0 zAoqI">
+                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj"><p
+                                        class="ButtonStyles__Label-sc-1kch7k2-4 iuiven">Сохранить</p></div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div data-focus-guard="true" tabindex="0"
+             style="width: 1px; height: 0px; padding: 0px; overflow: hidden; position: fixed; top: 1px; left: 1px;"></div>
+    </div>
+
+    <!--    -->
+
+    <!--    ===================================================   -->
+
+
+    <div class="WrapperStyles__ContentWrapper-sc-y7txxx-2 dNLoqs">
+        <div class="wrapper__TabbarHelper-sc-1lpty13-0 esMFRB">
+            <div class="PageContainer__AlignContainer-sc-xe5rib-1 drtEfM">
+                <div class="PageContainer__WidthContainer-sc-xe5rib-0 gKzyDm"></div>
+            </div>
+            <div class="PageContainer__AlignContainer-sc-xe5rib-1 drtEfM">
+                <div class="PageContainer__WidthContainer-sc-xe5rib-0 gKzyDm">
+                    <div class="Grid__Wrapper-sc-1uiem96-1 hsRTNY">
+                        <div spacing="1" class="Grid__Content-sc-1uiem96-0 eFFZeV">
+                            <div class="Column-sc-1180kxd-0 dzkvrC">
+
+                                <div class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 kMOlZy">
+                                        <form id="profileImage"
+                                              th:action="@{/executor/{id}/profile/update(id = ${readPersonDto.id})}"
+                                              method="post" enctype="multipart/form-data">
+                                            <div class="OverviewStyles__PhotoContainer-sc-qgpzz2-1 jdLhpd">
+                                                <div class="AvatarStyles__Container-sc-80xznt-0 dxDRaG OverviewStyles__StyledAvatar-sc-qgpzz2-0 bQkDtV">
+                                                    <img th:src="@{/api/v1/executor/{id}/image(id = ${readPersonDto.id})}"
+                                                         alt="Аватар пользователя"
+                                                         class="AvatarStyles__PrepAvatar-sc-80xznt-1 hthSMx">
+
+
+                                                    <a
+                                                            target="_self" type="button"
+
+
+                                                            class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn AvatarStyles__EditButton-sc-80xznt-2 iLZPbY"
+
+                                                    >
+
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+
+                                                                <label for="input__file" class="input__file-button">
+                                                                    <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH upload-button">
+
+
+                                                                        <input name="multipartFile" id="input__file"
+                                                                               class="input__file" type="file"
+                                                                               hidden="hidden">
+
+
+                                                                        <svg width="16" height="16" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M13.68 12.675c.205-.209.32-.491.32-.786V5.778c0-.295-.115-.578-.32-.786a1.081 1.081 0 0 0-.77-.325h-2.183L9.637 3H6.363L5.273 4.667H3.09c-.29 0-.567.117-.771.325-.205.208-.32.491-.32.786v6.11c0 .296.115.578.32.787.204.208.482.325.77.325h9.82c.288 0 .566-.117.77-.325ZM10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"
+                                                                                  fill="currentColor"></path>
+                                                                            <path d="m13.68 4.992.357-.35-.357.35Zm-2.953-.325-.418.274a.5.5 0 0 0 .418.226v-.5ZM9.637 3l.418-.274a.5.5 0 0 0-.419-.226V3ZM6.363 3v-.5a.5.5 0 0 0-.419.226L6.364 3ZM5.273 4.667v.5a.5.5 0 0 0 .418-.226l-.418-.274Zm-2.953.325-.357-.35.357.35Zm0 7.683.356-.35-.356.35Zm11.18-.786a.622.622 0 0 1-.176.435l.713.7c.298-.302.463-.71.463-1.135h-1Zm0-6.111v6.11h1v-6.11h-1Zm-.176-.436c.112.114.176.27.176.436h1c0-.425-.165-.833-.463-1.136l-.713.7Zm-.415-.175c.154 0 .303.062.415.175l.713-.7a1.581 1.581 0 0 0-1.128-.475v1Zm-2.182 0h2.182v-1h-2.182v1ZM9.218 3.274l1.09 1.667.838-.548-1.091-1.667-.837.548ZM6.364 3.5h3.272v-1H6.364v1ZM5.69 4.94l1.091-1.666-.837-.548-1.09 1.667.836.548Zm-2.6.227h2.182v-1H3.09v1Zm-.415.175a.581.581 0 0 1 .415-.175v-1c-.425 0-.83.172-1.128.475l.713.7Zm-.176.436c0-.165.064-.322.176-.436l-.713-.7A1.622 1.622 0 0 0 1.5 5.778h1Zm0 6.11v-6.11h-1v6.11h1Zm.176.436a.622.622 0 0 1-.176-.435h-1c0 .424.165.833.463 1.136l.713-.7Zm.415.176a.581.581 0 0 1-.415-.176l-.713.7c.297.304.703.476 1.128.476v-1Zm9.818 0H3.091v1h9.818v-1Zm.415-.176a.581.581 0 0 1-.415.176v1c.425 0 .83-.172 1.128-.475l-.713-.7ZM8 11.5a3 3 0 0 0 3-3h-1a2 2 0 0 1-2 2v1Zm-3-3a3 3 0 0 0 3 3v-1a2 2 0 0 1-2-2H5Zm3-3a3 3 0 0 0-3 3h1a2 2 0 0 1 2-2v-1Zm3 3a3 3 0 0 0-3-3v1a2 2 0 0 1 2 2h1Z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+
+
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+
+
+                                                    </a>
+
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                        <div class="OverviewStyles__MainContainer-sc-qgpzz2-2 AxSNW">
+
+                                            <div>
+                                                <div class="NameRowStyles__Container-sc-9284mb-0 hCXXgh">
+                                                    <h2 th:text="${readPersonDto.firstName}"
+                                                        class="NameRowStyles__FullName-sc-9284mb-1 kaUzef">dummy
+                                                        text</h2>
+                                                    <button onclick="popupToggle();">
+                                                        <a target="_self" type="button"
+                                                           class="ButtonStyles__Container-sc-1kch7k2-0 ftxHPw NameRowStyles__EditButton-sc-9284mb-2 erOrbN">
+                                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                    <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                        <svg width="16" height="16" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M12.651 1a2.35 2.35 0 0 0-1.66.688L9.696 2.981l1.661 1.66a.492.492 0 1 1-.696.697l-1.66-1.66-6.873 6.871a.492.492 0 0 0-.127.219l-.985 3.61a.492.492 0 0 0 .605.605l3.61-.985a.492.492 0 0 0 .219-.127l8.861-8.861A2.348 2.348 0 0 0 12.652 1Z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                        </a>
+                                                    </button>
+
+                                                </div>
+                                                <div class="StatsStyles__Container-sc-11907xo-0 cQUXtF"><a
+                                                        href="/backoffice/a.php?z=p" target="_self" type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 hrzpjw StatsStyles__Item-sc-11907xo-1 dUctMU">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="24" height="24" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M12 1.25a.75.75 0 0 1 .673.418l2.915 5.907 6.52.953a.75.75 0 0 1 .415 1.28l-4.717 4.594 1.113 6.491a.75.75 0 0 1-1.088.79L12 18.618l-5.83 3.067a.75.75 0 0 1-1.09-.79l1.114-6.492-4.717-4.595a.75.75 0 0 1 .415-1.28l6.52-.952 2.915-5.907A.75.75 0 0 1 12 1.25Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                            <p class="ButtonStyles__Label-sc-1kch7k2-4 iuiven">Нет
+                                                                оценок</p></div>
+                                                    </div>
+
+                                                </a>
+
+                                                    <a href="https://profi.ru/profile/DavletshinRR20/#reviews-tab"
+                                                       target="_self" type="button"
+                                                       class="ButtonStyles__Container-sc-1kch7k2-0 hrzpjw StatsStyles__Item-sc-11907xo-1 dUctMU">
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                    <svg width="24" height="24" fill="none"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                              d="M12 2.25C6.14 2.25 1.25 6.543 1.25 12S6.14 21.75 12 21.75c1.617 0 3.153-.324 4.533-.906l3.382 1.208c1.342.479 2.663-.76 2.272-2.129l-.872-3.051A9.03 9.03 0 0 0 22.75 12c0-5.457-4.89-9.75-10.75-9.75ZM13.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm3.5 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM8.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
+                                                                              fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <p class="ButtonStyles__Label-sc-1kch7k2-4 iuiven">Нет
+                                                                    отзывов</p></div>
+                                                        </div>
+
+                                                    </a>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                            <div>
+                                                <div class="updateIconButton">
+                                                    <div class="custom">
+                                                        <button form="profileImage" type="submit"
+                                                                class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn OverviewStyles__ShareButton-sc-qgpzz2-3 kFIRID">
+                                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                    <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                        <svg width="16" height="16" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M8 10.06a.75.75 0 0 0 .75-.75V3.872l1.72 1.72a.75.75 0 1 0 1.06-1.06l-3-3L8 1l-.53.53-3 3a.75.75 0 0 0 1.06 1.061l1.72-1.72v5.44c0 .414.336.75.75.75Zm-4.5.69a.75.75 0 0 0-1.5 0v2.75A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5v-2.75a.75.75 0 0 0-1.5 0v2.75h-9v-2.75Z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="Header__Container-sc-1y9asjn-0 cUeTl"><h2
+                                            class="Header__Title-sc-1y9asjn-1 gEUeuy">О себе</h2></div>
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 wDKUq">
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Всё, что важно знать
+                                                клиенту</h3>
+                                                <button onclick="popupToggle2()" type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg" color="#181818"
+                                                                     class="ProfileGroupStyles__OpenModalIcon-sc-1z023c2-2 dtFsns">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div th:if="${readPersonDto.personalInfo == null or #strings.trim(readPersonDto.personalInfo).isEmpty()}" class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+
+                                                <div class="ProfileGroupStyles__Placeholder-sc-1z023c2-3 cHqPcy">Как
+                                                    давно вы работаете, каких успехов добились? В чём особенность вашего
+                                                    подхода? Какие заказы вам интересны?
+                                                </div>
+                                            </div>
+                                            <div th:unless="${readPersonDto.personalInfo == null or #strings.contains(readPersonDto.personalInfo, '\s{0,}')}" class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+
+                                                <div th:text="${readPersonDto.personalInfo}"  class="ProfileGroupStyles__Placeholder-sc-1z023c2-3 cHqPcy">Как
+                                                    давно вы работаете, каких успехов добились? В чём особенность вашего
+                                                    подхода? Какие заказы вам интересны?
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="Header__Container-sc-1y9asjn-0 cUeTl"><h2
+                                            class="Header__Title-sc-1y9asjn-1 gEUeuy">Образование и опыт</h2></div>
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 wDKUq">
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Образование</h3>
+                                                <button type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="SectionItemStyles__RecordItemsContainer-sc-1ck7cdb-0 eGlmca"
+                                                     height="0"></div>
+                                            </div>
+                                        </div>
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Опыт работы</h3>
+                                                <button type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="SectionItemStyles__RecordItemsContainer-sc-1ck7cdb-0 eGlmca"
+                                                     height="0"></div>
+                                            </div>
+                                        </div>
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Достижения
+                                                и&nbsp;грамоты</h3>
+                                                <button type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="SectionItemStyles__RecordItemsContainer-sc-1ck7cdb-0 eGlmca"
+                                                     height="0"></div>
+                                            </div>
+                                        </div>
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Разное</h3>
+                                                <button type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="SectionItemStyles__RecordItemsContainer-sc-1ck7cdb-0 eGlmca"
+                                                     height="0"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-testid="geoSettings/container"
+                                     class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="Header__Container-sc-1y9asjn-0 cUeTl"><h2
+                                            class="Header__Title-sc-1y9asjn-1 gEUeuy">Районы и адреса</h2><span
+                                            class="Header__Description-sc-1y9asjn-2 bELpNg">Где вам удобно работать, принимать клиентов.</span>
+                                    </div>
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 wDKUq">
+                                        <div data-testid="geoSettings/prepAddress"
+                                             class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj">
+                                                <div class="BlockLayout__HeaderTexts-sc-1ti9mrx-2 LCCz"><h3
+                                                        class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Мой адрес</h3>
+                                                    <p class="BlockLayout__Description-sc-1ti9mrx-6 bBeDiD">Не покажем
+                                                        его клиентам. Этот адрес нужен для того, чтобы получать заказы
+                                                        поблизости. Клиенты увидят только ваш район.</p></div>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div data-testid="geoSettings/settingItem"
+                                                     class="ItemStyles__Content-sc-1pf8fmo-0 fPrgei">
+                                                    <div class="ItemStyles__Icon-sc-1pf8fmo-1 fRGNLo">
+                                                        <svg width="24" height="24" fill="none"
+                                                             xmlns="http://www.w3.org/2000/svg">
+                                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                  d="M12.46 1.408a.75.75 0 0 0-.92 0l-9 7A.75.75 0 0 0 2.25 9v11A2.75 2.75 0 0 0 5 22.75h4V13a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v9.75h4A2.75 2.75 0 0 0 21.75 20V9a.75.75 0 0 0-.29-.592l-9-7Z"
+                                                                  fill="currentColor"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <div class="ItemStyles__AddressHolder-sc-1pf8fmo-2 icFyjm"><span
+                                                            class="ItemStyles__Title-sc-1pf8fmo-3 igVDtZ">улица Пушкина, 4</span><span
+                                                            class="ItemStyles__Description-sc-1pf8fmo-4 liWQqR">Россия, Казань, городской округ Казань</span>
+                                                    </div>
+                                                    <div class="ItemStyles__ActionsHolder-sc-1pf8fmo-5 ipFFKn">
+                                                        <button type="button"
+                                                                class="ButtonStyles__Container-sc-1kch7k2-0 hhekQF"
+                                                                data-testid="geoSettings/editSettingItem">
+                                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                    <p class="ButtonStyles__Label-sc-1kch7k2-4 gJnrsw">
+                                                                        Изменить</p></div>
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                    <div class="DropdownActionsStyles__Container-sc-8wbg3b-0 eJQSQp"
+                                                         wfd-invisible="true">
+                                                        <button type="button"
+                                                                class="ButtonStyles__Container-sc-1kch7k2-0 ftxHPw">
+                                                            <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                                <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                    <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                        <svg width="16" height="16" fill="none"
+                                                                             xmlns="http://www.w3.org/2000/svg">
+                                                                            <path fill-rule="evenodd"
+                                                                                  clip-rule="evenodd"
+                                                                                  d="M5 8a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm4.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm3 1.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+                                                                                  fill="currentColor"></path>
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                        </button>
+                                                        <div></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div data-testid="geoSettings/atClient"
+                                             class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj">
+                                                <div class="BlockLayout__HeaderTexts-sc-1ti9mrx-2 LCCz"><h3
+                                                        class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Выезжаю к
+                                                    клиентам</h3>
+                                                    <p class="BlockLayout__Description-sc-1ti9mrx-6 bBeDiD">Будем
+                                                        предлагать заказы, где клиент хочет услугу по своему адресу.</p>
+                                                </div>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="ListAddressBlock__Content-sc-pgpuxt-0 ePOZvP">
+                                                    <div class="ListAddressBlock__GeoPlacesList-sc-pgpuxt-1 bBUTYy">
+                                                        <div data-testid="geoSettings/geoplaceItem"
+                                                             class="GeoPlace__Container-sc-1vh4loh-0 hTFSgQ"><span
+                                                                class="GeoPlace__Text-sc-1vh4loh-1 iSmzzh">Вахитовский</span>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button"
+                                                            class="ButtonStyles__Container-sc-1kch7k2-0 ftxHPw ListAddressBlock__StyledButton-sc-pgpuxt-2 kkXfmG">
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                <p class="ButtonStyles__Label-sc-1kch7k2-4 gJnrsw">
+                                                                    Редактировать список</p></div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="Header__Container-sc-1y9asjn-0 cUeTl"><h2
+                                            class="Header__Title-sc-1y9asjn-1 gEUeuy">Услуги и условия работы</h2></div>
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 wDKUq">
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Услуги и цены</h3>
+                                                <div class="SettingBlock__ButtonsHolder-sc-1q7cl0m-0 fFglUi">
+                                                    <button type="button"
+                                                            class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                    <svg width="16" height="16" fill="none"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                              d="M12.651 1a2.35 2.35 0 0 0-1.66.688L9.696 2.981l1.661 1.66a.492.492 0 1 1-.696.697l-1.66-1.66-6.873 6.871a.492.492 0 0 0-.127.219l-.985 3.61a.492.492 0 0 0 .605.605l3.61-.985a.492.492 0 0 0 .219-.127l8.861-8.861A2.348 2.348 0 0 0 12.652 1Z"
+                                                                              fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                    </button>
+                                                    <button type="button"
+                                                            class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr"
+                                                            data-testid="specialties-overview-add-specs">
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                    <svg width="16" height="16" fill="none"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                              fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="OverviewItemStyles__Container-sc-172texy-0 jTPzrG">
+                                                    <div class="OverviewItemStyles__Main-sc-172texy-1 hgOYKk"><span
+                                                            class="OverviewItemStyles__LabelHolder-sc-172texy-2 bMHklt"><span
+                                                            class="OverviewItemStyles__Label-sc-172texy-3 bdtbAN">Отделочные работы</span></span><span
+                                                            class="OverviewItemStyles__Price-sc-172texy-5 cdRSGK">по&nbsp;договорённости</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj"><h3
+                                                    class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Скидка</h3>
+                                                <div class="SettingBlock__ButtonsHolder-sc-1q7cl0m-0 fFglUi">
+                                                    <button type="button"
+                                                            class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr"
+                                                            data-testid="specialties-overview-add-discount">
+                                                        <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                            <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                                <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                    <svg width="16" height="16" fill="none"
+                                                                         xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                              fill="currentColor"></path>
+                                                                    </svg>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="CommonStyles__Container-sc-2mpmi7-0 bdYjAH">
+                                    <div class="Header__Container-sc-1y9asjn-0 cUeTl"><h2
+                                            class="Header__Title-sc-1y9asjn-1 gEUeuy">Портфолио</h2></div>
+                                    <div class="CommonStyles__Main-sc-2mpmi7-1 wDKUq">
+                                        <div class="BlockLayout__Content-sc-1ti9mrx-0 iAbNgs">
+                                            <div class="BlockLayout__Header-sc-1ti9mrx-1 fgZQYj">
+                                                <div class="BlockLayout__HeaderTexts-sc-1ti9mrx-2 LCCz"><h3
+                                                        class="BlockLayout__Title-sc-1ti9mrx-4 ddNTzA">Фотографии</h3>
+                                                </div>
+                                                <button type="button"
+                                                        class="ButtonStyles__Container-sc-1kch7k2-0 zTSqn BlockLayout__HeaderButton-sc-1ti9mrx-3 jvMMHr">
+                                                    <div class="ButtonStyles__Content-sc-1kch7k2-1 kitzDt">
+                                                        <div class="ButtonStyles__LabelAndIconContainer-sc-1kch7k2-3 kXA-dvj">
+                                                            <div class="ButtonStyles__StyledIcon-sc-1kch7k2-6 bGZEwH">
+                                                                <svg width="16" height="16" fill="none"
+                                                                     xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M9 2.75a.75.75 0 0 0-1.5 0V7.5H2.75a.75.75 0 0 0 0 1.5H7.5v4.75a.75.75 0 0 0 1.5 0V9h4.75a.75.75 0 0 0 0-1.5H9V2.75Z"
+                                                                          fill="currentColor"></path>
+                                                                </svg>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ButtonStyles__AbsoluteCounterContainer-sc-1kch7k2-2 iPIBAq"></div>
+                                                </button>
+                                            </div>
+                                            <div class="BlockLayout__Body-sc-1ti9mrx-7 fRvcwv">
+                                                <div class="PfilesListStyles__Container-sc-15rhp5-0 fmCYeu">
+                                                    <div class="PfilesListStyles__Row-sc-15rhp5-1 iJDaPT"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    =======================================================-->
+
+
+</section>
+
+
+<script>
+    function popupToggle() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide() {
+        const popup = document.getElementById('popup');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+<script>
+    function popupToggle2() {
+        const popup = document.getElementById('popup2');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide2() {
+        const popup = document.getElementById('popup2');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var id = /*[[${readPersonDto.id}]]*/ '5';
+        const optionValue = document.getElementById("exampleInputRole1");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + id + "/resumes";
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + id + "/orders";
+
+        }
+    }
+
+    /*]]>*/
+
+
+</script>
+
+
+<!--<script>-->
+<!--    $(document).ready(function() {-->
+
+
+<!--        var readURL = function(input) {-->
+<!--            if (input.files && input.files[0]) {-->
+<!--                var reader = new FileReader();-->
+
+<!--                reader.onload = function (e) {-->
+<!--                    $('.profile-pic').attr('src', e.target.result);-->
+<!--                }-->
+
+<!--                reader.readAsDataURL(input.files[0]);-->
+<!--            }-->
+<!--        }-->
+
+
+<!--        $(".file-upload").on('change', function(){-->
+<!--            readURL(this);-->
+<!--        });-->
+
+<!--        $(".upload-button").on('click', function() {-->
+<!--            $(".file-upload").click();-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

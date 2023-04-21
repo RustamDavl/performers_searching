@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+    <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
+    <link rel="stylesheet" href="/static/styles/forInprogressPage.css" th:href="@{/styles/forInprogressPage.css}">
+    <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
+
+    <title></title>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo-details">
+
+        <i class='icon'>
+
+            <a href="#">
+                <!-- here i need to dinamically change the photo -->
+
+                <img th:src="@{/api/v1/executor/{id}/image(id = ${executorId})}"
+                     class="forPhoto">
+            </a> </i>
+        <div class="logo_name">
+
+            <select onchange="doSelect()" id="inputRole" name="role" class="form-select form-select-lg mb-3 loginSelect"
+                    aria-label=".form-select-lg example">
+
+                <option>Специалист</option>
+                <option>Заказчик</option>
+
+            </select>
+
+        </div>
+        <i class='bx bx-menu' id="btn"></i>
+
+
+    </div>
+    <ul class="nav-list">
+
+        <li>
+            <a id="orders" th:href="@{/executor/{id}/resumes(id = ${executorId})}">
+                <i class='bx bx-grid-alt'></i>
+                <span class="links_name">Мое резюме</span>
+            </a>
+            <span class="tooltip">Мое резюме</span>
+        </li>
+        <li>
+            <a id="profile" th:href="@{/executor/{id}/profile(id = ${executorId})}" onclick="changeHeaderText()">
+                <i class='bx bx-user'></i>
+                <span class="links_name">Профиль</span>
+            </a>
+            <span class="tooltip">Профиль</span>
+        </li>
+        <li>
+            <a id="messages" href="#messages" onclick="changeHeaderText()">
+                <i class='bx bx-chat'></i>
+                <span class="links_name">Сообщения</span>
+            </a>
+            <span class="tooltip">Сообщения</span>
+        </li>
+        <li>
+            <a id="responses" th:href="@{/executor/{id}/orders(id = ${executorId})}">
+                <i class='bx bx-pie-chart-alt-2'></i>
+                <span class="links_name">Найти заказы</span>
+            </a>
+            <span class="tooltip">Найти заказ</span>
+        </li>
+        <li>
+            <a id="record" th:href="@{/executor/{id}/progress(id = ${executorId})}">
+                <i class='bx bx-folder'></i>
+                <span class="links_name">Выполняемые</span>
+            </a>
+            <span class="tooltip">Выполняемые</span>
+        </li>
+
+        <li class="profile">
+            <div class="profile-details">
+
+            </div>
+            <a href="#" style="background: none;">
+
+                <i class='bx bx-log-out' id="log_out"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<section class="home-section">
+
+    <div id="headerText" class="text">
+        Выполняемые заказы
+    </div>
+
+
+    <div class="screen-grid screen__grid">
+        <div class="screen-grid__content" style="position: relative;">
+            <div class="projects-list">
+                <div id="projectsDiv" class="projects-list__grid">
+
+
+                    <div th:each="order : ${executableOrders}" class="adding project-preview projects-list__item"
+                         style="cursor: pointer;">
+                        <a style="text-decoration: none"
+                           th:href="@{/executor/{id}/orders/{orderId}(id = ${executorId},orderId = ${order.readOrderDto.id},
+                           resumeId = ${order.readResumeDto.id}, accepted = true, submitted = true)}">
+                            <div class="project-preview__container">
+                                <div class="project-preview__actions">
+
+
+                                    <!-- <div class="project-preview__time-zone">PRSN</div> -->
+                                </div>
+<!--                                <h2 style="color: black" data-cy="project-card-title" class="project-preview__title">-->
+
+
+
+
+<!--                                    <span th:text="|${order.readOrderDto.startAt} - ${order.readOrderDto.endAt}|"-->
+<!--                                          class="project-preview__title-text">order name</span>-->
+
+<!--                                </h2>-->
+                                <h2 style="color: black" data-cy="project-card-title" class="project-preview__title">
+
+
+                                    <img th:src="@{/images/folder-black-interface-symbol_icon-icons.com_54528.png}"
+                                         width="20"
+                                         height="20">
+
+                                    <span th:text="${order.readOrderDto.orderName}"
+                                          class="project-preview__title-text">order name</span>
+
+                                </h2>
+
+
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- ...................................................................................... -->
+
+
+</section>
+
+
+<script>
+    function popupToggle() {
+        const popup = document.getElementById('popup');
+        popup.classList.add('active')
+    }
+</script>
+
+<script>
+
+    function popupHide() {
+        const popup = document.getElementById('popup');
+        popup.classList.remove('active')
+
+    }
+</script>
+
+<script>
+    let sidebar = document.querySelector(".sidebar");
+    let closeBtn = document.querySelector("#btn");
+    let searchBtn = document.querySelector(".bx-search");
+
+    closeBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("open");
+        menuBtnChange();//calling the function(optional)
+    });
+
+    searchBtn.addEventListener("click", () => { // Sidebar open when you click on the search iocn
+        sidebar.classList.toggle("open");
+        menuBtnChange(); //calling the function(optional)
+    });
+
+    // following are the code to change sidebar button(optional)
+    function menuBtnChange() {
+        if (sidebar.classList.contains("open")) {
+            closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");//replacing the iocns class
+        } else {
+            closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");//replacing the iocns class
+        }
+    }
+</script>
+
+<script>
+    function changeHeaderText() {
+        document.getElementById('orders').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Заказы"
+        })
+        document.getElementById('profile').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Профиль"
+        })
+        document.getElementById('messages').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Сообщения"
+        })
+        document.getElementById('responses').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Отклики"
+        })
+        document.getElementById('record').addEventListener('click', () => {
+            document.getElementById('headerText').innerText = "Учет"
+        })
+
+
+    }
+</script>
+
+<script src="/js/bootstrap.bundle.js">
+</script>
+
+
+<script>
+    let inputs = document.querySelectorAll('.input__file');
+    Array.prototype.forEach.call(inputs, function (input) {
+        let label = input.nextElementSibling,
+            labelVal = label.querySelector('.input__file-button-text').innerText;
+
+        input.addEventListener('change', function (e) {
+            let countFiles = '';
+            if (this.files && this.files.length >= 1)
+                countFiles = this.files.length;
+
+            if (countFiles)
+                label.querySelector('.input__file-button-text').innerText = 'Выбрано файлов: ' + countFiles;
+            else
+                label.querySelector('.input__file-button-text').innerText = labelVal;
+        });
+    });
+</script>
+
+<!--<script th:src="@{/js/jquery-3.6.1.min.js}" th:inline="javascript">-->
+
+
+<!--    /*<![CDATA[*/-->
+
+
+<!--    $( function() {-->
+<!--        const availableTags = /*[[${keywords}]]*/ 'list';-->
+<!--        $( "#keywords" ).autocomplete({-->
+<!--            source: availableTags-->
+<!--        });-->
+<!--    } );-->
+
+
+<!--    /*]]>*/-->
+
+<!--</script>-->
+
+<!--////////////////////////////////////////////////////////////////////////////////////////-->
+<script src="/jquery-ui-1.13.2/jquery-ui.js"></script>
+
+<script src="/js/jquery-3.6.1.min.js">
+    $(function () {
+        var availableTags = [
+            "ActionScript",
+            "AppleScript",
+            "Asp",
+            "BASIC",
+            "C",
+            "C++",
+            "Clojure",
+            "COBOL",
+            "ColdFusion",
+            "Erlang",
+            "Fortran",
+            "Groovy",
+            "Haskell",
+            "Java",
+            "JavaScript",
+            "Lisp",
+            "Perl",
+            "PHP",
+            "Python",
+            "Ruby",
+            "Scala",
+            "Scheme"
+        ];
+        $("#keywords").autocomplete({
+            source: availableTags
+        });
+    });
+</script>
+
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+
+    function doSelect() {
+        var executorId = /*[[${executorId}]]*/ '5';
+        const optionValue = document.getElementById("inputRole");
+
+        if (optionValue.value == 'Специалист') {
+            window.location.href = "/executor/" + executorId + "/resumes";
+
+        } else if (optionValue.value == 'Заказчик') {
+            window.location.href = "/customer/" + executorId + "/orders";
+        }
+    }
+
+    /*]]>*/
+</script>
+
+
+<!--/////////////////////////////////////////////////////////////////////////////////////////////-->
+</body>
+
+</html>

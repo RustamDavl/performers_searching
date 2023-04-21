@@ -22,9 +22,9 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/customer/{id}/image(id = ${customerId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
@@ -44,14 +44,14 @@
     <ul class="nav-list">
 
         <li>
-            <a id="orders" href="#orders" onclick="changeHeaderText()">
+            <a id="orders" th:href="@{/customer/{id}/orders(id = ${customerId})}" onclick="changeHeaderText()">
                 <i class='bx bx-grid-alt'></i>
                 <span class="links_name">Заказы</span>
             </a>
             <span class="tooltip">Заказы</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/customer/{id}/profile(id = ${customerId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>
@@ -112,7 +112,12 @@
                         <div class="project-preview__container">
                             <div class="project-preview__actions">
                                 <div class="project-preview__tasks">
-                                    <span class="project-preview__tasks-text">Удалить</span>
+                                    <form id="deleteOrder" method="post" th:action="@{/customer/{id}/orders/{orderId}/delete(id = ${customerId}, orderId = ${readOrder.id})}">
+                                        <button form="deleteOrder" class="removeResume" type="submit" >
+                                            <span class="project-preview__tasks-text">Удалить</span>
+
+                                        </button>
+                                    </form>
                                 </div>
                                 <div class="project-preview__edit"
                                      style="cursor: pointer; min-width: auto; margin-right: 1rem;">

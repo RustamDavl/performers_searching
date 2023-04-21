@@ -22,9 +22,9 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/customer/{id}/image(id = ${customerId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
@@ -52,7 +52,7 @@
             <span class="tooltip">Заказы</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/customer/{id}/profile(id = ${customerId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>

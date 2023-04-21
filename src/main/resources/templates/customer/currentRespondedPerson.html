@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
     <link rel="stylesheet" href="/static/styles/fontello.css" th:href="@{/styles/fontello.css}">
-    <link rel="stylesheet" href="/static/styles/currentRespondedPerson.css" th:href="@{/styles/currentRespondedPerson.css}">
+    <link rel="stylesheet" href="/static/styles/currentRespondedPerson.css"
+          th:href="@{/styles/currentRespondedPerson.css}">
     <link rel="stylesheet" href="/jquery-ui-1.13.2/jquery-ui.css" th:href="@{/jquery-ui-1.13.2/jquery-ui.css}">
 
     <title></title>
@@ -22,9 +23,9 @@
 
             <a href="#">
                 <!-- here i need to dinamically change the photo -->
-                <div style="background-image: url('/images/chb5.png');" class="forPhoto">
 
-                </div>
+                <img th:src="@{/api/v1/customer/{id}/image(id = ${customerId})}"
+                     class="forPhoto">
             </a> </i>
         <div class="logo_name">
 
@@ -52,7 +53,7 @@
             <span class="tooltip">Заказы</span>
         </li>
         <li>
-            <a id="profile" href="#profile" onclick="changeHeaderText()">
+            <a id="profile" th:href="@{/customer/{id}/profile(id = ${customerId})}" onclick="changeHeaderText()">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Профиль</span>
             </a>
@@ -93,11 +94,16 @@
 </div>
 
 
-
 <section class="home-section">
 
     <div id="headerText" class="text">
-        Просмотр резюме
+        <a th:href="@{/customer/{id}/responses(id = ${customerId})}">
+            <button data-cy="project-form-close-bt"
+                    class="y-ctrl-btn slide-panel__button-back" type="button">
+
+
+                <span class="y-ctrl-btn__text">Назад</span></button>
+        </a>
     </div>
 
 
@@ -131,8 +137,9 @@
                                                     <div class="TagList__List-sc-1povpgm-0 dRvBCN order-card-header__tag-list">
                                                         <div class="TagList__ListContainer-sc-1povpgm-1 dxGPHX">
                                                             <div class="TagStyles__Component-sc-1ckjkbh-0 dlkFzg"
-                                                                 color="#0075FF"><span th:text="|Опыт работы ${resume.experience}|"
-                                                                                       class="TagStyles__TagText-sc-1ckjkbh-3 btGqYQ">dummy keyword</span>
+                                                                 color="#0075FF"><span
+                                                                    th:text="|Опыт работы ${resume.experience}|"
+                                                                    class="TagStyles__TagText-sc-1ckjkbh-3 btGqYQ">dummy keyword</span>
                                                             </div>
 
                                                         </div>
@@ -210,12 +217,15 @@
                                                     Республика Татарстан, Бугульма, улица Ленина, 2</p></div>
                                             <div class="order-card-param-list__item order-card-param__container">
                                                 <div class="order-card-param-title"><p size="18"
-                                                                                       class="bo_text__18 bo_text">График работы</p></div>
+                                                                                       class="bo_text__18 bo_text">
+                                                    График работы</p></div>
                                                 <p th:text="${resume.weekdays}" size="16"
                                                    class="bo_text__16 bo_text order-card-param__text">
-                                                    Пн,&nbsp&nbspВт, &nbsp&nbspСр, &nbsp&nbspЧт, &nbsp&nbspПт.&nbsp&nbsp</p>
+                                                    Пн,&nbsp&nbspВт, &nbsp&nbspСр, &nbsp&nbspЧт,
+                                                    &nbsp&nbspПт.&nbsp&nbsp</p>
                                                 <p th:text="|${resume.startAt} : ${resume.endAt}|" size="16"
-                                                   class="bo_text__16 bo_text order-card-param__text">С 6:00 до 22:00</p>
+                                                   class="bo_text__16 bo_text order-card-param__text">С 6:00 до
+                                                    22:00</p>
 
 
                                             </div>
@@ -227,11 +237,10 @@
                                                 </div>
                                                 <p th:text="|${resume.price} ${resume.measurement}|" size="16"
                                                    class="bo_text__16 bo_text order-card-param__text">
-                                                   2500 за час
-                                                   </p>
+                                                    2500 за час
+                                                </p>
 
                                             </div>
-
 
 
                                             <div class="order-card-param-list__item">
@@ -240,7 +249,7 @@
                                                         <!--                                                        <p class="bo_text__16_bold bo_text order-card-client-avatar__letter">-->
                                                         <!--                                                            Е</p>-->
                                                         <img th:src="@{/api/v1/executor/{id}/image(id = ${resume.readPersonDto.id})}"
-                                                             width="35px" height="35px" alt="empty">
+                                                             width="65px" height="55px" alt="empty">
                                                     </div>
                                                     <div><p th:text="${resume.readPersonDto.firstName}" size="18"
                                                             class="bo_text__18 bo_text">Евгений Кузнецов</p>
@@ -256,65 +265,36 @@
 
                                         </div>
                                     </div>
-                                    <div th:if="${orderResumeDto.orderStatus != 'ACCEPTED'}" class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
+                                    <div th:if="${orderResumeDto.orderStatus != 'ACCEPTED' and orderResumeDto.orderStatus != 'FINISHED'}"
+                                         class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
                                         <form th:action="@{/response/customer/{customerId}/responses/{resumeId}(customerId=${customerId}, resumeId = ${resume.id}
                                        )}" method="post">
                                             <input type="hidden" name="orderId" th:value="${param.orderId}">
                                             <input type="hidden" name="orderStatus" value="ACCEPTED">
                                             <input type="hidden" name="resumeStatus" value="FROM">
-<!--                                            <div class="react-geocoder" style="position: relative;">-->
-
-<!--                                                <details class="custom-select forLabel">-->
-<!--                                                    <summary class="radios">-->
-<!--                                                        <input class="sumInput" type="radio" name="resumeId"-->
-<!--                                                               id="default4" title="Выбрать резюме" checked="">-->
-
-
-<!--                                                        <input th:each="resume : ${resumes}" class="sumInput"-->
-<!--                                                               type="radio" name="resumeId" th:value="${resume.id}"-->
-<!--                                                               th:id="${resume.keyword}" th:title="${resume.keyword}"-->
-<!--                                                               wfd-invisible="true">-->
-
-<!--                                                    </summary>-->
-
-
-<!--                                                    <ul class="list">-->
-<!--                                                        <li th:each="resume : ${resumes}">-->
-<!--                                                            <label th:value="${resume.keyword}"-->
-<!--                                                                   th:text="${resume.keyword}"-->
-<!--                                                                   th:for="${resume.keyword}">-->
-
-<!--                                                                dummy text-->
-
-<!--                                                            </label>-->
-<!--                                                        </li>-->
-<!--                                                    </ul>-->
-<!--                                                </details>-->
-<!--                                            </div>-->
-                                            <div  class="ContentStyles__StickyContainer-sc-1vo8noy-2 bgZqlz">
-                                                <div th:if="${orderResumeDto.orderStatus != 'ACCEPTED'}" class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
+                                            <div class="ContentStyles__StickyContainer-sc-1vo8noy-2 bgZqlz">
+                                                <div th:if="${orderResumeDto.orderStatus != 'ACCEPTED'}"
+                                                     class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
 
                                                     <div class="testing">
 
-                                                    <button type="submit" style="border: none; background: none;">
-                                                        <a  class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
-                                                            <div class="backoffice-common-button__content"><p
-                                                                    class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
-                                                                    size="18">Принять</p></div>
-                                                            <div data-testid="LOADER"
-                                                                 class="loader-dots backoffice-common-button__loader">
-                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
-                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
-                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
-                                                            </div>
-                                                        </a>
-                                                    </button>
-
-
+                                                        <button type="submit" style="border: none; background: none;">
+                                                            <a class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                                <div class="backoffice-common-button__content"><p
+                                                                        class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
+                                                                        size="18">Принять</p></div>
+                                                                <div data-testid="LOADER"
+                                                                     class="loader-dots backoffice-common-button__loader">
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                </div>
+                                                            </a>
+                                                        </button>
 
 
                                                         <button type="submit" style="border: none; background: none;">
-                                                            <a  class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                            <a class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
                                                                 <div class="backoffice-common-button__content"><p
                                                                         class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
                                                                         size="18">Написать</p></div>
@@ -327,12 +307,25 @@
                                                             </a>
                                                         </button>
                                                     </div>
-
-
-
                                                 </div>
 
-
+                                                <div th:if="${orderResumeDto.orderStatus == 'ACCEPTED'}"
+                                                     class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
+                                                    <button type="submit"
+                                                            style="border: none; background: none; width: 100%">
+                                                        <a class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                            <div class="backoffice-common-button__content"><p
+                                                                    class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
+                                                                    size="18">Откликнуться</p></div>
+                                                            <div data-testid="LOADER"
+                                                                 class="loader-dots backoffice-common-button__loader">
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                            </div>
+                                                        </a>
+                                                    </button>
+                                                </div>
 
 
                                             </div>
@@ -340,12 +333,54 @@
 
                                         </form>
                                     </div>
+
+
+                                    <div th:if="${orderResumeDto.orderStatus == 'FINISHED'}"
+                                         class="Column-sc-1180kxd-0 ContentStyles__RightColumn-sc-1vo8noy-1 jtPqym ffDToG">
+                                        <form th:action="@{/response/customer/{customerId}/responses/{resumeId}(customerId=${customerId}, resumeId = ${resume.id}
+                                       )}" method="post">
+                                            <input type="hidden" name="orderId" th:value="${param.orderId}">
+                                            <input type="hidden" name="orderStatus" value="ACCEPTED">
+                                            <input type="hidden" name="resumeStatus" value="FROM">
+                                            <div class="ContentStyles__StickyContainer-sc-1vo8noy-2 bgZqlz">
+                                                <div
+                                                        class="ContentStyles__Card-sc-1vo8noy-0 BidActionsStyles__Card-sc-1c2key5-0 kIhtgG kErMQG">
+
+
+
+                                                        <button type="submit" style="border: none; background: none; width: 100%">
+                                                            <a class="backoffice-common-button backoffice-common-button_medium backoffice-common-button_theme-black order-card-bid-action-bar__button">
+                                                                <div class="backoffice-common-button__content"><p
+                                                                        class="bo_text__18 bo_text backoffice-common-button__text backoffice-common-button__text_theme-black"
+                                                                        size="18">Оценить</p></div>
+                                                                <div data-testid="LOADER"
+                                                                     class="loader-dots backoffice-common-button__loader">
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                    <div class="loader-dots__dot loader-dots__dot_white loader-dots__dot_size-m"></div>
+                                                                </div>
+                                                            </a>
+                                                        </button>
+
+
+                                                </div>
+
+
+                                            </div>
+
+
+                                        </form>
+                                    </div>
+
+
                                 </div>
                             </div>
-                            <div class="bottomContainerStyles__Container-sc-p011ip-0 kiiuet order-card-bid-action-bar backoffice-no-scrollbars"
-                                 style="bottom: 0px;"></div>
+
+
                         </div>
                     </div>
+                    <div class="bottomContainerStyles__Container-sc-p011ip-0 kiiuet order-card-bid-action-bar backoffice-no-scrollbars"
+                         style="bottom: 0px;"></div>
                 </div>
 
 

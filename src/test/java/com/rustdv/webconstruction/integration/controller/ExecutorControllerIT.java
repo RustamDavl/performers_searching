@@ -1,5 +1,6 @@
 package com.rustdv.webconstruction.integration.controller;
 
+import com.rustdv.webconstruction.dto.createupdate.CreateUpdatePersonDto;
 import com.rustdv.webconstruction.dto.createupdate.CreateUpdateResumeDto;
 import com.rustdv.webconstruction.integration.IntegrationTestBase;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RequiredArgsConstructor
 @AutoConfigureMockMvc
 public class ExecutorControllerIT extends IntegrationTestBase {
+
+    private final Integer USER_ID = 10;
 
     private final MockMvc mockMvc;
 
@@ -49,12 +52,27 @@ public class ExecutorControllerIT extends IntegrationTestBase {
                 .aboutMe("very cool worker")
                 .build();
 
+
         int userId = 10;
+
+
         mockMvc.perform(MockMvcRequestBuilders.post("/{id}/resumes", userId)
-                .param(createUpdateResumeDto.toString()))
+                        .param(createUpdateResumeDto.toString()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrlPattern("/*/resumes"));
 
+    }
+
+    @Test
+    void updatePersonProfile() throws Exception {
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/executor/{id}/profile/update", 1)
+                        .param("firstName", "UpdatedFirstname")
+
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/executor/*/profile"));
     }
 
 }
