@@ -1079,23 +1079,6 @@ input[type=text] {
     visibility: hidden;
 }
 
-.bFJChp {
-    z-index: 12000;
-    position: fixed;
-    height: 100%;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    background-color: rgba(20, 28, 37, 0.12);
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    transition: opacity 300ms ease-out 0s;
-    opacity: 1;
-    pointer-events: auto;
-}
 
 @media (min-width: 720px) {
 
