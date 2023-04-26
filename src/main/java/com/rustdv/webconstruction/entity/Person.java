@@ -50,16 +50,27 @@ public class Person {
     private String personalInfo;
 
 
-    @OneToMany(mappedBy = "recipientId")
+    @OneToMany(mappedBy = "recipient")
     @Builder.Default
     @ToString.Exclude
     private List<Comment> receivedComments = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "senderId")
+    @OneToMany(mappedBy = "sender")
     @Builder.Default
     @ToString.Exclude
     private List<Comment> sentComments = new ArrayList<>();
+
+
+    public void addReceivedComments(Comment comment) {
+        this.receivedComments.add(comment);
+        comment.setRecipient(this);
+    }
+
+    public void addSentComments(Comment comment) {
+        this.sentComments.add(comment);
+        comment.setSender(this);
+    }
 
 
 

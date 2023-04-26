@@ -22,16 +22,16 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    String message;
+    String comment;
 
 
     @ManyToOne
     @JoinColumn(name = "recipient_id")
-    Person recipientId;
+    Person recipient;
 
     @ManyToOne
     @JoinColumn(name = "sender_id")
-    Person senderId;
+    Person sender;
 
     @Override
     public boolean equals(Object o) {
