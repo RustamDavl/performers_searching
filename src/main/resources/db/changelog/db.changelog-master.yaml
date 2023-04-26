@@ -15,6 +15,8 @@ databaseChangeLog:
       file: db/changelog/db.change-table-OrdersResume-1.0.sql
   - include:
       file: db/changelog/db.change-table-person-1.0.sql
+  - include:
+      file: db/changelog/db.changelog-create-table-comment-1.0.sql
 
 
 

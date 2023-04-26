@@ -50,6 +50,18 @@ public class Person {
     private String personalInfo;
 
 
+    @OneToMany(mappedBy = "recipientId")
+    @Builder.Default
+    @ToString.Exclude
+    private List<Comment> receivedComments = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "senderId")
+    @Builder.Default
+    @ToString.Exclude
+    private List<Comment> sentComments = new ArrayList<>();
+
+
 
 
     @Override
