@@ -24,11 +24,6 @@ public class ReadPersonMapper implements Mapper<Person, ReadPersonDto> {
                 .email(from.getEmail())
                 .photo(from.getPhoto())
                 .personalInfo(from.getPersonalInfo())
-//                .readResumeDtos(
-//                        from.getResumes().stream()
-//                                .map(readResumeMapper::mapFrom)
-//                                .toList()
-//                )
                 .build();
     }
 

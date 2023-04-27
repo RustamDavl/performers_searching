@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class CreateUpdateCommentDto implements CreateUpdateDto {
 
     String comment;
-    CreateUpdatePersonDto recipient;
-    CreateUpdatePersonDto sender;
+    String recipientId;
+    String senderId;
 
 }

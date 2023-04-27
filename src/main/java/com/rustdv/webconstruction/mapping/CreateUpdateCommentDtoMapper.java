@@ -10,14 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreateUpdateCommentDtoMapper implements Mapper<CreateUpdateCommentDto, Comment> {
 
-    private final CreateUpdatePersonMapper createUpdatePersonMapper;
     @Override
     public Comment mapFrom(CreateUpdateCommentDto from) {
 
         return Comment.builder()
                 .comment(from.getComment())
-                .recipient(createUpdatePersonMapper.mapFrom(from.getRecipient()))
-                .sender(createUpdatePersonMapper.mapFrom(from.getSender()))
                 .build();
     }
 }

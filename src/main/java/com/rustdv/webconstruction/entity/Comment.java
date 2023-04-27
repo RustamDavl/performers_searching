@@ -33,6 +33,7 @@ public class Comment {
     @JoinColumn(name = "sender_id")
     Person sender;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

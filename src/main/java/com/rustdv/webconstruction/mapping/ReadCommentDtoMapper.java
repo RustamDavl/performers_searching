@@ -8,13 +8,14 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class ReadCommentDtoMapper implements Mapper<ReadCommentDto, Comment> {
+public class ReadCommentDtoMapper implements Mapper<Comment, ReadCommentDto> {
 
     private final ReadPersonMapper readPersonMapper;
 
     @Override
-    public Comment mapFrom(ReadCommentDto from) {
-        return Comment.builder()
+    public ReadCommentDto mapFrom(Comment from) {
+        return ReadCommentDto.builder()
+                .id(from.getId())
                 .comment(from.getComment())
                 .recipient(readPersonMapper.mapFrom(from.getRecipient()))
                 .sender(readPersonMapper.mapFrom(from.getSender()))
