@@ -227,7 +227,7 @@ button, input {
 .getStarted {
     position: relative;
     left: 125px;
-    top: 300px;
+    /*top: 300px;*/
 }
 .greetingText {
     color: #fff;

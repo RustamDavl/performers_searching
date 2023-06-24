@@ -33,7 +33,6 @@ public class OrderResumeService implements IService<CreateUpdateOrderResumeDto, 
 
     private final ReadOrderMapper readOrderMapper;
 
-    private final ReadResumeMapper readResumeMapper;
     private final OrderResumeRepository orderResumeRepository;
     private final ReadOrdersResumeMapper readOrdersResumeMapper;
     private final PersonRepository personRepository;
@@ -86,9 +85,6 @@ public class OrderResumeService implements IService<CreateUpdateOrderResumeDto, 
                 RespondStatus.valueOf(object.getOrderStatus()));
 
 
-//        orderResumeRepository.updateStatusesToRejectByOrderId(orderId);
-
-//        orderResumeRepository.deleteAllByOrderIdAndOrderStatus(Integer.parseInt(object.getOrderId()), RespondStatus.TO.name());
 
         return orderResumeRepository.findById(id)
                 .map(readOrdersResumeMapper::mapFrom);
@@ -101,8 +97,6 @@ public class OrderResumeService implements IService<CreateUpdateOrderResumeDto, 
     }
 
     Optional<ReadOrderResumeDto> findByOrderId(Integer orderId) {
-//        return orderResumeRepository.findByOrderId(orderId)
-//                .map(readOrdersResumeMapper::mapFrom);
         return null;
     }
 
